@@ -1,41 +1,62 @@
-### Droplet description package ###
+r'''
+Droplet description package
+'''
 
 import const as cst
 import math
 import numpy as np
-import matplotlib.pyplot as plt
+import params
 
-humidity = 0.5 #50%
-temp = 30 #°C
+# Atmosphere properties
+humidity = params.humidity
+temp = params.temp
+air_density = params.air_density
 
-chem = 'thiophanate-methyl'
-chem_density = cst.rho_l(chem)
-chem_mass = 0.5 #grams
-chem_dilrate = 0.1 #dilution of 10%
+# Chemical properties
+chem = params.chem
+chem_density = params.chem_density
+chem_mass = params.chem_mass
+chem_dilrate = params.chem_dilrate
 
-supp_volume = 50 #liters
-supp_density = 1 #Water density
+# Support properties
+supp_volume = params.supp_volume
+supp_density = params.supp_density
+
+# Mixture properties
+rho_mix = params.rho_mix #Density of mixture
+vol_mix = params.vol_mix #Volume of mixture
+
+
+def init_velocity():
+    r'''
+    Droplets initial emission velocity is based on Bernoulli equation with some simplification hypothesis
+    :return: initial velocity of droplets
+    '''
+    P = 10
+    nu_e = 1
+    V_0 = math.sqrt((2*nu_e*P)/rho_mix)
+    return V_0
 
 
 def sed_velocity(drop_diam):
     r'''The sedimentation velocity of the droplet is obtained at equilibrium (dV/dt=0),
     under conditions close to the ground where the wind movement is horizontal
         *:param drop_diam: droplet diameter depend of weigth fraction
-        *:return: sedimentation velocity of differente droplet
+        *:return: sedimentation velocity of differents droplets
     '''
-    rho_vol = cst.rho_mix_vol(chem_dilrate, chem_density, supp_density)
     rho_a = cst.rho_a(humidity, temp)
     g = cst.g()
     Cd = cst.Cd()
-    Vs = math.sqrt((4*g*(rho_vol)*drop_diam)/(3*Cd*rho_a))
+    Vs = math.sqrt((4*g*(rho_mix)*drop_diam)/(3*Cd*rho_a))
     return Vs
 
-#
-def drop_distrib(mixt_volume):
+
+def drop_distrib():
     r'''
     Droplet distribution based on the log-normal distribution function
-    :param mixt_volume:
-    :return:
+    :param mixt_volume: volume of the mixture that will be sprayed
+    :return: drop_table that contains per line, the diameter of the droplet, with its volume fraction and the number of
+    droplets of this diameter within, and the cumulative volume fraction
     '''
     n0 = 0.567
     sigma_g = 1.3
@@ -43,17 +64,11 @@ def drop_distrib(mixt_volume):
     d_inf = 40
     d_sup = 500
     f_cumul = 0
-    drop_table = np.empty((0, 3), float)
+    drop_table = np.empty((0, 4), float)
     for d in np.arange(d_inf, d_sup, sigma_g):
         f = (n0/(math.sqrt(2*math.pi)*d*math.log10(sigma_g)))\
             *math.exp(-math.pow(math.log10(d/d_50),2)/(2*math.pow(math.log10(sigma_g),2)))
         f_cumul = f_cumul + f
-        drop_table = np.append(drop_table, np.array([[d, f, f_cumul]]), axis=0)
+        n = f/(math.pow(d,3)*(math.pi/6))
+        drop_table = np.append(drop_table, np.array([[d, f*vol_mix, f_cumul, n]]), axis=0)
     return drop_table
-
-# Plotting point using scatter method
-X= drop_distrib(0)[:, 0]
-Y1= drop_distrib(0)[:, 1]
-Y2= drop_distrib(0)[:, 2]
-plt.scatter(X,Y1 )
-plt.show()

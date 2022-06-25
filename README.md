@@ -1,4 +1,5 @@
 # drimera atmospheric model
+# <img height="110" src="icon/Logo_DRIMERA.png" width="200"/>
 The Drift Modeling for Environment Assessment (DRIMERA) is a Computational Fluid Dynamics (CFD) model for
 aerial applied pesticides concentration simulation
 
