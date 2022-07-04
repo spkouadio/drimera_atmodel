@@ -5,6 +5,9 @@ Parameter lists for imput
 import const as cst
 
 
+# Operational parameters
+alt_spray = 5 #altitude of spray (m)
+
 # Atmosphere properties
 humidity = 0.5 #50%
 temp = 30 #°C

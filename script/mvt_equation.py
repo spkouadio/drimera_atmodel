@@ -4,31 +4,47 @@ import params
 import const as cst
 import droplet_descr
 
+import matplotlib.pyplot as plt
 
 rho_mix = params.rho_mix
 rho_a = params.air_density
 drop_dist = droplet_descr.drop_distrib()
+alt_spray = params.alt_spray
+init_velocity = droplet_descr.init_velocity()
 g = cst.g()
 Cd = cst.Cd()
 
 nx = 41
 dx = 2 / (nx - 1)
-nt = 20    #nt is the number of timesteps we want to calculate
+nt = 150    #nt is the number of timesteps
 dt = .025  #dt is the amount of time each timestep covers (delta t)
 c = 1
 
-u = np.ones(nx)      #as before, we initialize u with every value equal to 1.
-u[int(.5 / dx) : int(1 / dx + 1)] = 2  #then set u = 2 between 0.5 and 1 as per our I.C.s
+n_diam = len(drop_dist[:,0])
+v = np.zeros((nt,n_diam))
+x = np.zeros((nt,n_diam))
+z = np.zeros((nt,n_diam)) # for altitude
+t = np.zeros(nt)
+v[0,:] = init_velocity # initialization of droplet velocity
+z[0,:] = alt_spray # altitude of spray initialization
 
-un = np.ones(nx) #initialize our placeholder array un, to hold the time-stepped solution
+# Droplet velocity and position by diameter
+for n in range(nt - 1):
+    for i in range(n_diam):
+        vel = dt*(g*(rho_mix-rho_a)/rho_mix-(rho_a*math.pi*math.pow(drop_dist[i,0],2)*Cd*math.pow(v[n,i],2))/
+                       (8*(rho_mix*math.pi*math.pow(drop_dist[i,0],3)/6))) + v[n,0]
+        if vel >= 0 :
+            v[n+1, i] = vel # droplet velocity
+            z[n+1, i] = alt_spray
+        else :
+            alt = z[n, i] - droplet_descr.sed_velocity(drop_dist[i,0])*dt # droplet altitude
+            if alt >= 0 : z[n+1, i] = alt
 
-for n in range(nt):  # loop for values of n from 0 to nt, so it will run nt times
-    un = u.copy()  ##copy the existing values of u into un
-    for i in range(1, nx):  ## you can try commenting this line and...
-        # for i in range(nx): ## ... uncommenting this line and see what happens!
-        #u[i] = un[i] - c * dt / dx * (un[i] - un[i - 1])
-        un[i] = dt*(un[i-1] + g*(rho_mix-rho_a)/rho_mix-(rho_a*math.pi*math.pow(drop_dist[0,0],2)*Cd*math.pow(un[i],2))/
-                   (8*(rho_mix*math.pi*math.pow(drop_dist[0,0],3)/6)))
+        x[n + 1, i] = x[n, i] + v[n+1, i]*dt # droplet position
 
-print(u)
-print(un)
+# Timestep
+for n in range(nt):
+    t[n] = n*dt
+
+plt.scatter(z[:,0],x[:,0])
+plt.show()
