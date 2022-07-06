@@ -1,10 +1,14 @@
+r'''
+Module for describing the movement of droplets.
+It is based on the Lagrangian approach by solving Newton's equation of motion.
+'''
+
 import math
 import numpy as np
 import params
 import const as cst
 import droplet_descr
 
-import matplotlib.pyplot as plt
 
 rho_mix = params.rho_mix
 rho_a = params.air_density
@@ -45,6 +49,3 @@ for n in range(nt - 1):
 # Timestep
 for n in range(nt):
     t[n] = n*dt
-
-plt.scatter(z[:,0],x[:,0])
-plt.show()
