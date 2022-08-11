@@ -19,6 +19,11 @@ def rho_a(humid, temp):
     rho = float((1/(Rs*(temp+273.15)))*(P-230.617*humid*np.exp((17.5043*temp)/(241.2+temp))))
     return rho
 
+#Air kinematic viscosity
+def nu_a(temp):
+     nu = (0.22 * temp) - (195 / temp)
+     return nu
+
 #Mixture density
 def rho_mix_mass(chem_mass, chem_density, supp_volume, supp_density):
     rho_mix = float((chem_mass + supp_density*supp_volume)/((chem_mass/(1000*chem_density)) + supp_volume))

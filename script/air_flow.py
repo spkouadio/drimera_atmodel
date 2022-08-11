@@ -21,8 +21,8 @@ x = numpy.linspace(0, 2, nx)
 y = numpy.linspace(0, 2, ny)
 X, Y = numpy.meshgrid(x, y)
 
-rho = params.air_density #function
-nu = .1 #air kinematic viscosity function
+rho = params.air_density
+nu = params.air_kviscosity
 dt = .001
 
 u = numpy.zeros((ny, nx))

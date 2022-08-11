@@ -12,6 +12,7 @@ alt_spray = 5 #altitude of spray (m)
 humidity = 0.5 #50%
 temp = 30 #°C
 air_density = cst.rho_a(humidity, temp)
+air_kviscosity = cst.nu_a(temp)
 
 # Chemical properties
 chem = 'thiophanate-methyl'
