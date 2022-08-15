@@ -1,16 +1,13 @@
 r'''
 Constants package
 '''
+import math
 
 import numpy as np
 
 #Gravity
 def g():
     return 9.18
-
-#Buyoency coefficient
-def Cd():
-    return 0.447
 
 #Air density
 def rho_a(humid, temp):
@@ -19,10 +16,27 @@ def rho_a(humid, temp):
     rho = float((1/(Rs*(temp+273.15)))*(P-230.617*humid*np.exp((17.5043*temp)/(241.2+temp))))
     return rho
 
-#Air kinematic viscosity
-def nu_a(temp):
-     nu = (0.22 * temp) - (195 / temp)
-     return nu
+#Specific humidity
+def humid_spe(humid_rel, p_atmos, p_satur):
+    h = 0.6217*(humid_rel*p_satur)/(p_atmos-0.3783*humid_rel*p_satur)
+    return h
+
+#Atmosperical pressure (Pa)
+def p_atm(alt):
+    p_at = 101325 * math.pow(1 - 0.0000225577 * alt, 5.2554876)
+    return p_at
+
+#Saturation water vapor pressure (Pa)
+def p_sat(temp):
+    p_s = math.pow(10, 2.7862 + ((7.5526 * temp) / (239.21 + temp)))
+    return p_s
+
+#Air dynamic viscosity
+def mu_a(temp):
+    S = 110.4 #Kelvin
+    b = 1.458 * math.pow(10,-6)
+    mu = (b * math.pow(temp,3/2)) / (temp + 273.15 + S) #Sutherland Equation
+    return mu
 
 #Mixture density
 def rho_mix_mass(chem_mass, chem_density, supp_volume, supp_density):

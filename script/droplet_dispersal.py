@@ -9,15 +9,20 @@ import numpy as np
 import params
 import const as cst
 import droplet_descr
+import air_flow
 
+#air flow initialisation
+v_air = air_flow.v
+u_air = air_flow.u
 
 rho_mix = params.rho_mix
 rho_a = params.air_density
 drop_dist = droplet_descr.drop_distrib()
 alt_spray = params.alt_spray
 init_velocity = droplet_descr.init_velocity()
+nu_a = params.air_kviscosity
 g = cst.g()
-Cd = cst.Cd()
+Cd = 0.447 #to correct with flow type and drag force
 
 nx = 41
 dx = 2 / (nx - 1)
@@ -33,6 +38,24 @@ t = np.zeros(nt)
 v[0,:] = init_velocity # initialization of droplet velocity
 z[0,:] = alt_spray # altitude of spray initialization
 
+#Buyoency coefficient
+def C_d(diam, air_vel, drop_vel):
+    Re = (diam*math.fabs(air_vel-drop_vel))/nu_a
+    if Re < 0.1:
+        c_d = 24/Re #stokes regime
+    else :
+        if Re >=0.1 & Re <= 1000 :
+            c_d = (24/Re)*((1/6)*math.pow(Re, 2/3)) #transitory regime
+        else :
+            if Re > 1000 : c_d = 0.44 #newton regime
+    return c_d
+
+# Relaxation time
+def tau(diam, air_vel, drop_vel):
+    cd = C_d(diam, air_vel, drop_vel)
+    tp = (4*rho_mix*diam)/(3*rho_a*cd*math.fabs(air_vel-drop_vel))
+    return tp
+
 # Droplet velocity and position by diameter
 for n in range(nt - 1):
     for i in range(n_diam):
@@ -46,6 +69,13 @@ for n in range(nt - 1):
             if alt >= 0 : z[n+1, i] = alt
 
         x[n + 1, i] = x[n, i] + v[n+1, i]*dt # droplet position
+
+#New droplet trajectory calculation
+tau = tau(drop_dist[1,0], v[:, 0], )
+#diam, air_vel, drop_vel
+
+#vel_n = ()/(1+dt/)
+
 
 # Timestep
 for n in range(nt):
