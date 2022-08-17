@@ -38,19 +38,6 @@ def init_velocity():
     return V_0
 
 
-def sed_velocity(drop_diam):
-    r'''The sedimentation velocity of the droplet is obtained at equilibrium (dV/dt=0),
-    under conditions close to the ground where the wind movement is horizontal
-        *:param drop_diam: droplet diameter depend of weigth fraction
-        *:return: sedimentation velocity of differents droplets
-    '''
-    rho_a = cst.rho_a(humidity, temp)
-    g = cst.g()
-    Cd = cst.Cd()
-    Vs = math.sqrt((4*g*(rho_mix)*drop_diam)/(3*Cd*rho_a))
-    return Vs
-
-
 def drop_distrib():
     r'''
     Droplet distribution based on the log-normal distribution function

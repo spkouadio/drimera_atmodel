@@ -27,7 +27,7 @@ Cd = 0.447 #to correct with flow type and drag force
 nx = 41
 dx = 2 / (nx - 1)
 nt = 150    #nt is the number of timesteps
-dt = .025  #dt is the amount of time each timestep covers (delta t)
+dt = .01  #dt is the amount of time each timestep covers (delta t)
 c = 1
 
 n_diam = len(drop_dist[:,0])
@@ -44,7 +44,7 @@ def C_d(diam, air_vel, drop_vel):
     if Re < 0.1:
         c_d = 24/Re #stokes regime
     else :
-        if Re >=0.1 & Re <= 1000 :
+        if Re >=0.1 and Re <= 1000 :
             c_d = (24/Re)*((1/6)*math.pow(Re, 2/3)) #transitory regime
         else :
             if Re > 1000 : c_d = 0.44 #newton regime
@@ -56,25 +56,30 @@ def tau(diam, air_vel, drop_vel):
     tp = (4*rho_mix*diam)/(3*rho_a*cd*math.fabs(air_vel-drop_vel))
     return tp
 
+def sed_velocity():
+    r'''The sedimentation velocity of the droplet is obtained at equilibrium (dV/dt=0),
+    under conditions close to the ground where the wind movement is horizontal
+        *:param drop_diam: droplet diameter depend of weigth fraction
+        *:return: sedimentation velocity of differents droplets
+    '''
+
+
 # Droplet velocity and position by diameter
 for n in range(nt - 1):
     for i in range(n_diam):
-        vel = dt*(g*(rho_mix-rho_a)/rho_mix-(rho_a*math.pi*math.pow(drop_dist[i,0],2)*Cd*math.pow(v[n,i],2))/
-                       (8*(rho_mix*math.pi*math.pow(drop_dist[i,0],3)/6))) + v[n,0]
+        #vel = dt*(g*(rho_mix-rho_a)/rho_mix-(rho_a*math.pi*math.pow(drop_dist[i,0],2)*Cd*math.pow(v[n,i],2))/
+                       #(8*(rho_mix*math.pi*math.pow(drop_dist[i,0],3)/6))) + v[n,i]
+        vel = (v[n,i] + g * (1 - rho_a / rho_mix) * dt) / (1 + dt / tau(drop_dist[i, 0], v_air[0,0], v[n,i]))
+        vel_sed = math.sqrt((4 * g * rho_mix * drop_dist[i, 0]) / (3 * C_d(drop_dist[i, 0], v_air[0,0], v[n,i]) * rho_a))
+        #vel = (v[n, i] + g * (1 - rho_a / rho_mix) * dt) / (1 + dt / tau(drop_dist[i, 0], v_air[0, n], v[n, i]))
         if vel >= 0 :
             v[n+1, i] = vel # droplet velocity
             z[n+1, i] = alt_spray
         else :
-            alt = z[n, i] - droplet_descr.sed_velocity(drop_dist[i,0])*dt # droplet altitude
+            alt = z[n, i] - vel_sed*dt # droplet altitude
             if alt >= 0 : z[n+1, i] = alt
 
         x[n + 1, i] = x[n, i] + v[n+1, i]*dt # droplet position
-
-#New droplet trajectory calculation
-tau = tau(drop_dist[1,0], v[:, 0], )
-#diam, air_vel, drop_vel
-
-#vel_n = ()/(1+dt/)
 
 
 # Timestep
