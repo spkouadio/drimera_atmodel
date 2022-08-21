@@ -30,7 +30,23 @@ plt.ylabel('position')
 plt.title('Droplet trajectory')
 plt.show()
 
+#Droplets concentration (quantity distribution)
+t = 1500
+dt = .01
+conc = np.zeros((n_diam, 2))
 
+for i in range(n_diam):
+    conc[i, 0] = dd.x[i, t]
+    conc[i, 1] = drop_dist[i, 1]
+
+plt.plot(conc[:, 0], conc[:, 1])
+plt.xlabel('position')
+plt.ylabel('concentration')
+plt.title(f'Droplet concentration at t = {t*dt} s')
+plt.show()
+
+
+'''
 #Droplets sedimentation velocity
 sed_velo = np.array([])
 for diam in drop_dist[:,0]:
@@ -40,29 +56,19 @@ for diam in drop_dist[:,0]:
 init_velo = droplet_descr.init_velocity()
 #print("Droplets initial velocity = ",init_velo, "m/s")
 
-
 # Plotting point using scatter method
 #diam = drop_dist[10,0]
 #while diam == dd.x[:, :, :]
 
-'''
+
 x_max = round(x[- 1])
 conc = np.zeros((x_max,x_max))
 #Quantity distribution
 for pos_i in range(x_max):
     for pos_j in range(x_max):
         conc[pos_i,pos_j] = 
-'''
-t = 100
-pos_x = 4
-conc = 0
-for i in range(n_diam):
-    if round(dd.x[i, t]) == pos_x :
-        conc = conc + drop_dist[i, 1]
-print(conc)
-
-
-'''
+ 
+ 
 fig = plt.figure(figsize=(6, 3.2))
 
 ax = fig.add_subplot(111)

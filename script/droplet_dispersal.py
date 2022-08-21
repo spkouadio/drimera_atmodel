@@ -26,7 +26,7 @@ Cd = 0.447 #to correct with flow type and drag force
 
 nx = 41
 dx = 2 / (nx - 1)
-nt = 150    #nt is the number of timesteps
+nt = 1501    #nt is the number of timesteps
 dt = .01  #dt is the amount of time each timestep covers (delta t)
 c = 1
 '''
