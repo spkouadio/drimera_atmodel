@@ -29,7 +29,7 @@ dx = 2 / (nx - 1)
 nt = 150    #nt is the number of timesteps
 dt = .01  #dt is the amount of time each timestep covers (delta t)
 c = 1
-
+'''
 n_diam = len(drop_dist[:,0])
 v = np.zeros((nt,n_diam))
 x = np.zeros((nt,n_diam))
@@ -37,6 +37,7 @@ z = np.zeros((nt,n_diam)) # for altitude
 t = np.zeros(nt)
 v[0,:] = init_velocity # initialization of droplet velocity
 z[0,:] = alt_spray # altitude of spray initialization
+'''
 
 #Buyoency coefficient
 def C_d(diam, air_vel, drop_vel):
@@ -65,6 +66,63 @@ def sed_velocity():
 
 
 # Droplet velocity and position by diameter
+x_cord = len(v_air)
+y_cord = len(v_air[0])
+
+n_diam = len(drop_dist[:,0])
+v = np.zeros((nt))
+x = np.zeros((n_diam, nt))
+z = np.zeros((nt)) # for altitude
+t_t = np.zeros(nt)
+v[0] = init_velocity # initialization of droplet velocity
+z[0] = alt_spray # altitude of spray initialization
+
+i = 0
+j = 10
+x[0] = i
+#Position calculation
+for k in range(n_diam):
+    for t in range(nt - 1):
+        # vel = dt*(g*(rho_mix-rho_a)/rho_mix-(rho_a*math.pi*math.pow(drop_dist[i,0],2)*Cd*math.pow(v[n,i],2))/
+        # (8*(rho_mix*math.pi*math.pow(drop_dist[i,0],3)/6))) + v[n,i]
+        vel = (v[t] + g * (1 - rho_a / rho_mix) * dt) / (1 + dt / tau(drop_dist[k, 0], u_air[i, j], v[t]))
+        vel_sed = math.sqrt(
+            (4 * g * rho_mix * drop_dist[k, 0]) / (3 * C_d(drop_dist[k, 0], u_air[i, j], v[t]) * rho_a))
+        # vel = (v[n, i] + g * (1 - rho_a / rho_mix) * dt) / (1 + dt / tau(drop_dist[i, 0], v_air[0, n], v[n, i]))
+        if vel >= 0:
+            v[t + 1] = vel  # droplet velocity
+            z[t + 1] = alt_spray
+        else:
+            alt = z[t] - vel_sed * dt  # droplet altitude
+            if alt >= 0: z[t + 1] = alt
+
+        x[k, t + 1] = x[k, t] + v[t + 1] * dt  # droplet position
+        i = round(x[k, t + 1])
+
+
+'''
+for k in range(n_diam):
+    for i in range(x_cord-1):
+        for j in range(y_cord-1):
+            x[0] = i
+            for t in range(nt-1):
+                # vel = dt*(g*(rho_mix-rho_a)/rho_mix-(rho_a*math.pi*math.pow(drop_dist[i,0],2)*Cd*math.pow(v[n,i],2))/
+                # (8*(rho_mix*math.pi*math.pow(drop_dist[i,0],3)/6))) + v[n,i]
+                vel = (v[t] + g * (1 - rho_a / rho_mix) * dt) / (1 + dt / tau(drop_dist[k, 0], v_air[i, j], v[t]))
+                vel_sed = math.sqrt(
+                    (4 * g * rho_mix * drop_dist[k, 0]) / (3 * C_d(drop_dist[k, 0], v_air[i, j], v[t]) * rho_a))
+                # vel = (v[n, i] + g * (1 - rho_a / rho_mix) * dt) / (1 + dt / tau(drop_dist[i, 0], v_air[0, n], v[n, i]))
+                if vel >= 0:
+                    v[t + 1] = vel  # droplet velocity
+                    z[t + 1] = alt_spray
+                else:
+                    alt = z[t] - vel_sed * dt  # droplet altitude
+                    if alt >= 0: z[t + 1] = alt
+
+                x[t + 1] = x[t] + v[t + 1] * dt  # droplet position
+'''
+
+'''
 for n in range(nt - 1):
     for i in range(n_diam):
         #vel = dt*(g*(rho_mix-rho_a)/rho_mix-(rho_a*math.pi*math.pow(drop_dist[i,0],2)*Cd*math.pow(v[n,i],2))/
@@ -80,8 +138,8 @@ for n in range(nt - 1):
             if alt >= 0 : z[n+1, i] = alt
 
         x[n + 1, i] = x[n, i] + v[n+1, i]*dt # droplet position
-
+'''
 
 # Timestep
 for n in range(nt):
-    t[n] = n*dt
+    t_t[n] = n*dt

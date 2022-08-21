@@ -14,6 +14,23 @@ import droplet_dispersal as dd
 #Droplets distribution by diameter
 drop_dist = droplet_descr.drop_distrib()
 
+plt.plot(drop_dist[:, 0], drop_dist[:, 2])
+plt.xlabel('diameter')
+plt.ylabel('cumulated fraction')
+plt.title('Droplet distribution')
+plt.show()
+
+#Droplets trajectory
+n_diam = len(drop_dist[:,0])
+
+for i in range (n_diam):
+    plt.plot(dd.t_t, dd.x[i,:])
+plt.xlabel('time')
+plt.ylabel('position')
+plt.title('Droplet trajectory')
+plt.show()
+
+
 #Droplets sedimentation velocity
 sed_velo = np.array([])
 for diam in drop_dist[:,0]:
@@ -25,17 +42,40 @@ init_velo = droplet_descr.init_velocity()
 
 
 # Plotting point using scatter method
-X = dd.x[:, 1]
-t = dd.t
-#X= drop_dist[:, 0]
-#Y1= drop_dist[:, 1]
-#Y2= drop_dist[:, 2]
-#N = drop_dist[:, 3]
+#diam = drop_dist[10,0]
+#while diam == dd.x[:, :, :]
 
-fig = plt.figure()
-ax = fig.add_axes([0,0,1,1])
-ax.bar(t, X)
+'''
+x_max = round(x[- 1])
+conc = np.zeros((x_max,x_max))
+#Quantity distribution
+for pos_i in range(x_max):
+    for pos_j in range(x_max):
+        conc[pos_i,pos_j] = 
+'''
+t = 100
+pos_x = 4
+conc = 0
+for i in range(n_diam):
+    if round(dd.x[i, t]) == pos_x :
+        conc = conc + drop_dist[i, 1]
+print(conc)
+
+
+'''
+fig = plt.figure(figsize=(6, 3.2))
+
+ax = fig.add_subplot(111)
+ax.set_title('colorMap')
+plt.imshow(X)
+ax.set_aspect('equal')
+
+cax = fig.add_axes([0.12, 0.1, 0.78, 0.8])
+cax.get_xaxis().set_visible(False)
+cax.get_yaxis().set_visible(False)
+cax.patch.set_alpha(0)
+cax.set_frame_on(False)
+plt.colorbar(orientation='vertical')
 plt.show()
+'''
 
-#plt.scatter(X,Y2)
-#plt.show()

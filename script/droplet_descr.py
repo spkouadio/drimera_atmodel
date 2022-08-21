@@ -1,5 +1,5 @@
 r'''
-Droplet description package
+Droplet description module
 '''
 
 import const as cst
