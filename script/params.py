@@ -27,10 +27,10 @@ chem_dilrate = 0 ##chemical dilution rate (0%)
 supp_volume = 50 #liters
 supp_density = 1 #Water density
 
+if chem_dilrate != 0 :
+    chem_mass = chem_dilrate*supp_volume*(1000*chem_density)
+
 ## Mixture properties
 rho_mix = cst.rho_mix(chem_mass, chem_dilrate, chem_density, supp_volume, supp_density) #Density of mixture
 #Volume of mixture
-if chem_mass != 0 :
-    vol_mix = supp_volume+(chem_mass/(1000*chem_density))
-else:
-    vol_mix = supp_volume*(1+chem_dilrate)
+vol_mix = supp_volume+(chem_mass/(1000*chem_density))
