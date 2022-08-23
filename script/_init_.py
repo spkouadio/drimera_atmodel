@@ -9,6 +9,7 @@ import droplet_descr
 import matplotlib.pyplot as plt
 import numpy as np
 import droplet_dispersal as dd
+from mpl_toolkits.mplot3d import Axes3D
 
 
 #Droplets distribution by diameter
@@ -40,82 +41,26 @@ plt.ylabel('masse (mg)')
 plt.title(f'Droplet concentration at t = {t*dt} s')
 plt.show()
 
-
-plt.scatter(drop_dist[:, 1],  dd.z[:, t])
-plt.xlabel('masse (mg)')
-plt.ylabel('altitude')
-plt.title(f'Droplet concentration at t = {t*dt} s')
-plt.show()
-
-
 #Droplets sedimentation
 n_diam = len(drop_dist[:,0])
 
-for i in range (n_diam):
-    plt.plot(dd.t_t, dd.z[i,:])
-plt.xlabel('time')
+for t in range (len(dd.t_t)):
+    plt.scatter(dd.x[100, t], dd.z[100, t])
+plt.xlabel('position')
 plt.ylabel('altitude')
-plt.title('Droplet altitude')
+plt.title('Droplet altitude per position')
 plt.show()
 
 '''
-from mpl_toolkits import mplot3d
-dist = np.zeros((len(dd.x[:, t]),2))
-for i in range (n_diam):
-    dist[i,0] = dd.x[i, t]
-    dist[i,1] = dd.z[i, t]
-
-fig = plt.figure()
+# Creating 3D figure
+fig = plt.figure(figsize=(8, 8))
 ax = plt.axes(projection='3d')
-ax.plot_surface(dd.x[:, t], dd.z[:, t], dist[:,:], rstride=1, cstride=1,
-                cmap='viridis', edgecolor='none')
-ax.set_title('surface')
-ax.set_xlabel('t')
+
+ax.plot3D(dd.z[:, t], dd.x[:, t], drop_dist[:, 1])
+ax.set_xlabel('z')
 ax.set_ylabel('x')
-ax.set_zlabel('z')
-plt.show()
-'''
+ax.set_zlabel('m')
 
-fig = plt.figure()
-ax = fig.add_subplot(111, projection='3d')
-ax.scatter(dd.x[:, t], dd.z[:, t], drop_dist[:,1]) # plot the point (2,3,4) on the figure
-plt.show()
-'''
-#Droplets sedimentation velocity
-sed_velo = np.array([])
-for diam in drop_dist[:,0]:
-    sed_velo = np.append(sed_velo, 0) #droplet_descr.sed_velocity(diam))
-#print(sed_velo)
-#Droplets initial velocity
-init_velo = droplet_descr.init_velocity()
-#print("Droplets initial velocity = ",init_velo, "m/s")
-
-# Plotting point using scatter method
-#diam = drop_dist[10,0]
-#while diam == dd.x[:, :, :]
-
-
-x_max = round(x[- 1])
-conc = np.zeros((x_max,x_max))
-#Quantity distribution
-for pos_i in range(x_max):
-    for pos_j in range(x_max):
-        conc[pos_i,pos_j] = 
- 
- 
-fig = plt.figure(figsize=(6, 3.2))
-
-ax = fig.add_subplot(111)
-ax.set_title('colorMap')
-plt.imshow(X)
-ax.set_aspect('equal')
-
-cax = fig.add_axes([0.12, 0.1, 0.78, 0.8])
-cax.get_xaxis().set_visible(False)
-cax.get_yaxis().set_visible(False)
-cax.patch.set_alpha(0)
-cax.set_frame_on(False)
-plt.colorbar(orientation='vertical')
 plt.show()
 '''
 
