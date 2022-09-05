@@ -47,7 +47,7 @@ def drop_distrib():
     '''
     n0 = 0.567
     sigma_g = 1.3
-    d_50 = 254.74
+    d_50 = 254.74 # micrometer µm
     d_inf = 40
     d_sup = 500
     f_cumul = 0

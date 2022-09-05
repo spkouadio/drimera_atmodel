@@ -16,7 +16,7 @@ from mpl_toolkits.mplot3d import Axes3D
 drop_dist = droplet_descr.drop_distrib()
 
 plt.plot(drop_dist[:, 0], drop_dist[:, 2])
-plt.xlabel('diameter')
+plt.xlabel('diameter (µm)')
 plt.ylabel('cumulated fraction')
 plt.title('Droplet distribution')
 plt.show()
@@ -26,8 +26,8 @@ n_diam = len(drop_dist[:,0])
 
 for i in range (n_diam):
     plt.plot(dd.t_t, dd.x[i,:])
-plt.xlabel('time')
-plt.ylabel('position')
+plt.xlabel('time (s)')
+plt.ylabel('position (m)')
 plt.title('Droplet trajectory')
 plt.show()
 
@@ -36,7 +36,7 @@ t = 1500
 dt = .01
 
 plt.plot(dd.x[:, t], drop_dist[:, 1])
-plt.xlabel('position')
+plt.xlabel('position (m)')
 plt.ylabel('masse (mg)')
 plt.title(f'Droplet concentration at t = {t*dt} s')
 plt.show()
@@ -46,8 +46,8 @@ n_diam = len(drop_dist[:,0])
 
 for t in range (len(dd.t_t)):
     plt.scatter(dd.x[100, t], dd.z[100, t])
-plt.xlabel('position')
-plt.ylabel('altitude')
+plt.xlabel('position (m)')
+plt.ylabel('altitude (m)')
 plt.title('Droplet altitude per position')
 plt.show()
 
