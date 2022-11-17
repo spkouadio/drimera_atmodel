@@ -34,6 +34,15 @@ plt.show()
 #Droplets concentration (quantity distribution)
 t = 1500
 dt = .01
+pos = 5
+quantity = 0
+
+for i in range (n_diam):
+    if round(dd.x[i, t]) == pos :
+        quantity = quantity + drop_dist[i,1]
+conc = quantity / 2
+
+print(conc)
 
 plt.plot(dd.x[:, t], drop_dist[:, 1])
 plt.xlabel('position (m)')
