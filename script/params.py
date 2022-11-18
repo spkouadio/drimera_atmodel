@@ -27,6 +27,9 @@ chem_dilrate = 0 ##chemical dilution rate (0%)
 supp_volume = 50 #liters
 supp_density = 1 #Water density
 
+# Application properties
+application_rate = 2 #l/ha
+
 if chem_dilrate != 0 :
     chem_mass = chem_dilrate*supp_volume*(1000*chem_density)
 

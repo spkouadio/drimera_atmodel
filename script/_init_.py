@@ -9,8 +9,10 @@ import droplet_descr
 import matplotlib.pyplot as plt
 import numpy as np
 import droplet_dispersal as dd
+import params
 from mpl_toolkits.mplot3d import Axes3D
 
+app_rate = params.application_rate #l/ha
 
 #Droplets distribution by diameter
 drop_dist = droplet_descr.drop_distrib()
@@ -21,32 +23,34 @@ plt.ylabel('cumulated fraction')
 plt.title('Droplet distribution')
 plt.show()
 
+
 #Droplets trajectory
 n_diam = len(drop_dist[:,0])
-
+'''
 for i in range (n_diam):
     plt.plot(dd.t_t, dd.x[i,:])
 plt.xlabel('time (s)')
 plt.ylabel('position (m)')
 plt.title('Droplet trajectory')
 plt.show()
-
+'''
 #Droplets concentration (quantity distribution)
 t = 1500
 dt = .01
-pos = 5
+pos = 6
 quantity = 0
+vol_unit = 1
 
 for i in range (n_diam):
     if round(dd.x[i, t]) == pos :
         quantity = quantity + drop_dist[i,1]
-conc = quantity / 2
+conc = quantity / vol_unit
 
-print(conc)
+print(f'Droplet concentration at x = {pos} m is {conc} mg')
 
-plt.plot(dd.x[:, t], drop_dist[:, 1])
+plt.plot(dd.x[:, t], drop_dist[:, 0])
 plt.xlabel('position (m)')
-plt.ylabel('masse (mg)')
+plt.ylabel('diameter (µm)')
 plt.title(f'Droplet concentration at t = {t*dt} s')
 plt.show()
 
