@@ -13,6 +13,9 @@ import params
 from mpl_toolkits.mplot3d import Axes3D
 
 app_rate = params.application_rate #l/ha
+field_surf = params.field_surface #ha
+chem_mass = params.chem_mass #(g/m2)
+field_surface = params.field_surface #ha
 
 #Droplets distribution by diameter
 drop_dist = droplet_descr.drop_distrib()
@@ -40,7 +43,22 @@ dt = .01
 pos = 6
 quantity = 0
 vol_unit = 1
+it_field = field_surface*10000
 
+field_conc = np.zeros((it_field, n_diam))
+field_conc[0,:] = drop_dist[:, 1]
+
+dropfield_pos = np.zeros((it_field, n_diam))
+dropfield_pos[0,:] = drop_dist[:, 1]
+
+
+for i in range (it_field-1):
+    for k in range(n_diam):
+        dropfield_pos[i+1,k] = dropfield_pos[i,k] + drop_dist[k, 1]
+
+plt.plot(field_conc[it_field-1, :])
+plt.show()
+'''
 for i in range (n_diam):
     if round(dd.x[i, t]) == pos :
         quantity = quantity + drop_dist[i,1]
@@ -62,7 +80,7 @@ for t in range (len(dd.t_t)):
 plt.xlabel('position (m)')
 plt.ylabel('altitude (m)')
 plt.title('Droplet altitude per position')
-plt.show()
+plt.show() '''
 
 '''
 # Creating 3D figure

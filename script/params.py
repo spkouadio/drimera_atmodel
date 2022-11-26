@@ -1,12 +1,14 @@
 r'''
 Parameter lists for imput
 '''
+import math
 
 import const as cst
 
 
 # Operational parameters
 alt_spray = 5 #altitude of spray (m)
+aeronef_velocity = 15 #m/s
 
 # Atmosphere properties
 humidity = 0.5 #50%
@@ -20,15 +22,22 @@ air_kviscosity = cst.mu_a(temp) / air_density
 # Chemical properties
 chem = 'thiophanate-methyl'
 chem_density = cst.rho_chem(chem)
-chem_mass = 0.5 ##chemical mass (grams)
+
+active_mat_conc = 400
+active_mat_conc_unit = 'g/l'
+# Application properties
+application_rate = 2
+app_rate_unit = 'l/ha'
+
+chem_mass = active_mat_conc*application_rate*math.pow(10,-4) ##chemical mass (g/m2)
 chem_dilrate = 0 ##chemical dilution rate (0%)
 
 # Support properties
-supp_volume = 50 #liters
+supp_volume = 1 #liters
 supp_density = 1 #Water density
 
-# Application properties
-application_rate = 2 #l/ha
+# Field properties
+field_surface = 25 #ha
 
 if chem_dilrate != 0 :
     chem_mass = chem_dilrate*supp_volume*(1000*chem_density)
