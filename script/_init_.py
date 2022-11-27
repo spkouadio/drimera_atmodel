@@ -39,12 +39,16 @@ plt.show()
 '''
 #Droplets concentration (quantity distribution)
 t = 1500
+pos_max = round(max(dd.x[:, t]))
 dt = .01
 pos = 6
-quantity = 0
 vol_unit = 1
-it_field = field_surface*10000
+field = int(field_surface*10000)
+treat_field = int(field*0.5)
+conc = np.zeros((field))
+field_conc = np.zeros((field))
 
+'''
 field_conc = np.zeros((it_field, n_diam))
 field_conc[0,:] = drop_dist[:, 1]
 
@@ -59,13 +63,29 @@ for i in range (it_field-1):
 plt.plot(field_conc[it_field-1, :])
 plt.show()
 '''
-for i in range (n_diam):
-    if round(dd.x[i, t]) == pos :
-        quantity = quantity + drop_dist[i,1]
-conc = quantity / vol_unit
 
-print(f'Droplet concentration at x = {pos} m is {conc} mg')
 
+for i in range(n_diam):
+    for x_pos in range (pos_max):
+        if round(dd.x[i, t]) == x_pos:
+           conc[x_pos] = conc[x_pos] + drop_dist[i, 1]
+
+#Iteration
+it = 0
+field_conc[:] = conc[:]
+while (it < treat_field):
+    for i in range(treat_field-1):
+        field_conc[i+1+it] = field_conc[i+1+it] + conc[i]
+    it += 1
+
+drift_field = field_conc[treat_field:]
+
+#Result
+drift_pos = 5 #m
+print(f'Droplet concentration at x = {drift_pos} m from treat field is {drift_field[drift_pos-1]} mg')
+
+
+'''
 plt.plot(dd.x[:, t], drop_dist[:, 0])
 plt.xlabel('position (m)')
 plt.ylabel('diameter (µm)')

@@ -37,7 +37,7 @@ supp_volume = 1 #liters
 supp_density = 1 #Water density
 
 # Field properties
-field_surface = 25 #ha
+field_surface = 0.025 #ha
 
 if chem_dilrate != 0 :
     chem_mass = chem_dilrate*supp_volume*(1000*chem_density)
