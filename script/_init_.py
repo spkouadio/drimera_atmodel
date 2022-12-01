@@ -4,6 +4,8 @@ Created as part of my PhD, on Sun Jun 19 12:04:32 2022
 
 @author: KOUADIO, S.-P.
 """
+import math
+
 import const as cst
 import droplet_descr
 import matplotlib.pyplot as plt
@@ -38,12 +40,12 @@ plt.title('Droplet trajectory')
 plt.show()
 '''
 #Droplets concentration (quantity distribution)
-t = 1500
+t = 3600
 pos_max = round(max(dd.x[:, t]))
-dt = .01
+#dt = .01
 pos = 6
 vol_unit = 1
-field = int(field_surface*10000)
+field = 100 #int(field_surface*10000)
 treat_field = int(field*0.5)
 conc = np.zeros((field))
 field_conc = np.zeros((field))
@@ -80,9 +82,20 @@ while (it < treat_field):
 
 drift_field = field_conc[treat_field:]
 
+conc_treat = 0
+for i in [0, treat_field]:
+    conc_treat += field_conc[i]
+
+conc_drift = 0
+for i in [treat_field+1, field-1]:
+    conc_drift += field_conc[i]
+
 #Result
-drift_pos = 5 #m
-print(f'Droplet concentration at x = {drift_pos} m from treat field is {drift_field[drift_pos-1]} mg')
+print(f'Le taux de derive est : = {(conc_drift/(params.chem_mass*treat_field))*100} %')
+
+drift_pos = [5,10,20,30,50] #m
+for x in drift_pos:
+    print(f'Droplet concentration at x = {x} m from treat field is {drift_field[x-1]*math.pow(10,6)} µg')
 
 
 '''

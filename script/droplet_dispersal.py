@@ -23,10 +23,10 @@ init_velocity = droplet_descr.init_velocity()
 nu_a = params.air_kviscosity
 g = cst.g()
 
-nx = 41
-dx = 2 / (nx - 1)
-nt = 1501    #nt is the number of timesteps
-dt = .01  #dt is the amount of time each timestep covers (delta t)
+#nx = 41
+#dx = 2 / (nx - 1)
+nt = 3601 #1501    #nt is the number of timesteps
+dt = 1  #dt is the amount of time each timestep covers (delta t)
 c = 1
 '''
 n_diam = len(drop_dist[:,0])

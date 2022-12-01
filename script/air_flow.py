@@ -68,15 +68,15 @@ def pressure_poisson_periodic(p, dx, dy):
     return p
 
 ##variable declarations
-nx = 41
-ny = 41
-nt = 10
+nx = 101 #41
+ny = 101 #41
+nt = 3601
 nit = 50
 c = 1
-dx = 2 / (nx - 1)
-dy = 2 / (ny - 1)
-x = numpy.linspace(0, 2, nx)
-y = numpy.linspace(0, 2, ny)
+dx = 1 #2 / (nx - 1)
+dy = 1 #2 / (ny - 1)
+x = numpy.linspace(0, 100, 101) #numpy.linspace(0, 2, nx)
+y = numpy.linspace(0, 100, 101) #numpy.linspace(0, 2, ny)
 X, Y = numpy.meshgrid(x, y)
 
 
@@ -84,7 +84,7 @@ X, Y = numpy.meshgrid(x, y)
 rho = params.air_density
 nu = params.air_kviscosity
 F = 1
-dt = .01
+dt = .001
 
 
 #initial conditions
