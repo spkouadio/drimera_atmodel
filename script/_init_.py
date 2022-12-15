@@ -65,7 +65,8 @@ for i in range (it_field-1):
 plt.plot(field_conc[it_field-1, :])
 plt.show()
 '''
-
+for i in range(n_diam):
+    print(i, "position ",dd.x[i, t])
 
 for i in range(n_diam):
     for x_pos in range (pos_max):
@@ -92,6 +93,8 @@ for i in [treat_field+1, field-1]:
 
 #Result
 print(f'Le taux de derive est : = {(conc_drift/(params.chem_mass*treat_field))*100} %')
+print(f'Le taux de pulvérisation est : = {(conc_treat/(params.chem_mass*treat_field))*100} %')
+print(conc[:]*treat_field)
 
 drift_pos = [5,10,20,30,50] #m
 for x in drift_pos:
