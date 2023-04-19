@@ -8,8 +8,10 @@ Created on Mon Jun  7 21:18:06 2021
 
 
 """
-DRIMERA est une application de simulation de la dispersion atmosphérique de polluants.
-Elle permet d'évaluation de risques lié à la dérive des pesticides dans les bananeraie
+DRIMERA (Drift Modeling for Environmental Risk Assessment) est un outil d’aide à la décision développé 
+dans la cadre de la thèse de doctorat de @Saint-Pierre KOUADIO. Ce logiciel permet la simulation de la dispersion 
+atmosphérique de polluants. Il aide ainsi à évaluer les risques liés à l’utilisation de pesticides par 
+voie aérienne sur cultures comme dans les bananeraies. 
 
 """
 
@@ -134,3 +136,4 @@ if __name__ == '__main__':
     except SystemExit:
         print('Closing window...')
 """
+
