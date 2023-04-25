@@ -71,6 +71,7 @@ y_cord = len(v_air[0])
 n_diam = len(drop_dist[:,0])
 v = np.zeros((nt))
 x = np.zeros((n_diam, nt))
+#x_tab = np.empty((0, 1), float)
 z = np.zeros((n_diam, nt)) # for altitude
 t_t = np.zeros(nt)
 v[0] = init_velocity # initialization of droplet velocity
@@ -88,14 +89,16 @@ for k in range(n_diam):
         vel_sed = math.sqrt(
             (4 * g * rho_mix * drop_dist[k, 0]) / (3 * C_d(drop_dist[k, 0], u_air[i, j], v[t]) * rho_a))
         # vel = (v[n, i] + g * (1 - rho_a / rho_mix) * dt) / (1 + dt / tau(drop_dist[i, 0], v_air[0, n], v[n, i]))
-        if vel >= 0:
+        if vel > 0: #vel >= 0
             v[t + 1] = vel  # droplet velocity
             z[k, t + 1] = alt_spray
-        else:
+        else :
             alt = z[k, t] - vel_sed * dt  # droplet altitude
             if alt >= 0: z[k, t + 1] = alt
 
         x[k, t + 1] = x[k, t] + v[t + 1] * dt  # droplet position
+        #if v[t + 1] == 0 : x[k, t + 1] = 0
+        #if x[k, t + 1] != x[k, t] : np.append(x_tab, np.array([x[k, t + 1]]), axis=0)
         i = round(x[k, t + 1])
 
 

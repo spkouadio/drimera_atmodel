@@ -57,6 +57,7 @@ for n in range(nt):
     c[-1, :] = 0
 
     # Plot concentration profile
+"""
     if n % 10 == 0:
         plt.imshow(c, cmap='hot', origin='lower', extent=[0, 10, 0, 10])
         plt.colorbar()
@@ -64,3 +65,4 @@ for n in range(nt):
         plt.ylabel('y')
         plt.title(f'Time = {n * dt:.2f}')
         plt.show()
+"""

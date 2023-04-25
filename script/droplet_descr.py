@@ -57,6 +57,6 @@ def drop_distrib():
             *math.exp(-math.pow(math.log10(d/d_50),2)/(2*math.pow(math.log10(sigma_g),2)))
         f_cumul = f_cumul + f
         n = f/(math.pow(d,3)*(math.pi/6))
-        #drop_table = np.append(drop_table, np.array([[d, f*vol_mix, f_cumul, n]]), axis=0)
-        drop_table = np.append(drop_table, np.array([[d, 1000*f*chem_mass, f_cumul, n]]), axis=0)
+        drop_table = np.append(drop_table, np.array([[d, f*vol_mix, f_cumul, n]]), axis=0)
+        #drop_table = np.append(drop_table, np.array([[d, 1000*f*chem_mass, f_cumul, n]]), axis=0)
     return drop_table

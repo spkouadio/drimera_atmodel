@@ -12,6 +12,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 import droplet_dispersal as dd
 import params
+import conc_calculus as cc
 from mpl_toolkits.mplot3d import Axes3D
 
 app_rate = params.application_rate #l/ha
@@ -49,7 +50,7 @@ field = 100 #int(field_surface*10000)
 treat_field = int(field*0.5)
 conc = np.zeros((field))
 field_conc = np.zeros((field))
-
+pos_x = dd.x[:, :]
 '''
 field_conc = np.zeros((it_field, n_diam))
 field_conc[0,:] = drop_dist[:, 1]
@@ -67,6 +68,8 @@ plt.show()
 '''
 for i in range(n_diam):
     print(i, "position ",dd.x[i, t])
+
+
 
 for i in range(n_diam):
     for x_pos in range (pos_max):
@@ -92,14 +95,33 @@ for i in [treat_field+1, field-1]:
     conc_drift += field_conc[i]
 
 #Result
-print(f'Le taux de derive est : = {(conc_drift/(params.chem_mass*treat_field))*100} %')
-print(f'Le taux de pulvérisation est : = {(conc_treat/(params.chem_mass*treat_field))*100} %')
-print(conc[:]*treat_field)
+#print(f'Le taux de derive est : = {(conc_drift/(params.chem_mass*treat_field))*100} %')
+#print(f'Le taux de pulvérisation est : = {(conc_treat/(params.chem_mass*treat_field))*100} %')
+#print(conc[:]*treat_field)
 
 drift_pos = [5,10,20,30,50] #m
 for x in drift_pos:
     print(f'Droplet concentration at x = {x} m from treat field is {drift_field[x-1]*math.pow(10,6)} µg')
 
+
+# Plot concentration profile for a specific time
+# Plot concentration profile by diameter
+
+for k in range(n_diam):
+    i = round(dd.x[k, t])
+    j = dd.j
+    cc.u = dd.u_air[i, j]
+    cc.alpha = dd.C_d(drop_dist[k, 0], dd.u_air[i, j], dd.v[t])
+    cc.c[i, 50] = drop_dist[k, 1]
+    #cc.c += cc.c
+#c = cc.c
+plt.imshow(cc.c, cmap='hot', origin='lower', extent=[0, 10, 0, 10])
+plt.colorbar()
+plt.xlabel('x')
+plt.ylabel('y')
+#plt.title(f'Time = {t:.2f}')
+plt.title(f'Time = 100')
+plt.show()
 
 '''
 plt.plot(dd.x[:, t], drop_dist[:, 0])
