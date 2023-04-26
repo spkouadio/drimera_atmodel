@@ -16,17 +16,17 @@ nt = 100  # number of time steps
 dx = 0.1  # grid spacing
 dy = 0.1
 dt = 0.01  # time step
-u = 1  # fluid velocity
+#u = 1  # fluid velocity
 D = 0.1  # diffusion coefficient
-alpha = 0.5  # weighting factor for particle velocity
+#alpha = 0.5  # weighting factor for particle velocity
 
 # Initialize arrays
-c = np.zeros((nx, ny))  # concentration of particles
-u_p = np.zeros((nx, ny))  # particle velocity in x-direction
-v_p = np.zeros((nx, ny))  # particle velocity in y-direction
+#c = np.zeros((nx, ny))  # concentration of particles
+#u_p = np.zeros((nx, ny))  # particle velocity in x-direction
+#v_p = np.zeros((nx, ny))  # particle velocity in y-direction
 
 # Set initial condition
-c[50, 50] = 1
+#c[50, 50] = 1
 
 
 # Define finite difference operator
@@ -37,24 +37,42 @@ def laplacian(c):
     return lap
 
 
-# Time loop
-for n in range(nt):
-    # Update particle velocity based on fluid velocity
-    u_p = alpha * u + (1 - alpha) * u_p
-    v_p = alpha * 0 + (1 - alpha) * v_p
 
-    # Calculate particle diffusion
-    c += dt * D * laplacian(c)
 
-    # Calculate advection of particles
-    c[1:-1, 1:-1] -= dt * u_p[1:-1, 1:-1] * (c[2:, 1:-1] - c[:-2, 1:-1]) / (2 * dx) \
-                     + dt * v_p[1:-1, 1:-1] * (c[1:-1, 2:] - c[1:-1, :-2]) / (2 * dy)
+def conc_cal(u_air, alpha_buoy, c_0):
+    r'''
+    Concentration advection-diffusion calculus module
+    :param u_air: air velocity
+    :param alpha_buoy: Buyoency coefficient
+    :param c_0: initial concentration at the point of dispersion
+    :return: concentration
+    '''
+    u = u_air
+    alpha = alpha_buoy
+    c = np.zeros((nx, ny))   # concentration of particles
+    c[50, 50] = c_0 # Set initial condition
+    u_p = np.zeros((nx, ny))  # particle velocity in x-direction
+    v_p = np.zeros((nx, ny))  # particle velocity in y-direction
 
-    # Enforce boundary conditions
-    c[:, 0] = 0
-    c[:, -1] = 0
-    c[0, :] = 0
-    c[-1, :] = 0
+    # Time loop
+    for n in range(nt):
+        # Update particle velocity based on fluid velocity
+        u_p = alpha * u + (1 - alpha) * u_p
+        v_p = alpha * 0 + (1 - alpha) * v_p
+
+        # Calculate particle diffusion
+        c += dt * D * laplacian(c)
+
+        # Calculate advection of particles
+        c[1:-1, 1:-1] -= dt * u_p[1:-1, 1:-1] * (c[2:, 1:-1] - c[:-2, 1:-1]) / (2 * dx) \
+                         + dt * v_p[1:-1, 1:-1] * (c[1:-1, 2:] - c[1:-1, :-2]) / (2 * dy)
+
+        # Enforce boundary conditions
+        c[:, 0] = 0
+        c[:, -1] = 0
+        c[0, :] = 0
+        c[-1, :] = 0
+    return c
 
     # Plot concentration profile
 """

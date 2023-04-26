@@ -66,10 +66,6 @@ for i in range (it_field-1):
 plt.plot(field_conc[it_field-1, :])
 plt.show()
 '''
-for i in range(n_diam):
-    print(i, "position ",dd.x[i, t])
-
-
 
 for i in range(n_diam):
     for x_pos in range (pos_max):
@@ -107,15 +103,16 @@ for x in drift_pos:
 # Plot concentration profile for a specific time
 # Plot concentration profile by diameter
 
+concent = np.zeros((101, 101))
 for k in range(n_diam):
-    i = round(dd.x[k, t])
+    i = round(dd.x[k, -1])
     j = dd.j
-    cc.u = dd.u_air[i, j]
-    cc.alpha = dd.C_d(drop_dist[k, 0], dd.u_air[i, j], dd.v[t])
-    cc.c[i, 50] = drop_dist[k, 1]
-    #cc.c += cc.c
-#c = cc.c
-plt.imshow(cc.c, cmap='hot', origin='lower', extent=[0, 10, 0, 10])
+    u_air = dd.u_air[i, j]
+    alpha_buoy = dd.C_d(drop_dist[k, 0], dd.u_air[i, j], dd.v[-1])
+    c_0 = drop_dist[k, 1]
+    concent = np.add(concent, cc.conc_cal(u_air, alpha_buoy, c_0))
+
+plt.imshow(concent, cmap='hot', origin='lower', extent=[0, 10, 0, 10])
 plt.colorbar()
 plt.xlabel('x')
 plt.ylabel('y')
