@@ -95,10 +95,11 @@ for i in [treat_field+1, field-1]:
 #print(f'Le taux de pulvérisation est : = {(conc_treat/(params.chem_mass*treat_field))*100} %')
 #print(conc[:]*treat_field)
 
+"""
 drift_pos = [5,10,20,30,50] #m
 for x in drift_pos:
     print(f'Droplet concentration at x = {x} m from treat field is {drift_field[x-1]*math.pow(10,6)} µg')
-
+"""
 
 # Plot concentration profile for a specific time
 # Plot concentration profile by diameter
@@ -109,17 +110,19 @@ for k in range(n_diam):
     j = dd.j
     u_air = dd.u_air[i, j]
     alpha_buoy = dd.C_d(drop_dist[k, 0], dd.u_air[i, j], dd.v[-1])
-    c_0 = drop_dist[k, 1]
-    concent = np.add(concent, cc.conc_cal(u_air, alpha_buoy, c_0))
+    c_0 = drop_dist[k, 1] #*math.pow(10,6) µg/l
+    concent = np.add(concent, cc.conc_cal(u_air, alpha_buoy, c_0, i, j))
 
-plt.imshow(concent, cmap='hot', origin='lower', extent=[0, 10, 0, 10])
+plt.imshow(concent, cmap='hot', origin='lower', extent=[0, 100, 0, 100])
 plt.colorbar()
 plt.xlabel('x')
 plt.ylabel('y')
 #plt.title(f'Time = {t:.2f}')
-plt.title(f'Time = 100')
+plt.title(f'Concentration in g/l at time = 100')
 plt.show()
 
+x = 50
+print(f'Droplet concentration at x = {x} m from treat field is {concent[dd.j,x-1]*math.pow(10,6)} µg')
 '''
 plt.plot(dd.x[:, t], drop_dist[:, 0])
 plt.xlabel('position (m)')

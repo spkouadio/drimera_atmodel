@@ -14,6 +14,8 @@ aeronef_velocity = 15 #m/s
 humidity = 0.5 #50%
 temp = 30 #°C
 alt = 10 #m
+air_velocity = 4 #m/s
+air_pressure = 10 #mCE
 
 air_density = cst.rho_a(humidity, temp)
 air_dviscosity = cst.mu_a(temp)

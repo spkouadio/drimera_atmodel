@@ -90,12 +90,14 @@ dt = .001
 
 #initial conditions
 u = numpy.zeros((ny, nx))
+#u.fill(params.air_velocity) #Ce n'est pas correct ! Une direction VS Deux coordonnées
 un = numpy.zeros((ny, nx))
 
 v = numpy.zeros((ny, nx))
 vn = numpy.zeros((ny, nx))
 
 p = numpy.ones((ny, nx))
+#p.fill(params.air_pressure)
 pn = numpy.ones((ny, nx))
 
 b = numpy.zeros((ny, nx))
