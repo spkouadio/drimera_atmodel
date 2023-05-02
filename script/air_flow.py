@@ -89,6 +89,7 @@ dt = .001
 
 
 #initial conditions
+
 u = numpy.zeros((ny, nx))
 #u.fill(params.air_velocity) #Ce n'est pas correct ! Une direction VS Deux coordonnées
 un = numpy.zeros((ny, nx))
@@ -99,6 +100,13 @@ vn = numpy.zeros((ny, nx))
 p = numpy.ones((ny, nx))
 #p.fill(params.air_pressure)
 pn = numpy.ones((ny, nx))
+
+p_inf = 10.1325  # free stream pressure
+u_inf = 5  # free stream velocity
+# Set initial condition
+u[:, :] = u_inf
+#v[:, :] = 100
+p[:, :] = p_inf
 
 b = numpy.zeros((ny, nx))
 

@@ -22,13 +22,13 @@ field_surface = params.field_surface #ha
 
 #Droplets distribution by diameter
 drop_dist = droplet_descr.drop_distrib()
-
+"""
 plt.plot(drop_dist[:, 0], drop_dist[:, 2])
 plt.xlabel('diameter (µm)')
 plt.ylabel('cumulated fraction')
 plt.title('Droplet distribution')
 plt.show()
-
+"""
 
 #Droplets trajectory
 n_diam = len(drop_dist[:,0])
@@ -103,14 +103,14 @@ for x in drift_pos:
 
 # Plot concentration profile for a specific time
 # Plot concentration profile by diameter
-
 concent = np.zeros((101, 101))
 for k in range(n_diam):
     i = round(dd.x[k, -1])
     j = dd.j
-    u_air = dd.u_air[i, j]
-    alpha_buoy = dd.C_d(drop_dist[k, 0], dd.u_air[i, j], dd.v[-1])
+    u_air = dd.u_air
+    alpha_buoy = dd.C_d(drop_dist[k, 0], dd.u_air[i, i], 0.0)
     c_0 = drop_dist[k, 1] #*math.pow(10,6) µg/l
+    #concent = cc.conc_cal(u_air, alpha_buoy, c_0, i, j)
     concent = np.add(concent, cc.conc_cal(u_air, alpha_buoy, c_0, i, j))
 
 plt.imshow(concent, cmap='hot', origin='lower', extent=[0, 100, 0, 100])
@@ -121,8 +121,8 @@ plt.ylabel('y')
 plt.title(f'Concentration in g/l at time = 100')
 plt.show()
 
-x = 50
-print(f'Droplet concentration at x = {x} m from treat field is {concent[dd.j,x-1]*math.pow(10,6)} µg')
+x = 80
+print(f'Droplet concentration at x = {x} m from treat field is {round(concent[dd.j, x-1]*math.pow(10,6),3)} µg')
 '''
 plt.plot(dd.x[:, t], drop_dist[:, 0])
 plt.xlabel('position (m)')
