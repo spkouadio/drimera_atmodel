@@ -117,12 +117,16 @@ plt.imshow(concent, cmap='hot', origin='lower', extent=[0, 100, 0, 100])
 plt.colorbar()
 plt.xlabel('x')
 plt.ylabel('y')
-#plt.title(f'Time = {t:.2f}')
-plt.title(f'Concentration in g/l at time = 100')
+plt.title(f'Concentration in g/l at time = {(params.time_nt/60):.2f} min')
+#plt.title(f'Concentration in g/l at time = 100')
 plt.show()
 
-x = 80
-print(f'Droplet concentration at x = {x} m from treat field is {round(concent[dd.j, x-1]*math.pow(10,6),3)} µg')
+
+drift_pos = [5,10,20,30,50,80,100] #m
+for x in drift_pos:
+    print(f'Droplet concentration at x = {x} m from treat field is '
+          f'{round(concent[dd.j, x-1]*math.pow(10,6),3)} µg')
+
 '''
 plt.plot(dd.x[:, t], drop_dist[:, 0])
 plt.xlabel('position (m)')

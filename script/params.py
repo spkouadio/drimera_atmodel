@@ -15,11 +15,15 @@ humidity = 0.5 #50%
 temp = 30 #°C
 alt = 10 #m
 air_velocity = 4 #m/s
-air_pressure = 10 #mCE
+air_pressure = 10.1325 #mCE
+air_sp_ratio = 1.4 #air specific heat ratio
 
 air_density = cst.rho_a(humidity, temp)
 air_dviscosity = cst.mu_a(temp)
 air_kviscosity = cst.mu_a(temp) / air_density
+
+#Times step dispersion
+time_nt = 180
 
 # Chemical properties
 chem = 'thiophanate-methyl'

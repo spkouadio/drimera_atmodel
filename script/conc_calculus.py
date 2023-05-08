@@ -7,26 +7,16 @@ Pesticides concentration is then determinated.
 
 
 import numpy as np
-import matplotlib.pyplot as plt
+import params
 
 # Define parameters
 nx = 101  # number of grid points
 ny = 101
-nt = 100  # number of time steps
+nt = params.time_nt #100  # number of time steps
 dx = 0.1  # grid spacing
 dy = 0.1
 dt = 0.01  # time step
-#u = 1  # fluid velocity
 D = 0.1  # diffusion coefficient
-#alpha = 0.5  # weighting factor for particle velocity
-
-# Initialize arrays
-#c = np.zeros((nx, ny))  # concentration of particles
-#u_p = np.zeros((nx, ny))  # particle velocity in x-direction
-#v_p = np.zeros((nx, ny))  # particle velocity in y-direction
-
-# Set initial condition
-#c[50, 50] = 1
 
 
 # Define finite difference operator

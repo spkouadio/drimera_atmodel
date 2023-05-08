@@ -1,8 +1,83 @@
 r'''
-Air flow description module including the turbulence effect caused by the sprayer fan.
-It is based on the Eulerian approach solving the Navier-Stokes equations.
+Air_flow module are based on the Eulerian approach solving the Navier-Stokes equations.
+Velocity field is initialized the with a constant free stream velocity u_inf and then solves the Euler equations
+using a finite difference method to calculate the velocity field at each point on the grid.
 '''
 
+
+import numpy as np
+import params
+
+# Define parameters
+nx = 101  # number of grid points
+ny = 101
+nt = 100  # number of time steps
+dx = 0.1  # grid spacing
+dy = 0.1
+CFL = 0.1  # CFL number
+gamma = params.air_sp_ratio  # air specific heat ratio
+p_inf = params.air_pressure  # free stream pressure
+rho_inf = params.air_density # free stream density
+u_inf = params.air_velocity  # free stream velocity
+
+# Initialize arrays
+u = np.zeros((nx, ny))  # x-velocity
+v = np.zeros((nx, ny))  # y-velocity
+p = np.ones((nx, ny)) * p_inf  # pressure
+rho = np.ones((nx, ny)) * rho_inf  # density
+
+# Set initial condition
+u[:, :] = u_inf
+p[:, :] = p_inf
+rho[:, :] = rho_inf
+
+
+# Define finite difference operator
+def ddt(f, u, v):
+    dfdt = np.zeros_like(f)
+    dfdx = np.zeros_like(f)
+    dfdy = np.zeros_like(f)
+
+    dfdx[1:-1, 1:-1] = (f[2:, 1:-1] - f[:-2, 1:-1]) / (2 * dx)
+    dfdy[1:-1, 1:-1] = (f[1:-1, 2:] - f[1:-1, :-2]) / (2 * dy)
+
+    dfdt[1:-1, 1:-1] = - u[1:-1, 1:-1] * dfdx[1:-1, 1:-1] \
+                       - v[1:-1, 1:-1] * dfdy[1:-1, 1:-1]
+
+    return dfdt
+
+
+# Time loop
+for n in range(nt):
+    # Calculate time step
+    dt = CFL * min(dx / np.max(np.abs(u)), dy / np.max(np.abs(v)))
+
+    # Calculate pressure from density and velocity
+    p = (gamma - 1) * (rho * (u ** 2 + v ** 2) / 2 - p_inf)
+
+    # Calculate density from pressure and velocity
+    rho = p / ((gamma - 1) * (u ** 2 + v ** 2) / 2 + p_inf)
+
+    # Calculate x-velocity
+    u -= dt * ddt(p, u, v) / rho
+
+    # Calculate y-velocity
+    v -= dt * ddt(p, u, v) / rho
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+"""
 #import math
 import params
 import const as cst
@@ -74,8 +149,8 @@ nt = 3601
 nit = 50
 
 c = 1
-dx = 1 #2 / (nx - 1)
-dy = 1 #2 / (ny - 1)
+dx = 0.1 #2 / (nx - 1)
+dy = 0.1 #2 / (ny - 1)
 x = numpy.linspace(0, 100, 101) #numpy.linspace(0, 2, nx)
 y = numpy.linspace(0, 100, 101) #numpy.linspace(0, 2, ny)
 X, Y = numpy.meshgrid(x, y)
@@ -206,3 +281,5 @@ while udiff > .001:
 #pyplot.quiver(X[::3, ::3], Y[::3, ::3], u[::3, ::3], v[::3, ::3])
 
 #pyplot.show()
+
+"""

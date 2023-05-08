@@ -27,7 +27,7 @@ g = cst.g()
 #dx = 2 / (nx - 1)
 nt = 3601 #1501    #nt is the number of timesteps
 dt = 1  #dt is the amount of time each timestep covers (delta t)
-c = 1
+#c = 1
 '''
 n_diam = len(drop_dist[:,0])
 v = np.zeros((nt,n_diam))
