@@ -15,10 +15,13 @@ voie aérienne sur cultures comme dans les bananeraies.
 
 """
 
-from ui_home import *
+from ui_homeUI import *
 import ui_alert
 import ui_error
 import sys
+from script.params import *
+#import script._init_ as calculus
+#import matplotlib.pyplot as plt
 
 
 class MainWindow(QMainWindow):
@@ -26,41 +29,56 @@ class MainWindow(QMainWindow):
         super(MainWindow, self).__init__()
         self.ui = Ui_MainWindow()
         self.ui.setupUi(self)
-        self.ui.paramStackedWidget.setCurrentIndex(0)
-
-        self.ui.atmosBtn.clicked.connect(self.atmosWidget)
-        self.ui.operaBtn.clicked.connect(self.operaWidget)
-        self.ui.terrainBtn.clicked.connect(self.terrainWidget)
         self.ui.calculBtn.clicked.connect(self.calResult)
 
 
-    def atmosWidget(self):
-        self.ui.paramStackedWidget.setCurrentIndex(1)
-        self.ui.atmosBtn.setDefault(True)
-        self.ui.operaBtn.setDefault(False)
-        self.ui.terrainBtn.setDefault(False)
-        self.ui.atmosBtnBox.accepted.connect(self.accepter)
-        self.ui.atmosBtnBox.rejected.connect(self.dialog)
-
-
-    def operaWidget(self):
-        self.ui.paramStackedWidget.setCurrentIndex(2)
-        self.ui.atmosBtn.setDefault(False)
-        self.ui.operaBtn.setDefault(True)
-        self.ui.terrainBtn.setDefault(False)
-        self.ui.opBtnBox.accepted.connect(self.accepter)
-        self.ui.opBtnBox.rejected.connect(self.dialog)
-
-    def terrainWidget(self):
-        self.ui.paramStackedWidget.setCurrentIndex(3)
-        self.ui.atmosBtn.setDefault(False)
-        self.ui.operaBtn.setDefault(False)
-        self.ui.terrainBtn.setDefault(True)
-        self.ui.terBtnBox.accepted.connect(self.accepter)
-        self.ui.terBtnBox.rejected.connect(self.uiAnnuler)
-
     def calResult(self):
-        self.uiErreur()
+        activeMatCarac = self.ui.activeMatCarac_comboBox.currentText()
+        supportCarac = self.ui.supportCarac_comboBox.currentText()
+        dropletSize = self.ui.dropletSize_comboBox.currentText()
+
+        activMatConc = self.ui.activMatConc_lineEdit.text()
+        carrierVol = self.ui.carrierVol_lineEdit.text()
+        boomHeight = self.ui.boomHeight_lineEdit.text()
+        appRate = self.ui.appRate_lineEdit.text()
+        residualConc = self.ui.residualConc_lineEdit.text()
+        windSpeed = self.ui.windSpeed_lineEdit.text()
+        temperature = self.ui.temperature_lineEdit.text()
+        humidity = self.ui.humidity_lineEdit.text()
+        timeStep = self.ui.timeStep_lineEdit.text()
+
+
+
+        if activMatConc != 0 :
+            parameter.chem_mass = activMatConc
+        else : self.uiErreur()
+
+        if carrierVol != 0 : parameter.supp_volume = carrierVol
+        else  : self.uiErreur()
+
+        if boomHeight != 0 : parameter.alt_spray = boomHeight
+        else  : self.uiErreur()
+
+        if appRate != 0 : parameter.application_rate = appRate
+        else  : self.uiErreur()
+
+        if residualConc != 0 : parameter.resConcentration = residualConc
+        else  : self.uiErreur()
+
+        if windSpeed != 0 : parameter.air_velocity = windSpeed
+        else  : self.uiErreur()
+
+        if temperature != 0 : parameter.temp = temperature
+        else  : self.uiErreur()
+
+        if humidity != 0 : parameter.humidity = humidity
+        else  : self.uiErreur()
+
+        if timeStep != 0 : parameter.time_nt = timeStep
+        else  : self.uiErreur()
+
+
+        #self.uiErreur()
         #self.ui.paramStackedWidget.setCurrentIndex(0)
         # Calculate and printing plot, tab
 
@@ -102,38 +120,3 @@ if __name__ == "__main__":
         sys.exit(app.exec_())
     except SystemExit:
         print('Closing window...')
-
-"""
-class appHome(Ui_MainWindow):
-    def __init__(self, window):
-        self.setupUi(self, window)
-        self.atmosBtn.clicked.connect(self.atmosWidget)
-        self.operaBtn.clicked.connect(self.operaWidget)
-        self.terrainBtn.clicked.connect(self.terrainWidget)
-
-
-    def atmosWidget(self):
-        self.paramGrpBox.addWidget(self.atmosForm)
-
-
-app = QApplication(sys.argv)
-MainWindow = QMainWindow()
-
-ui = appHome(MainWindow)
-
-MainWindow.show()
-app.exec_()
-
-Execution
-if __name__ == '__main__':
-    app = QApplication(sys.argv)
-
-    appInit = appHome()
-    appInit.show()
-
-    try:
-        sys.exit(app.exec_())
-    except SystemExit:
-        print('Closing window...')
-"""
-

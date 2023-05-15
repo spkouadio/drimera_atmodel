@@ -11,7 +11,6 @@ import droplet_descr
 import matplotlib.pyplot as plt
 import numpy as np
 import droplet_dispersal as dd
-import params
 import conc_calculus as cc
 from mpl_toolkits.mplot3d import Axes3D
 
@@ -113,6 +112,7 @@ for k in range(n_diam):
     #concent = cc.conc_cal(u_air, alpha_buoy, c_0, i, j)
     concent = np.add(concent, cc.conc_cal(u_air, alpha_buoy, c_0, i, j))
 
+"""
 plt.imshow(concent, cmap='hot', origin='lower', extent=[0, 100, 0, 100])
 plt.colorbar()
 plt.xlabel('x')
@@ -120,7 +120,7 @@ plt.ylabel('y')
 plt.title(f'Concentration in g/l at time = {(params.time_nt/60):.2f} min')
 #plt.title(f'Concentration in g/l at time = 100')
 plt.show()
-
+"""
 
 drift_pos = [5,10,20,30,50,80,100] #m
 for x in drift_pos:
