@@ -2,8 +2,9 @@ r'''
 Parameter lists for imput
 '''
 import math
-import const as cst
+import script.const as cst
 
+"""
 class parameter(object):
     def __init__(self, activeMatCarac, supportCarac, dropletSize, activMatConc, carrierVol, boomHeight, appRate,
                  residualConc, windSpeed, temperature, humidity, timeStep):
@@ -21,56 +22,79 @@ class parameter(object):
         self.temp = temperature
         self.humidity = humidity
         self.time_nt = timeStep
+"""
 
-    def pars(self):
-        # Operational parameters
-        #alt_spray = 5  # altitude of spray (m)
-        #aeronef_velocity = 15  # m/s
+class parameter():
+    def __init__(self):
+        input_params = calResult()
 
-        # Atmosphere properties
-        #humidity = 0.5  # 50%
-        #temp = 30  # °C
-        #alt = 10  # m
-        #resConcentration = 5  # µg/l
-        #air_velocity = 4  # m/s
+        self.chem,
+        self.supportCarac,
+        self.dropletSize,
 
-        air_pressure = 10.1325  # mCE
-        air_sp_ratio = 1.4  # air specific heat ratio
+        self.active_mat_conc = calResult.activMatConc,
+        self.supp_volume,
+        self.boomHeight,
+        self.application_rate,
+        self.resConcentration,
+        self.air_velocity,
+        self.temp,
+        self.humidity,
+        self.time_nt
 
-        air_density = cst.rho_a(self.humidity, self.temp)
-        air_dviscosity = cst.mu_a(self.temp)
-        air_kviscosity = cst.mu_a(self.temp) / air_density
 
-        # Times step dispersion
-        time_nt = 180
+# Operational parameters
+#alt_spray = 5  # altitude of spray (m)
+#aeronef_velocity = 15  # m/s
 
-        # Chemical properties
-        #chem = 'thiophanate-methyl'
-        chem_density = cst.rho_chem(self.chem)
+# Atmosphere properties
+#humidity = 0.5  # 50%
+#temp = 30  # °C
+#alt = 10  # m
+#resConcentration = 5  # µg/l
+#air_velocity = 4  # m/s
 
-        #active_mat_conc = 400
-        #active_mat_conc_unit = 'g/l'
-        # Application properties
-        #application_rate = 2
-        #app_rate_unit = 'l/ha'
+air_pressure = 10.1325  # mCE
+air_sp_ratio = 1.4  # air specific heat ratio
 
-        chem_mass = self.active_mat_conc * self.application_rate * math.pow(10, -4)  ##chemical mass (g/m2)
-        chem_dilrate = 0  ##chemical dilution rate (0%)
+params = parameter()
 
-        # Support properties
-        supp_volume = 1  # liters
-        supp_density = 1  # Water density
+air_density = cst.rho_a(params.humidity, params.temp)
+air_dviscosity = cst.mu_a(params.temp)
+air_kviscosity = cst.mu_a(params.temp) / air_density
 
-        # Field properties
-        field_surface = 0.025  # ha
+# Times step dispersion
+time_nt = params.time_nt #180
 
-        if chem_dilrate != 0:
-            chem_mass = chem_dilrate * self.supp_volume * (1000 * chem_density)
+# Chemical properties
+#chem = 'thiophanate-methyl'
+chem_density = cst.rho_chem(params.chem)
 
-        ## Mixture properties
-        rho_mix = cst.rho_mix(chem_mass, chem_dilrate, chem_density, self.supp_volume, supp_density)  # Density of mixture
-        # Volume of mixture
-        vol_mix = supp_volume + (chem_mass / (1000 * chem_density))
+#active_mat_conc = 400
+#active_mat_conc_unit = 'g/l'
+# Application properties
+#application_rate = 2
+#app_rate_unit = 'l/ha'
+
+chem_mass = params.active_mat_conc * params.application_rate * math.pow(10, -4)  ##chemical mass (g/m2)
+chem_dilrate = 0  ##chemical dilution rate (0%)
+
+# Support properties
+supp_volume = params.supp_volume  # liters
+supp_density = cst.supp_dens(params.supportCarac)  # Water density
+
+# Field properties
+field_surface = 0.025  # ha
+
+if chem_dilrate != 0:
+    chem_mass = chem_dilrate * params.supp_volume * (1000 * chem_density)
+
+## Mixture properties
+rho_mix = cst.rho_mix(chem_mass, chem_dilrate, chem_density, params.supp_volume, supp_density)  # Density of mixture
+# Volume of mixture
+vol_mix = supp_volume + (chem_mass / (1000 * chem_density))
+
+
 """        
 # Operational parameters
 alt_spray = 5 #altitude of spray (m)

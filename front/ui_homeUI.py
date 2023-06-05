@@ -411,7 +411,7 @@ class Ui_MainWindow(object):
 
         self.supportCarac_toolButton.setText(QCoreApplication.translate("MainWindow", u"...", None))
 
-        self.label_activMatConc.setText(QCoreApplication.translate("MainWindow", u"Active matter concentration", None))
+        self.label_activMatConc.setText(QCoreApplication.translate("MainWindow", u"Active matter concentration (g/l)", None))
         self.label_CarrierVol.setText(QCoreApplication.translate("MainWindow", u"Carrier volume (l)", None))
         self.groupBox_operational_data.setTitle(QCoreApplication.translate("MainWindow", u"Operational data", None))
         self.label_residualConc.setText(QCoreApplication.translate("MainWindow", u"Residual concentration (\u00b5g/l)", None))

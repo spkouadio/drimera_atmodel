@@ -56,9 +56,29 @@ def rho_mix(chem_mass, chem_dilrate, chem_density, supp_volume, supp_density):
 
 #Chemical density in g/ml
 def rho_chem(chem):
-    chem_density = np.array((['thiophanate-methyl', 1.45], ['difenoconazole', 1.37], ['epoxiconazole', 1.38],
-                             ['propiconazole', 1.09], ['tebuconazole', 1.25], ['fenpropimorph', 0.93],
-                             ['azoxystrobin', 1.34], ['trifloxystrobin', 1.36]))
+    #chem_density = np.array((['Thiophanate-methyl', 1.45], ['Difenoconazole', 1.37], ['Epoxiconazole', 1.38],
+                            # ['Propiconazole', 1.09], ['Tebuconazole', 1.25], ['Fenpropimorph', 0.93],
+                            # ['Azoxystrobin', 1.34], ['Trifloxystrobin', 1.36]))
+    chem_density = np.array((['Chlorothalonil', 0.00], ['Difenoconazol', 1.37], ['Dodin', 0.00],
+                             ['Epoxiconazol', 1.38], ['Fenpropimorph', 0.93],['Mancozeb', 0.00],
+                             ['Propiconazol', 1.09], ['Pyraclostrobin', 0.00], ['Pyrimethanil', 0.00],
+                             ['Spiroxamin', 0.00], ['Thiram', 00], ['Tebuconazol', 1.25], ['Triadimefon', 0.00],
+                             ['Tridemorph', 0.00], ['Trifloxystrobin', 1.36]))
     d_chem = float(chem_density[np.where(chem_density[:, 0] == chem), 1])
 
     return d_chem
+
+#Droplet size caracteristic
+def drop_size(droplet):
+    droplet_class = np.array((['Fog', 5], ['Very fine', 20], ['Fine', 100], ['Medium', 240], ['Coarse', 400],
+                              ['Fine rain', 1000]))
+    d_droplet = float(droplet_class[np.where(droplet_class[:, 0] == droplet), 1])
+    return d_droplet
+
+#Support caracteristic
+def supp_dens(supp):
+    supp_density = np.array((['Water', 1], ['Oil', 0.9]))
+    d_supp = float(supp_density[np.where(supp_density[:, 0] == supp), 1])
+    return d_supp
+
+
