@@ -5,7 +5,7 @@ Created on Mon Jun  7 21:18:06 2021
 @author: Saimpy
 
 """
-
+from PySide2 import QtWidgets
 
 """
 DRIMERA (Drift Modeling for Environmental Risk Assessment) est un outil d’aide à la décision développé 
@@ -26,20 +26,36 @@ from script.droplet_dispersal import *
 import ui_alert
 import ui_error
 
-
 import math
 import matplotlib.pyplot as plt
 import numpy as np
 
-#import sys
-import matplotlib
-matplotlib.use('Qt5Agg')
+#from PyQt5.QtWidgets import QApplication, QGraphicsView, QGraphicsScene
+from PySide2.QtGui import QPixmap
+from PyQt5.QtCore import Qt
+from six import BytesIO
+from PySide2 import QtCore
 
-from PySide2.QtWidgets import QMainWindow, QVBoxLayout, QWidget, QApplication
+class TableModel(QtCore.QAbstractTableModel):
+    def __init__(self, data):
+        super(TableModel, self).__init__()
+        self._data = data
 
-from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg, NavigationToolbar2QT as NavigationToolbar
-from matplotlib.figure import Figure
+    def data(self, index, role):
+        if role == Qt.DisplayRole:
+            # See below for the nested-list data structure.
+            # .row() indexes into the outer list,
+            # .column() indexes into the sub-list
+            return self._data[index.row()][index.column()]
 
+    def rowCount(self, index):
+        # The length of the outer list.
+        return len(self._data)
+
+    def columnCount(self, index):
+        # The following takes the first sub-list, and returns
+        # the length (only works if all rows are an equal length)
+        return len(self._data[0])
 
 class MainWindow(QMainWindow):
     def __init__(self):
@@ -107,37 +123,51 @@ class MainWindow(QMainWindow):
             # concent = cc.conc_cal(u_air, alpha_buoy, c_0, i, j)
             concent = np.add(concent, self.concalcul.conc_cal(u_air, alpha_buoy, c_0, i, j))
 
+        """
         drift_pos = [5, 10, 20, 30, 50, 80, 100]  # m
         for xpos in drift_pos:
             print(f'Droplet concentration at x = {xpos} m from treat field is '
                   f'{round(concent[self.dd.j, xpos - 1] * math.pow(10, 6), 3)} µg')
+        """
+        # Plot concentration by position in a tableView
+        drift_pos = len(concent[self.dd.j,:])-1
+        data = np.empty((0, 2), float)  # m
+        for xpos in range(drift_pos):
+            data = np.append(data, np.array([[xpos, round(concent[self.dd.j, xpos] * math.pow(10, 6), 3)]]), axis=0)
 
+        self.model = TableModel(data.tolist())
+        self.ui.tableView.setModel(self.model)
+
+        # Plot concentration by position in a 2D graph
         plt.imshow(concent, cmap='hot', origin='lower', extent=[0, 100, 0, 100])
         plt.colorbar()
+        #plt.axis('off')
         plt.xlabel('x')
         plt.ylabel('y')
         plt.title(f'Concentration in g/l at time = {(self.parameter.time_nt / 60):.2f} min')
-        # plt.title(f'Concentration in g/l at time = 100')
-        #plt.show()
 
-        #self.tableView = plt.show()
+        def fig_to_pixmap(fig):
+            # Save the figure to a buffer
+            buf = BytesIO()
+            fig.savefig(buf, format='png', bbox_inches='tight', pad_inches=0, transparent=True)
+            buf.seek(0)
 
-        sc = MplCanvas(self, width=5, height=4, dpi=100)
-        sc.axes.plot([0,1,2,3,4], [10,1,20,3,40])
+            # Convert the buffer to QPixmap
+            pixmap = QPixmap()
+            pixmap.loadFromData(buf.read())
+            buf.close()
 
-        # Create toolbar, passing canvas as first parament, parent (self, the MainWindow) as second.
-        toolbar = NavigationToolbar(sc, self)
+            return pixmap
 
-        layout = QVBoxLayout()
-        layout.addWidget(toolbar)
-        layout.addWidget(sc)
+        # Convert the matplotlib figure to QPixmap
+        self.figure_pixmap = fig_to_pixmap(plt.gcf())
 
-        # Create a placeholder widget to hold our toolbar and canvas.
-        widget = QWidget()
-        widget.setLayout(layout)
-        self.setCentralWidget(widget)
+        # Create a QGraphicsPixmapItem to display the image
+        self.graphicScene = QGraphicsScene()
+        self.graphicScene.addPixmap(self.figure_pixmap)
 
-        self.show()
+        # Set the QGraphicsView
+        self.ui.result_graphicsView.setScene(self.graphicScene)
 
         #self.uiErreur()
         #self.ui.paramStackedWidget.setCurrentIndex(0)
@@ -169,13 +199,6 @@ class MainWindow(QMainWindow):
         self.ui.operaBtn.setDefault(False)
         self.ui.terrainBtn.setDefault(False)
         self.ui.paramStackedWidget.setCurrentIndex(0)
-
-
-class MplCanvas(FigureCanvasQTAgg):
-    def __init__(self, parent=None, width=5, height=4, dpi=100):
-        fig = Figure(figsize=(width, height), dpi=dpi)
-        self.axes = fig.add_subplot(111)
-        super(MplCanvas, self).__init__(fig)
 
 
 if __name__ == "__main__":
