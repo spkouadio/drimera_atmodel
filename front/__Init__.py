@@ -167,6 +167,7 @@ class MainWindow(QMainWindow):
         self.graphicScene.addPixmap(self.figure_pixmap)
 
         # Set the QGraphicsView
+        self.ui.result_graphicsView.c
         self.ui.result_graphicsView.setScene(self.graphicScene)
 
         #self.uiErreur()
