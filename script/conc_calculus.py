@@ -7,65 +7,67 @@ Pesticides concentration is then determinated.
 
 
 import numpy as np
-import params
+#import params
 
-# Define parameters
-nx = 101  # number of grid points
-ny = 101
-nt = params.time_nt #100  # number of time steps
-dx = 0.1  # grid spacing
-dy = 0.1
-dt = 0.01  # time step
-D = 0.1  # diffusion coefficient
+class concent_calc(object):
 
+    # Define parameters
+    nx = 101  # number of grid points
+    ny = 101
+    # nt = 100 #params.time_nt  # number of time steps
+    dx = 0.1  # grid spacing
+    dy = 0.1
+    dt = 0.01  # time step
+    D = 0.1  # diffusion coefficient
 
-# Define finite difference operator
-def laplacian(c):
-    lap = np.zeros_like(c)
-    lap[1:-1, 1:-1] = (c[2:, 1:-1] - 2 * c[1:-1, 1:-1] + c[:-2, 1:-1]) / dx ** 2 \
-                      + (c[1:-1, 2:] - 2 * c[1:-1, 1:-1] + c[1:-1, :-2]) / dy ** 2
-    return lap
+    def __init__(self, nt):
+        self.nt = nt
 
+    # Define finite difference operator
+    def laplacian(self, c):
+        lap = np.zeros_like(c)
+        lap[1:-1, 1:-1] = (c[2:, 1:-1] - 2 * c[1:-1, 1:-1] + c[:-2, 1:-1]) / self.dx ** 2 \
+                          + (c[1:-1, 2:] - 2 * c[1:-1, 1:-1] + c[1:-1, :-2]) / self.dy ** 2
+        return lap
 
+    def conc_cal(self, u_air, alpha_buoy, c_0, i, j):
+        r'''
+        Concentration advection-diffusion calculus module
+        :param u_air: air velocity
+        :param alpha_buoy: Buyoency coefficient
+        :param c_0: initial concentration at the point of dispersion
+        :return: concentration
+        '''
+        u = u_air
+        alpha = alpha_buoy
+        c = np.zeros((self.nx, self.ny))  # concentration of particles
+        c[i, j] = c_0  # Set initial condition
+        u_p = np.zeros((self.nx, self.ny))  # particle velocity in x-direction
+        v_p = np.zeros((self.nx, self.ny))  # particle velocity in y-direction
 
+        # Time loop
+        for n in range(self.nt):
+            # Update particle velocity based on fluid velocity
+            u_p = alpha * u + (1 - alpha) * u_p
+            v_p = alpha * 0 + (1 - alpha) * v_p
 
-def conc_cal(u_air, alpha_buoy, c_0, i, j):
-    r'''
-    Concentration advection-diffusion calculus module
-    :param u_air: air velocity
-    :param alpha_buoy: Buyoency coefficient
-    :param c_0: initial concentration at the point of dispersion
-    :return: concentration
-    '''
-    u = u_air
-    alpha = alpha_buoy
-    c = np.zeros((nx, ny))   # concentration of particles
-    c[i, j] = c_0 # Set initial condition
-    u_p = np.zeros((nx, ny))  # particle velocity in x-direction
-    v_p = np.zeros((nx, ny))  # particle velocity in y-direction
+            # Calculate particle diffusion
+            c += self.dt * self.D * self.laplacian(c)
 
-    # Time loop
-    for n in range(nt):
-        # Update particle velocity based on fluid velocity
-        u_p = alpha * u + (1 - alpha) * u_p
-        v_p = alpha * 0 + (1 - alpha) * v_p
+            # Calculate advection of particles
+            c[1:-1, 1:-1] -= self.dt * u_p[1:-1, 1:-1] * (c[2:, 1:-1] - c[:-2, 1:-1]) / (2 * self.dx) \
+                             + self.dt * v_p[1:-1, 1:-1] * (c[1:-1, 2:] - c[1:-1, :-2]) / (2 * self.dy)
 
-        # Calculate particle diffusion
-        c += dt * D * laplacian(c)
+            # Enforce boundary conditions
+            c[:, 0] = 0
+            c[:, -1] = 0
+            c[0, :] = 0
+            c[-1, :] = 0
 
-        # Calculate advection of particles
-        c[1:-1, 1:-1] -= dt * u_p[1:-1, 1:-1] * (c[2:, 1:-1] - c[:-2, 1:-1]) / (2 * dx) \
-                         + dt * v_p[1:-1, 1:-1] * (c[1:-1, 2:] - c[1:-1, :-2]) / (2 * dy)
+        c[c < 0] = 0
 
-        # Enforce boundary conditions
-        c[:, 0] = 0
-        c[:, -1] = 0
-        c[0, :] = 0
-        c[-1, :] = 0
+        return c.transpose()
 
-    c[c < 0] = 0
-
-    return c.transpose()
 
     # Plot concentration profile
 """

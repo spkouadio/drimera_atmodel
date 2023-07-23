@@ -6,74 +6,67 @@ using a finite difference method to calculate the velocity field at each point o
 
 
 import numpy as np
-import params
 
-# Define parameters
-nx = 101  # number of grid points
-ny = 101
-nt = 100  # number of time steps
-dx = 0.1  # grid spacing
-dy = 0.1
-CFL = 0.1  # CFL number
-gamma = params.air_sp_ratio  # air specific heat ratio
-p_inf = params.air_pressure  # free stream pressure
-rho_inf = params.air_density # free stream density
-u_inf = params.air_velocity  # free stream velocity
+class air_flow(object):
+    def __init__(self, gamma, p_inf, rho_inf, u_inf):
+        self.gamma = gamma
+        self.p_inf = p_inf
+        self.rho_inf = rho_inf
+        self.u_inf = u_inf
+        # gamma = 1  # params.air_sp_ratio  # air specific heat ratio
+        # p_inf = 1  # params.air_pressure  # free stream pressure
+        # rho_inf = 1  # params.air_density # free stream density
+        # u_inf = 1  # params.air_velocity  # free stream velocity
 
-# Initialize arrays
-u = np.zeros((nx, ny))  # x-velocity
-v = np.zeros((nx, ny))  # y-velocity
-p = np.ones((nx, ny)) * p_inf  # pressure
-rho = np.ones((nx, ny)) * rho_inf  # density
+        # Define parameters
+        nx = 101  # number of grid points
+        ny = 101
+        nt = 100  # number of time steps
+        dx = 0.1  # grid spacing
+        dy = 0.1
+        CFL = 0.1  # CFL number
 
-# Set initial condition
-u[:, :] = u_inf
-p[:, :] = p_inf
-rho[:, :] = rho_inf
+        # Initialize arrays
+        self.u = np.zeros((nx, ny))  # x-velocity
+        self.v = np.zeros((nx, ny))  # y-velocity
+        p = np.ones((nx, ny)) * self.p_inf  # pressure
+        rho = np.ones((nx, ny)) * self.rho_inf  # density
 
+        # Set initial condition
+        self.u[:, :] = self.u_inf
+        p[:, :] = self.p_inf
+        rho[:, :] = self.rho_inf
 
-# Define finite difference operator
-def ddt(f, u, v):
-    dfdt = np.zeros_like(f)
-    dfdx = np.zeros_like(f)
-    dfdy = np.zeros_like(f)
+        # Define finite difference operator
+        def ddt(f, u, v):
+            dfdt = np.zeros_like(f)
+            dfdx = np.zeros_like(f)
+            dfdy = np.zeros_like(f)
 
-    dfdx[1:-1, 1:-1] = (f[2:, 1:-1] - f[:-2, 1:-1]) / (2 * dx)
-    dfdy[1:-1, 1:-1] = (f[1:-1, 2:] - f[1:-1, :-2]) / (2 * dy)
+            dfdx[1:-1, 1:-1] = (f[2:, 1:-1] - f[:-2, 1:-1]) / (2 * dx)
+            dfdy[1:-1, 1:-1] = (f[1:-1, 2:] - f[1:-1, :-2]) / (2 * dy)
 
-    dfdt[1:-1, 1:-1] = - u[1:-1, 1:-1] * dfdx[1:-1, 1:-1] \
-                       - v[1:-1, 1:-1] * dfdy[1:-1, 1:-1]
+            dfdt[1:-1, 1:-1] = - u[1:-1, 1:-1] * dfdx[1:-1, 1:-1] \
+                               - v[1:-1, 1:-1] * dfdy[1:-1, 1:-1]
 
-    return dfdt
+            return dfdt
 
+        # Time loop
+        for n in range(nt):
+            # Calculate time step
+            dt = CFL * min(dx / np.max(np.abs(self.u)), dy / np.max(np.abs(self.v)))
 
-# Time loop
-for n in range(nt):
-    # Calculate time step
-    dt = CFL * min(dx / np.max(np.abs(u)), dy / np.max(np.abs(v)))
+            # Calculate pressure from density and velocity
+            p = (self.gamma - 1) * (rho * (self.u ** 2 + self.v ** 2) / 2 - self.p_inf)
 
-    # Calculate pressure from density and velocity
-    p = (gamma - 1) * (rho * (u ** 2 + v ** 2) / 2 - p_inf)
+            # Calculate density from pressure and velocity
+            rho = p / ((self.gamma - 1) * (self.u ** 2 + self.v ** 2) / 2 + self.p_inf)
 
-    # Calculate density from pressure and velocity
-    rho = p / ((gamma - 1) * (u ** 2 + v ** 2) / 2 + p_inf)
+            # Calculate x-velocity
+            self.u -= dt * ddt(p, self.u, self.v) / rho
 
-    # Calculate x-velocity
-    u -= dt * ddt(p, u, v) / rho
-
-    # Calculate y-velocity
-    v -= dt * ddt(p, u, v) / rho
-
-
-
-
-
-
-
-
-
-
-
+            # Calculate y-velocity
+            self.v -= dt * ddt(p, self.u, self.v) / rho
 
 
 

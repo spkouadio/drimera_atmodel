@@ -6,18 +6,16 @@ Created as part of my PhD, on Sun Jun 19 12:04:32 2022
 """
 import math
 
-import const as cst
 import droplet_descr
-import matplotlib.pyplot as plt
 import numpy as np
 import droplet_dispersal as dd
 import conc_calculus as cc
-from mpl_toolkits.mplot3d import Axes3D
+#import params
 
-app_rate = params.application_rate #l/ha
-field_surf = params.field_surface #ha
-chem_mass = params.chem_mass #(g/m2)
-field_surface = params.field_surface #ha
+app_rate = 0 # params.application_rate #l/ha
+field_surf = 0 # params.field_surface #ha
+chem_mass = 0 # params.chem_mass #(g/m2)
+field_surface = 0 # params.field_surface #ha
 
 #Droplets distribution by diameter
 drop_dist = droplet_descr.drop_distrib()

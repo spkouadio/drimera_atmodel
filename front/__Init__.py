@@ -14,15 +14,31 @@ atmosphérique de polluants. Il aide ainsi à évaluer les risques liés à l’
 voie aérienne sur cultures comme dans les bananeraies. 
 
 """
+import sys
 
 from ui_homeUI import *
+from script.params import *
+from script.air_flow import *
+from script.droplet_descr import *
+from script.conc_calculus import *
+from script.droplet_dispersal import *
+
 import ui_alert
 import ui_error
-import sys
-from script.params import parameter
 
-#import script._init_ as calculus
-#import matplotlib.pyplot as plt
+
+import math
+import matplotlib.pyplot as plt
+import numpy as np
+
+#import sys
+import matplotlib
+matplotlib.use('Qt5Agg')
+
+from PySide2.QtWidgets import QMainWindow, QVBoxLayout, QWidget, QApplication
+
+from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg, NavigationToolbar2QT as NavigationToolbar
+from matplotlib.figure import Figure
 
 
 class MainWindow(QMainWindow):
@@ -38,19 +54,90 @@ class MainWindow(QMainWindow):
         supportCarac = self.ui.supportCarac_comboBox.currentText()
         dropletSize = self.ui.dropletSize_comboBox.currentText()
 
-        activMatConc = self.ui.activMatConc_lineEdit.text()
-        carrierVol = self.ui.carrierVol_lineEdit.text()
-        boomHeight = self.ui.boomHeight_lineEdit.text()
-        appRate = self.ui.appRate_lineEdit.text()
-        residualConc = self.ui.residualConc_lineEdit.text()
-        windSpeed = self.ui.windSpeed_lineEdit.text()
-        temperature = self.ui.temperature_lineEdit.text()
-        humidity = self.ui.humidity_lineEdit.text()
-        timeStep = self.ui.timeStep_lineEdit.text()
+        activMatConc = float(self.ui.activMatConc_lineEdit.text())
+        carrierVol = float(self.ui.carrierVol_lineEdit.text())
+        boomHeight = float(self.ui.boomHeight_lineEdit.text())
+        appRate = float(self.ui.appRate_lineEdit.text())
+        residualConc = float(self.ui.residualConc_lineEdit.text())
+        windSpeed = float(self.ui.windSpeed_lineEdit.text())
+        temperature = float(self.ui.temperature_lineEdit.text())
+        humidity = float(self.ui.humidity_lineEdit.text())
+        timeStep = int(self.ui.timeStep_lineEdit.text())
 
-        return [activeMatCarac, supportCarac, dropletSize, activMatConc, carrierVol, boomHeight, appRate,
-                residualConc, windSpeed, temperature, humidity, timeStep]
+        # Parameters initialisation
+        self.parameter = inputs_par(activeMatCarac, supportCarac, dropletSize, activMatConc, carrierVol, boomHeight, appRate,
+                residualConc, windSpeed, temperature, humidity, timeStep)
 
+        # Air flow initialisation
+        self.airflow = air_flow(self.parameter.air_sp_ratio, self.parameter.air_pressure,
+                           self.parameter.air_density, self.parameter.air_velocity)
+
+        # Droplet description initialisation
+        self.dropdescr = droplet_descr(self.parameter.humidity, self.parameter.temp, self.parameter.air_density,
+                                       self.parameter.chem, self.parameter.chem_density, self.parameter.chem_mass,
+                                       self.parameter.chem_dilrate, self.parameter.supp_volume, self.parameter.supp_density,
+                                       self.parameter.rho_mix, self.parameter.vol_mix)
+
+        # Droplet dispersal initialisation
+        self.dd = droplet_dispersal(self.airflow.v, self.airflow.u, self.parameter.rho_mix, self.parameter.air_density,
+                                    self.parameter.boomHeight, self.parameter.air_kviscosity, self.dropdescr.drop_distrib(),
+                                    self.dropdescr.init_velocity())
+
+        # Concentration calculus initialisation
+        self.concalcul = concent_calc(self.parameter.time_nt)
+
+
+        #app_rate = self.parameter.application_rate  # l/ha
+
+        # Droplets distribution by diameter
+        drop_dist = self.dropdescr.drop_distrib()
+
+        # Droplets trajectory
+        n_diam = len(drop_dist[:, 0])
+
+        # Plot concentration profile for a specific time
+        # Plot concentration profile by diameter
+        concent = np.zeros((101, 101))
+        for k in range(n_diam):
+            i = round(self.dd.x[k, -1])
+            j = self.dd.j
+            u_air = self.dd.u_air
+            alpha_buoy = self.dd.C_d(drop_dist[k, 0], self.dd.u_air[i, i], 0.0)
+            c_0 = drop_dist[k, 1]  # *math.pow(10,6) µg/l
+            # concent = cc.conc_cal(u_air, alpha_buoy, c_0, i, j)
+            concent = np.add(concent, self.concalcul.conc_cal(u_air, alpha_buoy, c_0, i, j))
+
+        drift_pos = [5, 10, 20, 30, 50, 80, 100]  # m
+        for xpos in drift_pos:
+            print(f'Droplet concentration at x = {xpos} m from treat field is '
+                  f'{round(concent[self.dd.j, xpos - 1] * math.pow(10, 6), 3)} µg')
+
+        plt.imshow(concent, cmap='hot', origin='lower', extent=[0, 100, 0, 100])
+        plt.colorbar()
+        plt.xlabel('x')
+        plt.ylabel('y')
+        plt.title(f'Concentration in g/l at time = {(self.parameter.time_nt / 60):.2f} min')
+        # plt.title(f'Concentration in g/l at time = 100')
+        #plt.show()
+
+        #self.tableView = plt.show()
+
+        sc = MplCanvas(self, width=5, height=4, dpi=100)
+        sc.axes.plot([0,1,2,3,4], [10,1,20,3,40])
+
+        # Create toolbar, passing canvas as first parament, parent (self, the MainWindow) as second.
+        toolbar = NavigationToolbar(sc, self)
+
+        layout = QVBoxLayout()
+        layout.addWidget(toolbar)
+        layout.addWidget(sc)
+
+        # Create a placeholder widget to hold our toolbar and canvas.
+        widget = QWidget()
+        widget.setLayout(layout)
+        self.setCentralWidget(widget)
+
+        self.show()
 
         #self.uiErreur()
         #self.ui.paramStackedWidget.setCurrentIndex(0)
@@ -82,6 +169,13 @@ class MainWindow(QMainWindow):
         self.ui.operaBtn.setDefault(False)
         self.ui.terrainBtn.setDefault(False)
         self.ui.paramStackedWidget.setCurrentIndex(0)
+
+
+class MplCanvas(FigureCanvasQTAgg):
+    def __init__(self, parent=None, width=5, height=4, dpi=100):
+        fig = Figure(figsize=(width, height), dpi=dpi)
+        self.axes = fig.add_subplot(111)
+        super(MplCanvas, self).__init__(fig)
 
 
 if __name__ == "__main__":

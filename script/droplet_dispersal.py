@@ -6,28 +6,109 @@ That calculus is based on the Lagrangian approach by solving Newton's equation o
 
 import math
 import numpy as np
-import params
-import const as cst
-import droplet_descr
-import air_flow
+from script.const import constants
+#from params import *
+#import const as cst
+#import droplet_descr
+#import air_flow
 
-#air flow initialisation
-v_air = air_flow.v
-u_air = air_flow.u
+class droplet_dispersal(object):
+    # nx = 41
+    # dx = 2 / (nx - 1)
+    nt = 3601  # 1501    #nt is the number of timesteps
+    dt = 1  # dt is the amount of time each timestep covers (delta t)
+    # c = 1
 
-rho_mix = params.rho_mix
-rho_a = params.air_density
-drop_dist = droplet_descr.drop_distrib()
-alt_spray = params.alt_spray
-init_velocity = droplet_descr.init_velocity()
-nu_a = params.air_kviscosity
-g = cst.g()
+    def __init__(self, v_air, u_air, rho_mix, rho_a, alt_spray, nu_a, drop_dist, init_velocity):
+        self.v_air = v_air
+        self.u_air = u_air
+        self.rho_mix = rho_mix
+        self.rho_a = rho_a
+        self.alt_spray = alt_spray
+        self.nu_a = nu_a
+        self.drop_dist = drop_dist
+        self.init_velocity = init_velocity
+        # air flow initialisation
+        # v_air = air_flow.v
+        # u_air = air_flow.u
+        # rho_mix = 0 # params.rho_mix
+        # rho_a = 0 #params.air_density
+        # alt_spray = 0 #params.alt_spray
+        # nu_a = 0 #params.air_kviscosity
+        # drop_dist = droplet_descr.drop_distrib()
+        # init_velocity = droplet_descr.init_velocity()
+        #
+        self.g = constants().g()
 
-#nx = 41
-#dx = 2 / (nx - 1)
-nt = 3601 #1501    #nt is the number of timesteps
-dt = 1  #dt is the amount of time each timestep covers (delta t)
-#c = 1
+        # Droplet velocity and position by diameter
+        x_cord = len(self.v_air)
+        y_cord = len(self.v_air[0])
+
+        n_diam = len(self.drop_dist[:, 0])
+        v = np.zeros((self.nt))
+        self.x = np.zeros((n_diam, self.nt))
+        # x_tab = np.empty((0, 1), float)
+        self.z = np.zeros((n_diam, self.nt))  # for altitude
+        t_t = np.zeros(self.nt)
+        v[0] = self.init_velocity  # initialization of droplet velocity
+        self.z[:, 0] = self.alt_spray  # altitude of spray initialization
+
+        self.i = 0
+        self.j = 10
+        self.x[:, 0] = self.i
+
+    # Buyoency coefficient
+    def C_d(self, diam, air_vel, drop_vel):
+        Re = (diam * math.fabs(air_vel - drop_vel)) / self.nu_a
+        if Re < 0.1:
+            c_d = 24 / Re  # stokes regime
+        else:
+            if Re >= 0.1 and Re <= 1000:
+                c_d = (24 / Re) * ((1 / 6) * math.pow(Re, 2 / 3))  # transitory regime
+            else:
+                if Re > 1000: c_d = 0.44  # newton regime
+        return c_d
+
+    # Relaxation time
+    def tau(self, diam, air_vel, drop_vel):
+        cd = self.C_d(diam, air_vel, drop_vel)
+        tp = (4 * self.rho_mix * diam) / (3 * self.rho_a * cd * math.fabs(air_vel - drop_vel))
+        return tp
+
+    def sed_velocity(self):
+        r'''The sedimentation velocity of the droplet is obtained at equilibrium (dV/dt=0),
+        under conditions close to the ground where the wind movement is horizontal
+            *:param drop_diam: droplet diameter depend of weigth fraction
+            *:return: sedimentation velocity of differents droplets
+        '''
+
+
+        # Position calculation
+        for k in range(self.n_diam):
+            for t in range(self.nt - 1):
+                # vel = dt*(g*(rho_mix-rho_a)/rho_mix-(rho_a*math.pi*math.pow(drop_dist[i,0],2)*Cd*math.pow(v[n,i],2))/
+                # (8*(rho_mix*math.pi*math.pow(drop_dist[i,0],3)/6))) + v[n,i]
+                vel = (self.v[t] + self.g * (1 - self.rho_a / self.rho_mix) * self.dt) / (1 + self.dt / self.tau(self.drop_dist[k, 0], self.u_air[i, self.j], self.v[t]))
+                vel_sed = math.sqrt(
+                    (4 * self.g * self.rho_mix * self.drop_dist[k, 0]) / (3 * self.C_d(self.drop_dist[k, 0], self.u_air[i, self.j], self.v[t]) * self.rho_a))
+                # vel = (v[n, i] + g * (1 - rho_a / rho_mix) * dt) / (1 + dt / tau(drop_dist[i, 0], v_air[0, n], v[n, i]))
+                if vel > 0:  # vel >= 0
+                    self.v[t + 1] = vel  # droplet velocity
+                    self.z[k, t + 1] = self.alt_spray
+                else:
+                    alt = self.z[k, t] - vel_sed * self.dt  # droplet altitude
+                    if alt >= 0: self.z[k, t + 1] = alt
+
+                self.x[k, t + 1] = self.x[k, t] + self.v[t + 1] * self.dt  # droplet position
+                # if v[t + 1] == 0 : x[k, t + 1] = 0
+                # if x[k, t + 1] != x[k, t] : np.append(x_tab, np.array([x[k, t + 1]]), axis=0)
+                i = round(self.x[k, t + 1])
+
+        # Timestep
+        for n in range(self.nt):
+            self.t_t[n] = n * self.dt
+
+
 '''
 n_diam = len(drop_dist[:,0])
 v = np.zeros((nt,n_diam))
@@ -36,73 +117,8 @@ z = np.zeros((nt,n_diam)) # for altitude
 t = np.zeros(nt)
 v[0,:] = init_velocity # initialization of droplet velocity
 z[0,:] = alt_spray # altitude of spray initialization
-'''
-
-#Buyoency coefficient
-def C_d(diam, air_vel, drop_vel):
-    Re = (diam*math.fabs(air_vel-drop_vel))/nu_a
-    if Re < 0.1:
-        c_d = 24/Re #stokes regime
-    else :
-        if Re >=0.1 and Re <= 1000 :
-            c_d = (24/Re)*((1/6)*math.pow(Re, 2/3)) #transitory regime
-        else :
-            if Re > 1000 : c_d = 0.44 #newton regime
-    return c_d
-
-# Relaxation time
-def tau(diam, air_vel, drop_vel):
-    cd = C_d(diam, air_vel, drop_vel)
-    tp = (4*rho_mix*diam)/(3*rho_a*cd*math.fabs(air_vel-drop_vel))
-    return tp
-
-def sed_velocity():
-    r'''The sedimentation velocity of the droplet is obtained at equilibrium (dV/dt=0),
-    under conditions close to the ground where the wind movement is horizontal
-        *:param drop_diam: droplet diameter depend of weigth fraction
-        *:return: sedimentation velocity of differents droplets
-    '''
 
 
-# Droplet velocity and position by diameter
-x_cord = len(v_air)
-y_cord = len(v_air[0])
-
-n_diam = len(drop_dist[:,0])
-v = np.zeros((nt))
-x = np.zeros((n_diam, nt))
-#x_tab = np.empty((0, 1), float)
-z = np.zeros((n_diam, nt)) # for altitude
-t_t = np.zeros(nt)
-v[0] = init_velocity # initialization of droplet velocity
-z[:, 0] = alt_spray # altitude of spray initialization
-
-i = 0
-j = 10
-x[:, 0] = i
-#Position calculation
-for k in range(n_diam):
-    for t in range(nt - 1):
-        # vel = dt*(g*(rho_mix-rho_a)/rho_mix-(rho_a*math.pi*math.pow(drop_dist[i,0],2)*Cd*math.pow(v[n,i],2))/
-        # (8*(rho_mix*math.pi*math.pow(drop_dist[i,0],3)/6))) + v[n,i]
-        vel = (v[t] + g * (1 - rho_a / rho_mix) * dt) / (1 + dt / tau(drop_dist[k, 0], u_air[i, j], v[t]))
-        vel_sed = math.sqrt(
-            (4 * g * rho_mix * drop_dist[k, 0]) / (3 * C_d(drop_dist[k, 0], u_air[i, j], v[t]) * rho_a))
-        # vel = (v[n, i] + g * (1 - rho_a / rho_mix) * dt) / (1 + dt / tau(drop_dist[i, 0], v_air[0, n], v[n, i]))
-        if vel > 0: #vel >= 0
-            v[t + 1] = vel  # droplet velocity
-            z[k, t + 1] = alt_spray
-        else :
-            alt = z[k, t] - vel_sed * dt  # droplet altitude
-            if alt >= 0: z[k, t + 1] = alt
-
-        x[k, t + 1] = x[k, t] + v[t + 1] * dt  # droplet position
-        #if v[t + 1] == 0 : x[k, t + 1] = 0
-        #if x[k, t + 1] != x[k, t] : np.append(x_tab, np.array([x[k, t + 1]]), axis=0)
-        i = round(x[k, t + 1])
-
-
-'''
 for k in range(n_diam):
     for i in range(x_cord-1):
         for j in range(y_cord-1):
@@ -142,6 +158,3 @@ for n in range(nt - 1):
         x[n + 1, i] = x[n, i] + v[n+1, i]*dt # droplet position
 '''
 
-# Timestep
-for n in range(nt):
-    t_t[n] = n*dt

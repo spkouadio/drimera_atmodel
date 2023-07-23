@@ -1,6 +1,5 @@
 import numpy as np
-import params
-import matplotlib.pyplot as plt
+from front import params
 
 # Define parameters
 nx = 101  # number of grid points
