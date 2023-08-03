@@ -31,31 +31,11 @@ import matplotlib.pyplot as plt
 import numpy as np
 
 #from PyQt5.QtWidgets import QApplication, QGraphicsView, QGraphicsScene
-from PySide2.QtGui import QPixmap
+from PySide2.QtGui import QPixmap, QStandardItemModel, QStandardItem
 from PyQt5.QtCore import Qt
 from six import BytesIO
 from PySide2 import QtCore
 
-class TableModel(QtCore.QAbstractTableModel):
-    def __init__(self, data):
-        super(TableModel, self).__init__()
-        self._data = data
-
-    def data(self, index, role):
-        if role == Qt.DisplayRole:
-            # See below for the nested-list data structure.
-            # .row() indexes into the outer list,
-            # .column() indexes into the sub-list
-            return self._data[index.row()][index.column()]
-
-    def rowCount(self, index):
-        # The length of the outer list.
-        return len(self._data)
-
-    def columnCount(self, index):
-        # The following takes the first sub-list, and returns
-        # the length (only works if all rows are an equal length)
-        return len(self._data[0])
 
 class MainWindow(QMainWindow):
     def __init__(self):
@@ -66,6 +46,8 @@ class MainWindow(QMainWindow):
 
 
     def calResult(self):
+
+        # Get parameters
         activeMatCarac = self.ui.activeMatCarac_comboBox.currentText()
         supportCarac = self.ui.supportCarac_comboBox.currentText()
         dropletSize = self.ui.dropletSize_comboBox.currentText()
@@ -123,25 +105,24 @@ class MainWindow(QMainWindow):
             # concent = cc.conc_cal(u_air, alpha_buoy, c_0, i, j)
             concent = np.add(concent, self.concalcul.conc_cal(u_air, alpha_buoy, c_0, i, j))
 
-        """
-        drift_pos = [5, 10, 20, 30, 50, 80, 100]  # m
-        for xpos in drift_pos:
-            print(f'Droplet concentration at x = {xpos} m from treat field is '
-                  f'{round(concent[self.dd.j, xpos - 1] * math.pow(10, 6), 3)} µg')
-        """
         # Plot concentration by position in a tableView
         drift_pos = len(concent[self.dd.j,:])-1
         data = np.empty((0, 2), float)  # m
         for xpos in range(drift_pos):
             data = np.append(data, np.array([[xpos, round(concent[self.dd.j, xpos] * math.pow(10, 6), 3)]]), axis=0)
 
-        self.model = TableModel(data.tolist())
+        self.model = QStandardItemModel(0, 2, self)
+        self.model.setHorizontalHeaderLabels(['position (m)', 'concentration (µg/l)'])
+        for i in range(drift_pos):
+            for j in range(2):
+                self.model.setItem(i, j, QStandardItem(str(data[i,j])))
+
         self.ui.tableView.setModel(self.model)
 
         # Plot concentration by position in a 2D graph
+        plt.clf() # Reinitialize plot
         plt.imshow(concent, cmap='hot', origin='lower', extent=[0, 100, 0, 100])
         plt.colorbar()
-        #plt.axis('off')
         plt.xlabel('x')
         plt.ylabel('y')
         plt.title(f'Concentration in g/l at time = {(self.parameter.time_nt / 60):.2f} min')
@@ -167,7 +148,7 @@ class MainWindow(QMainWindow):
         self.graphicScene.addPixmap(self.figure_pixmap)
 
         # Set the QGraphicsView
-        self.ui.result_graphicsView.c
+        #self.ui.result_graphicsView.c
         self.ui.result_graphicsView.setScene(self.graphicScene)
 
         #self.uiErreur()
