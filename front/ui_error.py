@@ -16,20 +16,20 @@ from PySide2.QtGui import (QBrush, QColor, QConicalGradient, QCursor, QFont,
 from PySide2.QtWidgets import *
 
 
-class Ui_Erreur(object):
-    def setupUi(self, Erreur):
-        if Erreur.objectName():
-            Erreur.setObjectName(u"Erreur")
-        Erreur.resize(344, 91)
+class Ui_Error(object):
+    def setupUi(self, Error):
+        if Error.objectName():
+            Error.setObjectName(u"Error")
+        Error.resize(344, 91)
         icon = QIcon()
         icon.addFile(u"Im/info.png", QSize(), QIcon.Normal, QIcon.Off)
-        Erreur.setWindowIcon(icon)
-        self.verticalLayout = QVBoxLayout(Erreur)
+        Error.setWindowIcon(icon)
+        self.verticalLayout = QVBoxLayout(Error)
         self.verticalLayout.setObjectName(u"verticalLayout")
         self.verticalLayout.setSizeConstraint(QLayout.SetFixedSize)
         self.horizontalLayout = QHBoxLayout()
         self.horizontalLayout.setObjectName(u"horizontalLayout")
-        self.label_2 = QLabel(Erreur)
+        self.label_2 = QLabel(Error)
         self.label_2.setObjectName(u"label_2")
         self.label_2.setMaximumSize(QSize(25, 25))
         self.label_2.setPixmap(QPixmap(u"Im/dangerflat.png"))
@@ -37,7 +37,7 @@ class Ui_Erreur(object):
 
         self.horizontalLayout.addWidget(self.label_2)
 
-        self.label = QLabel(Erreur)
+        self.label = QLabel(Error)
         self.label.setObjectName(u"label")
         self.label.setAlignment(Qt.AlignCenter)
         self.label.setMargin(0)
@@ -47,7 +47,7 @@ class Ui_Erreur(object):
 
         self.verticalLayout.addLayout(self.horizontalLayout)
 
-        self.buttonBox = QDialogButtonBox(Erreur)
+        self.buttonBox = QDialogButtonBox(Error)
         self.buttonBox.setObjectName(u"buttonBox")
         self.buttonBox.setOrientation(Qt.Horizontal)
         self.buttonBox.setStandardButtons(QDialogButtonBox.Ok)
@@ -55,16 +55,16 @@ class Ui_Erreur(object):
         self.verticalLayout.addWidget(self.buttonBox)
 
 
-        self.retranslateUi(Erreur)
-        self.buttonBox.accepted.connect(Erreur.accept)
-        self.buttonBox.rejected.connect(Erreur.reject)
+        self.retranslateUi(Error)
+        self.buttonBox.accepted.connect(Error.accept)
+        self.buttonBox.rejected.connect(Error.reject)
 
-        QMetaObject.connectSlotsByName(Erreur)
+        QMetaObject.connectSlotsByName(Error)
     # setupUi
 
-    def retranslateUi(self, Erreur):
-        Erreur.setWindowTitle(QCoreApplication.translate("Erreur", u"DRIMERA", None))
+    def retranslateUi(self, Error):
+        Error.setWindowTitle(QCoreApplication.translate("Alert", u"DRIMERA", None))
         self.label_2.setText("")
-        self.label.setText(QCoreApplication.translate("Erreur", u"Param\u00e9trage erron\u00e9 ! Veuillez renseigner tous les champs.", None))
+        self.label.setText(QCoreApplication.translate("Alert", u"Wrong settings! Please fill in all fields.", None))
     # retranslateUi
 

@@ -429,7 +429,7 @@ class Ui_MainWindow(object):
         self.calculBtn.setText(QCoreApplication.translate("MainWindow", u"Calculus", None))
         self.resultTabWidget_result.setTabText(self.resultTabWidget_result.indexOf(self.tabPlot_result), QCoreApplication.translate("MainWindow", u"Plot", None))
         self.resultTabWidget_result.setTabText(self.resultTabWidget_result.indexOf(self.tabData_result), QCoreApplication.translate("MainWindow", u"Datasheet", None))
-        self.downloadBtn.setText(QCoreApplication.translate("MainWindow", u"Export", None))
+        self.downloadBtn.setText(QCoreApplication.translate("MainWindow", u"Download", None))
         self.appversion.setText(QCoreApplication.translate("MainWindow", u"v 1.0.0   ", None))
         self.menuFichier.setTitle(QCoreApplication.translate("MainWindow", u"File", None))
         self.menuAide.setTitle(QCoreApplication.translate("MainWindow", u"Help", None))
