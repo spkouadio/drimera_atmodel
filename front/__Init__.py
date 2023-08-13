@@ -24,9 +24,11 @@ from script.air_flow import *
 from script.droplet_descr import *
 from script.conc_calculus import *
 from script.droplet_dispersal import *
+from script.const import constants
 
 import ui_alert
 import ui_error
+import ui_pestsetting
 
 import math
 import matplotlib.pyplot as plt
@@ -41,13 +43,18 @@ from six import BytesIO
 from PySide2 import QtCore
 
 
+
 class MainWindow(QMainWindow):
     def __init__(self):
         super(MainWindow, self).__init__()
         self.ui = Ui_MainWindow()
         self.ui.setupUi(self)
+        self.pestList = constants.chemical(self)
         self.ui.calculBtn.clicked.connect(self.errorDetection)
         self.ui.downloadBtn.clicked.connect(self.exportData)
+        self.ui.activeMatCarac_toolButton.clicked.connect(self.pestSetting)
+
+        #self.modelList = QStandardItemModel(self)
 
         #self.statusBar().showMessage("Ready", 0)
 
@@ -295,6 +302,77 @@ class MainWindow(QMainWindow):
         if (self.truevalue == 12):
             self.calResult()
         else : self.uiErreur()
+
+
+    def pestSetting(self):
+        pestSetting = QDialog()
+        pestSetting.ui = ui_pestsetting.Ui_Alert()
+        pestSetting.ui.setupUi(pestSetting)
+        self.modelList = QStandardItemModel(self)
+        pestSetting.ui.pesticide_listView.setModel(self.modelList)
+        #self.modelList = QStandardItemModel(self)
+        #self.pestList = constants.chemical(self)#np.empty((0, 3))
+        for ichem in range(len(self.pestList[:,0])):
+            item = QStandardItem(str(self.pestList[ichem,0]))
+            item.setCheckable(True)
+            item.setCheckState(QtCore.Qt.Unchecked)
+            self.modelList.appendRow(item)
+
+        def addPest():
+            def is_float(string):
+                try:
+                    float(string)
+                    return True
+                except ValueError:
+                    return False
+
+            pestName = pestSetting.ui.pesticide_lineEdit.text()
+            amName = pestSetting.ui.activeMatter_lineEdit.text()
+            amDensity = pestSetting.ui.amDensity_lineEdit.text()
+            value = 0
+            if (pestName == ''): value += 0
+            else: value += 1
+            if (amName == ''): value += 0
+            else: value += 1
+            if (is_float(amDensity) == False): value += 0
+            else: value += 1
+            if (value != 3):
+                self.uiErreur()
+            else:
+                self.pestList = np.append(self.pestList, np.array([[str(pestName), str(amName), float(amDensity)]]), axis=0)
+                self.ui.activeMatCarac_comboBox.addItem(pestName)
+                item = QStandardItem(str(pestName))
+                item.setCheckable(True)
+                item.setCheckState(QtCore.Qt.Unchecked)
+                self.modelList.appendRow(item)
+                pestSetting.ui.pesticide_listView.setModel(self.modelList)
+                pestSetting.ui.pesticide_lineEdit.clear()
+                pestSetting.ui.activeMatter_lineEdit.clear()
+                pestSetting.ui.amDensity_lineEdit.clear()
+        def removePest():
+            pestSetting.ui.pesticide_lineEdit.clear()
+            pestSetting.ui.activeMatter_lineEdit.clear()
+            pestSetting.ui.amDensity_lineEdit.clear()
+            for row in range(self.modelList.rowCount()):
+                item = self.modelList.item(row)
+                if item and item.checkState() == QtCore.Qt.Checked:
+                    self.modelList.removeRow(row)
+                    self.pestList = np.delete(self.pestList, row, axis=0)
+                    self.ui.activeMatCarac_comboBox.removeItem(row)
+        def displayPest():
+            for row in range(self.modelList.rowCount()):
+                item = self.modelList.item(row)
+                if item and item.checkState() == QtCore.Qt.Checked:
+                    pestSetting.ui.pesticide_lineEdit.setText(self.pestList[row, 0])
+                    pestSetting.ui.activeMatter_lineEdit.setText(self.pestList[row, 1])
+                    pestSetting.ui.amDensity_lineEdit.setText(self.pestList[row, 2])
+
+        pestSetting.ui.saveBtn.clicked.connect(addPest)
+        pestSetting.ui.deleteBtn.clicked.connect(removePest)
+        pestSetting.ui.pesticide_listView.clicked.connect(displayPest)
+
+        pestSetting.exec_()
+
 
 
 if __name__ == "__main__":

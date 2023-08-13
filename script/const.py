@@ -5,6 +5,17 @@ import math
 import numpy as np
 
 class constants(object):
+    # Initial chemical list
+    def chemical(self):
+        chem_list = np.array((['Chlorothalonil', 'Chlorothalonil', 0.00], ['Difenoconazol', 'Difenoconazol', 1.37],
+                                 ['Dodin', 'Dodin', 0.00], ['Epoxiconazol', 'Epoxiconazol', 1.38],
+                                 ['Fenpropimorph', 'Fenpropimorph', 0.93], ['Mancozeb', 'Mancozeb', 0.00],
+                                 ['Propiconazol', 'Propiconazol', 1.09], ['Pyraclostrobin', 'Pyraclostrobin', 0.00],
+                                 ['Pyrimethanil', 'Pyrimethanil', 0.00], ['Spiroxamin', 'Spiroxamin', 0.00],
+                                 ['Thiram', 'Thiram', 00], ['Tebuconazol', 'Tebuconazol', 1.25],
+                                 ['Triadimefon', 'Triadimefon', 0.00], ['Tridemorph', 'Tridemorph', 0.00],
+                                 ['Trifloxystrobin', 'Trifloxystrobin', 1.36]))
+        return chem_list
     # Gravity
     def g(self):
         return 9.18
@@ -60,12 +71,8 @@ class constants(object):
         # chem_density = np.array((['Thiophanate-methyl', 1.45], ['Difenoconazole', 1.37], ['Epoxiconazole', 1.38],
         # ['Propiconazole', 1.09], ['Tebuconazole', 1.25], ['Fenpropimorph', 0.93],
         # ['Azoxystrobin', 1.34], ['Trifloxystrobin', 1.36]))
-        chem_density = np.array((['Chlorothalonil', 0.00], ['Difenoconazol', 1.37], ['Dodin', 0.00],
-                                 ['Epoxiconazol', 1.38], ['Fenpropimorph', 0.93], ['Mancozeb', 0.00],
-                                 ['Propiconazol', 1.09], ['Pyraclostrobin', 0.00], ['Pyrimethanil', 0.00],
-                                 ['Spiroxamin', 0.00], ['Thiram', 00], ['Tebuconazol', 1.25], ['Triadimefon', 0.00],
-                                 ['Tridemorph', 0.00], ['Trifloxystrobin', 1.36]))
-        d_chem = float(chem_density[np.where(chem_density[:, 0] == chem), 1])
+        chem_list = self.chemical
+        d_chem = float(chem_list[np.where(chem_list[:, 1] == chem), 1])
 
         return d_chem
 
