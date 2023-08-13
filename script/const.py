@@ -16,6 +16,10 @@ class constants(object):
                                  ['Triadimefon', 'Triadimefon', 0.00], ['Tridemorph', 'Tridemorph', 0.00],
                                  ['Trifloxystrobin', 'Trifloxystrobin', 1.36]))
         return chem_list
+    # Initial carrier
+    def carrier(self):
+        supp_list = np.array((['Water', 1, 'water at 25°C'], ['Oil', 0.9, 'natural oil at 25°C']))
+        return supp_list
     # Gravity
     def g(self):
         return 9.18

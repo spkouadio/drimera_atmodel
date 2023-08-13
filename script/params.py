@@ -8,10 +8,12 @@ class inputs_par(object):
     def __init__(self, activeMatCarac, supportCarac, dropletSize, activMatConc, carrierVol, boomHeight, appRate,
                  residualConc, windSpeed, temperature, humidity, timeStep):
 
-        self.chem = activeMatCarac
-        self.supportCarac = supportCarac
+        #self.chem = activeMatCarac
+        #self.supportCarac = supportCarac
         self.dropletSize = dropletSize
 
+        self.chem = activeMatCarac
+        self.supportCarac = supportCarac
         self.active_mat_conc = activMatConc
         self.supp_volume = carrierVol
         self.boomHeight = boomHeight
@@ -35,14 +37,16 @@ class inputs_par(object):
 
         # Chemical properties
         # chem = 'thiophanate-methyl'
-        self.chem_density = self.cst.rho_chem(self.chem)
+        #self.chem_density = self.cst.rho_chem(self.chem)
+        self.chem_density = self.chem
 
         self.chem_mass = self.active_mat_conc * self.application_rate * math.pow(10, -4)  ##chemical mass (g/m2)
         self.chem_dilrate = 0  ##chemical dilution rate (0%)
 
         # Support properties
         #supp_volume = self.supp_volume  # liters
-        self.supp_density = self.cst.supp_dens(self.supportCarac)  # Water density
+        #self.supp_density = self.cst.supp_dens(self.supportCarac)  # Water density
+        self.supp_density = self.supportCarac
 
         # Field properties
         field_surface = 0.025  # ha

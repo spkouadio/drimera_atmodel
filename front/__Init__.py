@@ -29,6 +29,7 @@ from script.const import constants
 import ui_alert
 import ui_error
 import ui_pestsetting
+import ui_carriersetting
 
 import math
 import matplotlib.pyplot as plt
@@ -50,17 +51,12 @@ class MainWindow(QMainWindow):
         self.ui = Ui_MainWindow()
         self.ui.setupUi(self)
         self.pestList = constants.chemical(self)
+        self.carList = constants.carrier(self)
         self.ui.calculBtn.clicked.connect(self.errorDetection)
         self.ui.downloadBtn.clicked.connect(self.exportData)
         self.ui.activeMatCarac_toolButton.clicked.connect(self.pestSetting)
+        self.ui.supportCarac_toolButton.clicked.connect(self.carSetting)
 
-        #self.modelList = QStandardItemModel(self)
-
-        #self.statusBar().showMessage("Ready", 0)
-
-        #self.btn = QtWidgets.QPushButton("Download", self)
-        #self.btn.move(10, 10)
-        #self.btn.clicked.connect(self.runprocess)
         self.progress_bar = QtWidgets.QProgressBar()
         self.statusBar().addPermanentWidget(self.progress_bar)
         self.progress_bar.hide()
@@ -90,10 +86,16 @@ class MainWindow(QMainWindow):
 
         self.startprocess()
         # Get parameters
-        self.activeMatCarac = self.ui.activeMatCarac_comboBox.currentText()
-        self.supportCarac = self.ui.supportCarac_comboBox.currentText()
+        #self.activeMatCarac = self.ui.activeMatCarac_comboBox.currentText()
+        #self.supportCarac = self.ui.supportCarac_comboBox.currentText()
         self.dropletSize = self.ui.dropletSize_comboBox.currentText()
 
+        chem = self.ui.activeMatCarac_comboBox.currentText()
+        chem_density = self.pestList[np.where(self.pestList[:, 1] == chem), 2].item()
+        self.activeMatCarac = float(chem_density)
+        car = self.ui.supportCarac_comboBox.currentText()
+        car_density = self.carList[np.where(self.carList[:, 0] == car), 1].item()
+        self.supportCarac = float(car_density)
         self.activMatConc = float(self.ui.activMatConc_lineEdit.text())
         self.carrierVol = float(self.ui.carrierVol_lineEdit.text())
         self.boomHeight = float(self.ui.boomHeight_lineEdit.text())
@@ -312,8 +314,8 @@ class MainWindow(QMainWindow):
         pestSetting.ui.pesticide_listView.setModel(self.modelList)
         #self.modelList = QStandardItemModel(self)
         #self.pestList = constants.chemical(self)#np.empty((0, 3))
-        for ichem in range(len(self.pestList[:,0])):
-            item = QStandardItem(str(self.pestList[ichem,0]))
+        for ichem in range(len(self.pestList[:,1])):
+            item = QStandardItem(str(self.pestList[ichem,1]))
             item.setCheckable(True)
             item.setCheckState(QtCore.Qt.Unchecked)
             self.modelList.appendRow(item)
@@ -340,7 +342,7 @@ class MainWindow(QMainWindow):
                 self.uiErreur()
             else:
                 self.pestList = np.append(self.pestList, np.array([[str(pestName), str(amName), float(amDensity)]]), axis=0)
-                self.ui.activeMatCarac_comboBox.addItem(pestName)
+                self.ui.activeMatCarac_comboBox.addItem(amName)
                 item = QStandardItem(str(pestName))
                 item.setCheckable(True)
                 item.setCheckState(QtCore.Qt.Unchecked)
@@ -366,14 +368,85 @@ class MainWindow(QMainWindow):
                     pestSetting.ui.pesticide_lineEdit.setText(self.pestList[row, 0])
                     pestSetting.ui.activeMatter_lineEdit.setText(self.pestList[row, 1])
                     pestSetting.ui.amDensity_lineEdit.setText(self.pestList[row, 2])
+        def toMain():
+            pestSetting.close()
 
         pestSetting.ui.saveBtn.clicked.connect(addPest)
         pestSetting.ui.deleteBtn.clicked.connect(removePest)
         pestSetting.ui.pesticide_listView.clicked.connect(displayPest)
+        pestSetting.ui.backBtn.clicked.connect(toMain)
 
         pestSetting.exec_()
 
+    def carSetting(self):
+        carSetting = QDialog()
+        carSetting.ui = ui_carriersetting.Ui_Alert()
+        carSetting.ui.setupUi(carSetting)
+        self.carmodelList = QStandardItemModel(self)
+        carSetting.ui.carrier_listView.setModel(self.carmodelList)
+        for icar in range(len(self.carList[:,0])):
+            item = QStandardItem(str(self.carList[icar,0]))
+            item.setCheckable(True)
+            item.setCheckState(QtCore.Qt.Unchecked)
+            self.carmodelList.appendRow(item)
 
+        def addCarrier():
+            def is_float(string):
+                try:
+                    float(string)
+                    return True
+                except ValueError:
+                    return False
+
+            carrierName = carSetting.ui.carrier_lineEdit.text()
+            cadensity = carSetting.ui.cadensity_lineEdit.text()
+            caFeatures = carSetting.ui.cafeatures_lineEdit.text()
+            value = 0
+            if (carrierName == ''): value += 0
+            else: value += 1
+            if (caFeatures == ''): value += 0
+            else: value += 1
+            if (is_float(cadensity) == False): value += 0
+            else: value += 1
+            if (value != 3):
+                self.uiErreur()
+            else:
+                self.carList = np.append(self.carList, np.array([[str(carrierName), float(cadensity), str(caFeatures)]]), axis=0)
+                self.ui.supportCarac_comboBox.addItem(carrierName)
+                item = QStandardItem(str(carrierName))
+                item.setCheckable(True)
+                item.setCheckState(QtCore.Qt.Unchecked)
+                self.carmodelList.appendRow(item)
+                carSetting.ui.carrier_listView.setModel(self.carmodelList)
+                carSetting.ui.carrier_lineEdit.clear()
+                carSetting.ui.cadensity_lineEdit.clear()
+                carSetting.ui.cafeatures_lineEdit.clear()
+        def removeCarrier():
+            carSetting.ui.carrier_lineEdit.clear()
+            carSetting.ui.cadensity_lineEdit.clear()
+            carSetting.ui.cafeatures_lineEdit.clear()
+            for row in range(self.carmodelList.rowCount()):
+                item = self.carmodelList.item(row)
+                if item and item.checkState() == QtCore.Qt.Checked:
+                    self.carmodelList.removeRow(row)
+                    self.carList = np.delete(self.carList, row, axis=0)
+                    self.ui.supportCarac_comboBox.removeItem(row)
+        def displayCarrier():
+            for row in range(self.carmodelList.rowCount()):
+                item = self.carmodelList.item(row)
+                if item and item.checkState() == QtCore.Qt.Checked:
+                    carSetting.ui.carrier_lineEdit.setText(self.carList[row, 0])
+                    carSetting.ui.cadensity_lineEdit.setText(self.carList[row, 1])
+                    carSetting.ui.cafeatures_lineEdit.setText(self.carList[row, 2])
+        def toMain():
+            carSetting.close()
+
+        carSetting.ui.saveBtn.clicked.connect(addCarrier)
+        carSetting.ui.deleteBtn.clicked.connect(removeCarrier)
+        carSetting.ui.carrier_listView.clicked.connect(displayCarrier)
+        carSetting.ui.backBtn.clicked.connect(toMain)
+
+        carSetting.exec_()
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
