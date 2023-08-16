@@ -86,31 +86,33 @@ class Ui_MainWindow(object):
 
         self.gridLayout_spray_mixture.addWidget(self.label_supportCarac, 2, 0, 1, 1)
 
-        self.label_activeMat = QLabel(self.groupBox_spray_mixture)
-        self.label_activeMat.setObjectName(u"label_activeMat")
-        self.label_activeMat.setAlignment(Qt.AlignRight|Qt.AlignTrailing|Qt.AlignVCenter)
+        self.label_pesticideUsed = QLabel(self.groupBox_spray_mixture)
+        self.label_pesticideUsed.setObjectName(u"label_pesticideUsed")
+        self.label_pesticideUsed.setAlignment(Qt.AlignRight | Qt.AlignTrailing | Qt.AlignVCenter)
 
-        self.gridLayout_spray_mixture.addWidget(self.label_activeMat, 0, 0, 1, 1)
+        self.gridLayout_spray_mixture.addWidget(self.label_pesticideUsed, 0, 0, 1, 1)
 
-        self.activeMatCarac_comboBox = QComboBox(self.groupBox_spray_mixture)
-        self.activeMatCarac_comboBox.addItem(u"Chlorothalonil")
-        self.activeMatCarac_comboBox.addItem(u"Difenoconazol")
-        self.activeMatCarac_comboBox.addItem(u"Dodin")
-        self.activeMatCarac_comboBox.addItem(u"Epoxiconazol")
-        self.activeMatCarac_comboBox.addItem(u"Fenpropimorph")
-        self.activeMatCarac_comboBox.addItem(u"Mancozeb")
-        self.activeMatCarac_comboBox.addItem(u"Propiconazol")
-        self.activeMatCarac_comboBox.addItem(u"Pyraclostrobin")
-        self.activeMatCarac_comboBox.addItem(u"Pyrimethanil")
-        self.activeMatCarac_comboBox.addItem(u"Spiroxamin")
-        self.activeMatCarac_comboBox.addItem(u"Thiram")
-        self.activeMatCarac_comboBox.addItem(u"Tebuconazol")
-        self.activeMatCarac_comboBox.addItem(u"Triadimefon")
-        self.activeMatCarac_comboBox.addItem(u"Tridemorph")
-        self.activeMatCarac_comboBox.addItem(u"Trifloxystrobin")
-        self.activeMatCarac_comboBox.setObjectName(u"activeMatCarac_comboBox")
+        self.pesticideUsed_comboBox = QComboBox(self.groupBox_spray_mixture)
+        self.pesticideUsed_comboBox.addItem(u"Banko 720 SC")
+        self.pesticideUsed_comboBox.addItem(u"Sico 250 EC")
+        self.pesticideUsed_comboBox.addItem(u"Syllit 400 SC")
+        self.pesticideUsed_comboBox.addItem(u"Opal 7.5 EC")
+        self.pesticideUsed_comboBox.addItem(u"Volley 88 OL")
+        self.pesticideUsed_comboBox.addItem(u"Ivory 80 WP")
+        self.pesticideUsed_comboBox.addItem(u"Tilt 250 EC")
+        self.pesticideUsed_comboBox.addItem(u"Cabrio EG")
+        self.pesticideUsed_comboBox.addItem(u"Siganex 600 SC")
+        self.pesticideUsed_comboBox.addItem(u"Impulse 075 EC")
+        self.pesticideUsed_comboBox.addItem(u"Thiram 75 WP")
+        self.pesticideUsed_comboBox.addItem(u"Folicur 250 EW-Junior")
+        self.pesticideUsed_comboBox.addItem(u"Trical 250 EC")
+        self.pesticideUsed_comboBox.addItem(u"Calixine 75 EC")
+        self.pesticideUsed_comboBox.addItem(u"Téga 075 EC")
+        self.pesticideUsed_comboBox.addItem(u"Callis 400 OL")
+        self.pesticideUsed_comboBox.addItem(u"Bankit 25 SC")
+        self.pesticideUsed_comboBox.setObjectName(u"pesticideUsed_comboBox")
 
-        self.gridLayout_spray_mixture.addWidget(self.activeMatCarac_comboBox, 0, 1, 1, 1)
+        self.gridLayout_spray_mixture.addWidget(self.pesticideUsed_comboBox, 0, 1, 1, 1)
 
         self.supportCarac_toolButton = QToolButton(self.groupBox_spray_mixture)
         self.supportCarac_toolButton.setObjectName(u"supportCarac_toolButton")
@@ -130,26 +132,24 @@ class Ui_MainWindow(object):
 
         self.gridLayout_spray_mixture.addWidget(self.supportCarac_comboBox, 2, 1, 1, 1)
 
-        self.label_activMatConc = QLabel(self.groupBox_spray_mixture)
-        self.label_activMatConc.setObjectName(u"label_activMatConc")
-        self.label_activMatConc.setAlignment(Qt.AlignRight|Qt.AlignTrailing|Qt.AlignVCenter)
+        self.label_pesticideVol = QLabel(self.groupBox_spray_mixture)
+        self.label_pesticideVol.setObjectName(u"label_pesticideVol")
+        self.label_pesticideVol.setAlignment(Qt.AlignRight | Qt.AlignTrailing | Qt.AlignVCenter)
 
-        self.gridLayout_spray_mixture.addWidget(self.label_activMatConc, 1, 0, 1, 1)
+        self.gridLayout_spray_mixture.addWidget(self.label_pesticideVol, 1, 0, 1, 1)
 
-        self.activMatConc_lineEdit = QLineEdit(self.groupBox_spray_mixture)
-        self.activMatConc_lineEdit.setObjectName(u"activMatConc_lineEdit")
+        self.pesticideVol_lineEdit = QLineEdit(self.groupBox_spray_mixture)
+        self.pesticideVol_lineEdit.setObjectName(u"pesticideVol_lineEdit")
 
-        self.gridLayout_spray_mixture.addWidget(self.activMatConc_lineEdit, 1, 1, 1, 1)
+        self.gridLayout_spray_mixture.addWidget(self.pesticideVol_lineEdit, 1, 1, 1, 1)
 
         self.label_CarrierVol = QLabel(self.groupBox_spray_mixture)
         self.label_CarrierVol.setObjectName(u"label_CarrierVol")
-        self.label_CarrierVol.setAlignment(Qt.AlignRight|Qt.AlignTrailing|Qt.AlignVCenter)
+        self.label_CarrierVol.setAlignment(Qt.AlignRight | Qt.AlignTrailing | Qt.AlignVCenter)
 
         self.gridLayout_spray_mixture.addWidget(self.label_CarrierVol, 3, 0, 1, 1)
 
-
         self.verticalLayout_15.addLayout(self.gridLayout_spray_mixture)
-
 
         self.verticalLayout_2.addWidget(self.groupBox_spray_mixture)
 
@@ -389,7 +389,7 @@ class Ui_MainWindow(object):
 
         self.retranslateUi(MainWindow)
 
-        self.activeMatCarac_comboBox.setCurrentIndex(-1)
+        self.pesticideUsed_comboBox.setCurrentIndex(-1)
         self.supportCarac_comboBox.setCurrentIndex(-1)
         self.dropletSize_comboBox.setCurrentIndex(-1)
         self.resultTabWidget_result.setCurrentIndex(0)
@@ -408,28 +408,32 @@ class Ui_MainWindow(object):
         self.groupBox_spray_mixture.setTitle(QCoreApplication.translate("MainWindow", u"Spray mixture", None))
         self.activeMatCarac_toolButton.setText(QCoreApplication.translate("MainWindow", u"...", None))
         self.label_supportCarac.setText(QCoreApplication.translate("MainWindow", u"Carrier material", None))
-        self.label_activeMat.setText(QCoreApplication.translate("MainWindow", u"Active matter", None))
+        self.label_pesticideUsed.setText(QCoreApplication.translate("MainWindow", u"Pesticide used", None))
 
         self.supportCarac_toolButton.setText(QCoreApplication.translate("MainWindow", u"...", None))
 
-        self.label_activMatConc.setText(QCoreApplication.translate("MainWindow", u"Active matter concentration (g/l)", None))
+        self.label_pesticideVol.setText(QCoreApplication.translate("MainWindow", u"Pesticide volume (l)", None))
         self.label_CarrierVol.setText(QCoreApplication.translate("MainWindow", u"Carrier volume (l)", None))
         self.groupBox_operational_data.setTitle(QCoreApplication.translate("MainWindow", u"Operational data", None))
-        self.label_residualConc.setText(QCoreApplication.translate("MainWindow", u"Residual concentration (\u00b5g/l)", None))
+        self.label_residualConc.setText(
+            QCoreApplication.translate("MainWindow", u"Residual concentration (\u00b5g/l)", None))
         self.label_boomHeight.setText(QCoreApplication.translate("MainWindow", u"Boom height (m)", None))
-        self.label_appRate.setText(QCoreApplication.translate("MainWindow", u"Application rate (%)", None))
+        self.label_appRate.setText(QCoreApplication.translate("MainWindow", u"Application rate (l/ha)", None))
         self.label_dropletSize.setText(QCoreApplication.translate("MainWindow", u"Spray particle size", None))
 
-        self.groupBox_meteorological_data.setTitle(QCoreApplication.translate("MainWindow", u"Meteorological data", None))
+        self.groupBox_meteorological_data.setTitle(
+            QCoreApplication.translate("MainWindow", u"Meteorological data", None))
         self.label_windSpeed.setText(QCoreApplication.translate("MainWindow", u"Wind speed (m/s)", None))
         self.label_temperature.setText(QCoreApplication.translate("MainWindow", u"Temperature (\u00b0C)", None))
         self.label_humidity.setText(QCoreApplication.translate("MainWindow", u"Relative humidity (%)", None))
         self.resultGrpBox.setTitle(QCoreApplication.translate("MainWindow", u"Outputs", None))
         self.label_timeStep.setText(QCoreApplication.translate("MainWindow", u"Times step (s)", None))
         self.calculBtn.setText(QCoreApplication.translate("MainWindow", u"Calculus", None))
-        self.resultTabWidget_result.setTabText(self.resultTabWidget_result.indexOf(self.tabPlot_result), QCoreApplication.translate("MainWindow", u"Plot", None))
-        self.resultTabWidget_result.setTabText(self.resultTabWidget_result.indexOf(self.tabData_result), QCoreApplication.translate("MainWindow", u"Datasheet", None))
-        self.downloadBtn.setText(QCoreApplication.translate("MainWindow", u"Download", None))
+        self.resultTabWidget_result.setTabText(self.resultTabWidget_result.indexOf(self.tabPlot_result),
+                                               QCoreApplication.translate("MainWindow", u"Plot", None))
+        self.resultTabWidget_result.setTabText(self.resultTabWidget_result.indexOf(self.tabData_result),
+                                               QCoreApplication.translate("MainWindow", u"Datasheet", None))
+        self.downloadBtn.setText(QCoreApplication.translate("MainWindow", u"Export", None))
         self.appversion.setText(QCoreApplication.translate("MainWindow", u"v 1.0.0   ", None))
         self.menuFichier.setTitle(QCoreApplication.translate("MainWindow", u"File", None))
         self.menuAide.setTitle(QCoreApplication.translate("MainWindow", u"Help", None))

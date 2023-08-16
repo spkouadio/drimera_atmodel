@@ -8,26 +8,12 @@ import numpy as np
 #import params
 
 class droplet_descr(object):
-    def __init__(self, humidity, temp, air_density, chem, chem_density, chem_mass, chem_dilrate, supp_volume,
-                 supp_density, rho_mix, vol_mix):
-        # Atmosphere properties
-        self.humidity = humidity  # params.humidity
-        self.temp = temp  # params.temp
-        self.air_density = air_density  # params.air_density
-
+    def __init__(self, mean_diam, chem_mass, rho_mix, vol_mix):
         # Chemical properties
-        self.chem = chem  # params.chem
-        self.chem_density = chem_density  # params.chem_density
         self.chem_mass = chem_mass  # params.chem_mass
-        self.chem_dilrate = chem_dilrate  # params.chem_dilrate
-
-        # Support properties
-        self.supp_volume = supp_volume  # params.supp_volume
-        self.supp_density = supp_density  # params.supp_density
-
-        # Mixture properties
         self.rho_mix = rho_mix  # params.rho_mix #Density of mixture
         self.vol_mix = vol_mix  # params.vol_mix #Volume of mixture
+        self.d_50 = mean_diam
 
     def init_velocity(self):
         r'''
@@ -48,14 +34,14 @@ class droplet_descr(object):
         '''
         n0 = 0.567
         sigma_g = 1.3
-        d_50 = 254.74  # micrometer µm
-        d_inf = 40
-        d_sup = 500
+        #d_50 = 254.74  # micrometer µm
+        d_inf = (1 - 0.8430) * self.d_50
+        d_sup = (1 + 0.9623) * self.d_50
         f_cumul = 0
         drop_table = np.empty((0, 4), float)
         for d in np.arange(d_inf, d_sup, sigma_g):
             f = (n0 / (math.sqrt(2 * math.pi) * d * math.log10(sigma_g))) \
-                * math.exp(-math.pow(math.log10(d / d_50), 2) / (2 * math.pow(math.log10(sigma_g), 2)))
+                * math.exp(-math.pow(math.log10(d / self.d_50), 2) / (2 * math.pow(math.log10(sigma_g), 2)))
             f_cumul = f_cumul + f
             n = f / (math.pow(d, 3) * (math.pi / 6))
             # drop_table = np.append(drop_table, np.array([[d, f*vol_mix, f_cumul, n]]), axis=0)

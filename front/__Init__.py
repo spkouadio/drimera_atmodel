@@ -52,6 +52,7 @@ class MainWindow(QMainWindow):
         self.ui.setupUi(self)
         self.pestList = constants.chemical(self)
         self.carList = constants.carrier(self)
+        self.dropClassList = constants.dropletClass(self)
         self.ui.calculBtn.clicked.connect(self.errorDetection)
         self.ui.downloadBtn.clicked.connect(self.exportData)
         self.ui.activeMatCarac_toolButton.clicked.connect(self.pestSetting)
@@ -88,18 +89,23 @@ class MainWindow(QMainWindow):
         # Get parameters
         #self.activeMatCarac = self.ui.activeMatCarac_comboBox.currentText()
         #self.supportCarac = self.ui.supportCarac_comboBox.currentText()
-        self.dropletSize = self.ui.dropletSize_comboBox.currentText()
 
-        chem = self.ui.activeMatCarac_comboBox.currentText()
-        chem_density = self.pestList[np.where(self.pestList[:, 1] == chem), 2].item()
-        self.activeMatCarac = float(chem_density)
+
+        pest = self.ui.pesticideUsed_comboBox.currentText()
+        chem_concent = self.pestList[np.where(self.pestList[:, 0] == pest), 2].item()
+        pest_density = self.pestList[np.where(self.pestList[:, 0] == pest), 3].item()
+        self.activeMatConcent = float(chem_concent)
+        self.pesticideDensity = float(pest_density)
+        self.pesticideVol = float(self.ui.pesticideVol_lineEdit.text())
         car = self.ui.supportCarac_comboBox.currentText()
         car_density = self.carList[np.where(self.carList[:, 0] == car), 1].item()
-        self.supportCarac = float(car_density)
-        self.activMatConc = float(self.ui.activMatConc_lineEdit.text())
+        self.carrierDensity = float(car_density)
         self.carrierVol = float(self.ui.carrierVol_lineEdit.text())
         self.boomHeight = float(self.ui.boomHeight_lineEdit.text())
         self.appRate = float(self.ui.appRate_lineEdit.text())
+        droplet_class = self.ui.dropletSize_comboBox.currentText()
+        droplet_size = self.dropClassList[np.where(self.dropClassList[:, 0] == droplet_class), 1].item()
+        self.dropletSize = float(droplet_size)
         self.residualConc = float(self.ui.residualConc_lineEdit.text())
         self.windSpeed = float(self.ui.windSpeed_lineEdit.text())
         self.temperature = float(self.ui.temperature_lineEdit.text())
@@ -107,19 +113,16 @@ class MainWindow(QMainWindow):
         self.timeStep = int(self.ui.timeStep_lineEdit.text())
 
         # Parameters initialisation
-        self.parameter = inputs_par(self.activeMatCarac, self.supportCarac, self.dropletSize, self.activMatConc,
-                                    self.carrierVol, self.boomHeight, self.appRate, self.residualConc, self.windSpeed,
-                                    self.temperature, self.humidity, self.timeStep)
+        self.parameter = inputs_par(self.activeMatConcent, self.pesticideDensity, self.pesticideVol, self.carrierDensity,
+                                    self.carrierVol, self.dropletSize, self.boomHeight, self.appRate, self.residualConc,
+                                    self.windSpeed, self.temperature, self.humidity, self.timeStep)
 
         # Air flow initialisation
         self.airflow = air_flow(self.parameter.air_sp_ratio, self.parameter.air_pressure,
                            self.parameter.air_density, self.parameter.air_velocity)
 
         # Droplet description initialisation
-        self.dropdescr = droplet_descr(self.parameter.humidity, self.parameter.temp, self.parameter.air_density,
-                                       self.parameter.chem, self.parameter.chem_density, self.parameter.chem_mass,
-                                       self.parameter.chem_dilrate, self.parameter.supp_volume, self.parameter.supp_density,
-                                       self.parameter.rho_mix, self.parameter.vol_mix)
+        self.dropdescr = droplet_descr(self.dropletSize, self.parameter.chem_mass, self.parameter.rho_mix, self.parameter.vol_mix)
 
         # Droplet dispersal initialisation
         self.dd = droplet_dispersal(self.airflow.v, self.airflow.u, self.parameter.rho_mix, self.parameter.air_density,
@@ -156,23 +159,24 @@ class MainWindow(QMainWindow):
         drift_pos = len(concent[self.dd.j,:])-1
         self.datasheet = np.empty((0, 2), float)  # m
         for xpos in range(drift_pos):
-            self.datasheet = np.append(self.datasheet, np.array([[xpos, round(concent[self.dd.j, xpos] * math.pow(10, 6), 3)]]), axis=0)
+            self.datasheet = np.append(self.datasheet, np.array([[xpos, round(concent[self.dd.j, xpos] * math.pow(10, 3), 3)]]), axis=0)
 
         self.model = QStandardItemModel(0, 2, self)
-        self.model.setHorizontalHeaderLabels(['position (m)', 'concentration (µg/l)'])
+        self.model.setHorizontalHeaderLabels(['position (m)', 'concentration (mg/l)'])
         for i in range(drift_pos):
             for j in range(2):
                 self.model.setItem(i, j, QStandardItem(str(self.datasheet[i,j])))
 
         self.ui.tableView.setModel(self.model)
+        self.ui.tableView.setMinimumWidth(100)
 
         # Plot concentration by position in a 2D graph
         plt.clf() # Reinitialize plot
-        plt.imshow(concent, cmap='hot', origin='lower', extent=[0, 100, 0, 100])
+        plt.imshow(concent * math.pow(10, 3), cmap='hot', origin='lower', extent=[0, 100, 0, 100])
         plt.colorbar()
         plt.xlabel('x')
         plt.ylabel('y')
-        plt.title(f'Concentration in g/l at time = {(self.parameter.time_nt / 60):.2f} min')
+        plt.title(f'Concentration in mg/l at time = {(self.parameter.time_nt / 60):.2f} min')
 
         def fig_to_pixmap(fig):
             # Save the figure to a buffer
@@ -240,11 +244,11 @@ class MainWindow(QMainWindow):
 
     def errorDetection(self):
 
-        activeMatCarac = self.ui.activeMatCarac_comboBox.currentText()
+        pesticideUsed = self.ui.pesticideUsed_comboBox.currentText()
         supportCarac = self.ui.supportCarac_comboBox.currentText()
         dropletSize = self.ui.dropletSize_comboBox.currentText()
 
-        activMatConc = self.ui.activMatConc_lineEdit.text()
+        pesticideVol = self.ui.pesticideVol_lineEdit.text()
         carrierVol = self.ui.carrierVol_lineEdit.text()
         boomHeight = self.ui.boomHeight_lineEdit.text()
         appRate = self.ui.appRate_lineEdit.text()
@@ -263,7 +267,7 @@ class MainWindow(QMainWindow):
 
         self.truevalue = 0
 
-        if (activeMatCarac == '') :
+        if (pesticideUsed == '') :
             self.truevalue += 0
         else : self.truevalue += 1
         if (supportCarac == '') :
@@ -273,7 +277,7 @@ class MainWindow(QMainWindow):
             self.truevalue += 0
         else : self.truevalue += 1
 
-        if (is_float(activMatConc)==False) :
+        if (is_float(pesticideVol)==False) :
             self.truevalue += 0
         else : self.truevalue += 1
         if (is_float(carrierVol) == False):
@@ -314,8 +318,8 @@ class MainWindow(QMainWindow):
         pestSetting.ui.pesticide_listView.setModel(self.modelList)
         #self.modelList = QStandardItemModel(self)
         #self.pestList = constants.chemical(self)#np.empty((0, 3))
-        for ichem in range(len(self.pestList[:,1])):
-            item = QStandardItem(str(self.pestList[ichem,1]))
+        for ichem in range(len(self.pestList[:,0])):
+            item = QStandardItem(str(self.pestList[ichem,0]))
             item.setCheckable(True)
             item.setCheckState(QtCore.Qt.Unchecked)
             self.modelList.appendRow(item)
@@ -328,46 +332,52 @@ class MainWindow(QMainWindow):
                 except ValueError:
                     return False
 
-            pestName = pestSetting.ui.pesticide_lineEdit.text()
+            pestName = pestSetting.ui.pesticideName_lineEdit.text()
             amName = pestSetting.ui.activeMatter_lineEdit.text()
-            amDensity = pestSetting.ui.amDensity_lineEdit.text()
+            amConcent = pestSetting.ui.amConcent_lineEdit.text()
+            pestDensity = pestSetting.ui.pestDensity_lineEdit.text()
             value = 0
             if (pestName == ''): value += 0
             else: value += 1
             if (amName == ''): value += 0
             else: value += 1
-            if (is_float(amDensity) == False): value += 0
+            if (is_float(amConcent) == False): value += 0
             else: value += 1
-            if (value != 3):
+            if (is_float(pestDensity) == False): value += 0
+            else: value += 1
+            if (value != 4):
                 self.uiErreur()
             else:
-                self.pestList = np.append(self.pestList, np.array([[str(pestName), str(amName), float(amDensity)]]), axis=0)
-                self.ui.activeMatCarac_comboBox.addItem(amName)
+                self.pestList = np.append(self.pestList, np.array([[str(pestName), str(amName), float(amConcent), float(pestDensity)]]), axis=0)
+                self.ui.pesticideUsed_comboBox.addItem(pestName)
                 item = QStandardItem(str(pestName))
                 item.setCheckable(True)
                 item.setCheckState(QtCore.Qt.Unchecked)
                 self.modelList.appendRow(item)
                 pestSetting.ui.pesticide_listView.setModel(self.modelList)
-                pestSetting.ui.pesticide_lineEdit.clear()
+                pestSetting.ui.pesticideName_lineEdit.clear()
                 pestSetting.ui.activeMatter_lineEdit.clear()
-                pestSetting.ui.amDensity_lineEdit.clear()
+                pestSetting.ui.pestDensity_lineEdit.clear()
+                pestSetting.ui.amConcent_lineEdit.clear()
         def removePest():
-            pestSetting.ui.pesticide_lineEdit.clear()
+            pestSetting.ui.pesticideName_lineEdit.clear()
             pestSetting.ui.activeMatter_lineEdit.clear()
-            pestSetting.ui.amDensity_lineEdit.clear()
+            pestSetting.ui.pestDensity_lineEdit.clear()
+            pestSetting.ui.amConcent_lineEdit.clear()
             for row in range(self.modelList.rowCount()):
                 item = self.modelList.item(row)
                 if item and item.checkState() == QtCore.Qt.Checked:
                     self.modelList.removeRow(row)
                     self.pestList = np.delete(self.pestList, row, axis=0)
-                    self.ui.activeMatCarac_comboBox.removeItem(row)
+                    self.ui.pesticideUsed_comboBox.removeItem(row)
         def displayPest():
             for row in range(self.modelList.rowCount()):
                 item = self.modelList.item(row)
                 if item and item.checkState() == QtCore.Qt.Checked:
-                    pestSetting.ui.pesticide_lineEdit.setText(self.pestList[row, 0])
+                    pestSetting.ui.pesticideName_lineEdit.setText(self.pestList[row, 0])
                     pestSetting.ui.activeMatter_lineEdit.setText(self.pestList[row, 1])
-                    pestSetting.ui.amDensity_lineEdit.setText(self.pestList[row, 2])
+                    pestSetting.ui.amConcent_lineEdit.setText(self.pestList[row, 2])
+                    pestSetting.ui.pestDensity_lineEdit.setText(self.pestList[row, 3])
         def toMain():
             pestSetting.close()
 

@@ -5,20 +5,21 @@ import math
 from script.const import constants #import const as cst
 
 class inputs_par(object):
-    def __init__(self, activeMatCarac, supportCarac, dropletSize, activMatConc, carrierVol, boomHeight, appRate,
+    def __init__(self, activeMatConcent, pesticideDensity, pestVol, carrierDens, carrierVol, dropletSize, boomHeight, appRate,
                  residualConc, windSpeed, temperature, humidity, timeStep):
 
         #self.chem = activeMatCarac
         #self.supportCarac = supportCarac
         self.dropletSize = dropletSize
 
-        self.chem = activeMatCarac
-        self.supportCarac = supportCarac
-        self.active_mat_conc = activMatConc
-        self.supp_volume = carrierVol
+        self.chem_concent = activeMatConcent
+        self.pesticide_density = pesticideDensity
+        self.carrier_density = carrierDens
+        self.pesticide_volume = pestVol
+        self.carrier_volume = carrierVol
         self.boomHeight = boomHeight
         self.application_rate = appRate
-        self.resConcentration = residualConc
+        self.resConcentration = residualConc #Pas encore utliser !!!
         self.air_velocity = windSpeed
         self.temp = temperature
         self.humidity = humidity
@@ -35,27 +36,15 @@ class inputs_par(object):
         # Times step dispersion
         #self.time_nt = self.time_nt  # 180
 
-        # Chemical properties
-        # chem = 'thiophanate-methyl'
-        #self.chem_density = self.cst.rho_chem(self.chem)
-        self.chem_density = self.chem
-
-        self.chem_mass = self.active_mat_conc * self.application_rate * math.pow(10, -4)  ##chemical mass (g/m2)
-        self.chem_dilrate = 0  ##chemical dilution rate (0%)
-
-        # Support properties
-        #supp_volume = self.supp_volume  # liters
-        #self.supp_density = self.cst.supp_dens(self.supportCarac)  # Water density
-        self.supp_density = self.supportCarac
-
         # Field properties
-        field_surface = 0.025  # ha
+        #field_surface = 0.025  # ha
 
-        if self.chem_dilrate != 0:
-            self.chem_mass = self.chem_dilrate * self.supp_volume * (1000 * self.chem_density)
+        # Mixture properties
+        ## Density of mixture
+        self.rho_mix = self.cst.rho_mix(self.pesticide_density, self.pesticide_volume, self.carrier_density, self.carrier_volume)
+        ## Volume of mixture
+        self.vol_mix = self.carrier_volume + self.pesticide_volume
 
-        ## Mixture properties
-        self.rho_mix = self.cst.rho_mix(self.chem_mass, self.chem_dilrate, self.chem_density, self.supp_volume,
-                              self.supp_density)  # Density of mixture
-        # Volume of mixture
-        self.vol_mix = self.supp_volume + (self.chem_mass / (1000 * self.chem_density))
+        # Chemical properties
+        ##chemical mass (g/m2)
+        self.chem_mass = ((self.chem_concent * self.pesticide_volume)/self.vol_mix) * self.application_rate * math.pow(10, -4)
