@@ -43,7 +43,11 @@ from PyQt5.QtCore import Qt
 from six import BytesIO
 from PySide2 import QtCore
 
-
+class AnotherWindow(QWidget):
+    def __init__(self):
+        super().__init__()
+        self.w = MainWindow()
+        self.w.show()
 
 class MainWindow(QMainWindow):
     def __init__(self):
@@ -57,10 +61,17 @@ class MainWindow(QMainWindow):
         self.ui.downloadBtn.clicked.connect(self.exportData)
         self.ui.activeMatCarac_toolButton.clicked.connect(self.pestSetting)
         self.ui.supportCarac_toolButton.clicked.connect(self.carSetting)
+        self.ui.actionQuitter.triggered.connect(self.closeApp)
+        self.ui.actionNouveau.triggered.connect(self.newApp)
 
         self.progress_bar = QtWidgets.QProgressBar()
         self.statusBar().addPermanentWidget(self.progress_bar)
         self.progress_bar.hide()
+
+    def closeApp(self):
+        self.close()
+    def newApp(self):
+        self.w = AnotherWindow()
 
     def startprocess(self):
         self.completed = 0
@@ -162,16 +173,18 @@ class MainWindow(QMainWindow):
             self.datasheet = np.append(self.datasheet, np.array([[xpos, round(concent[self.dd.j, xpos] * math.pow(10, 3), 3)]]), axis=0)
 
         self.model = QStandardItemModel(0, 2, self)
-        self.model.setHorizontalHeaderLabels(['position (m)', 'concentration (mg/l)'])
+        self.model.setHorizontalHeaderLabels(['position (m)', 'value (mg/l)'])
         for i in range(drift_pos):
             for j in range(2):
                 self.model.setItem(i, j, QStandardItem(str(self.datasheet[i,j])))
 
         self.ui.tableView.setModel(self.model)
-        self.ui.tableView.setMinimumWidth(100)
+        #self.ui.tableView.setMinimumWidth(100)
 
         # Plot concentration by position in a 2D graph
         plt.clf() # Reinitialize plot
+        plt.rcParams.update({'font.size': 8}) # Set fontsize
+        plt.gcf().set_size_inches(8.7, 3.7, forward=True) # Set imagesize
         plt.imshow(concent * math.pow(10, 3), cmap='hot', origin='lower', extent=[0, 100, 0, 100])
         plt.colorbar()
         plt.xlabel('x')
@@ -181,7 +194,7 @@ class MainWindow(QMainWindow):
         def fig_to_pixmap(fig):
             # Save the figure to a buffer
             buf = BytesIO()
-            fig.savefig(buf, format='png', bbox_inches='tight', pad_inches=0, transparent=True)
+            fig.savefig(buf, format='png', bbox_inches='tight', pad_inches=0.2, transparent=True)
             buf.seek(0)
 
             # Convert the buffer to QPixmap
@@ -238,7 +251,7 @@ class MainWindow(QMainWindow):
         if self.ui.resultTabWidget_result.currentIndex() == 0:
             plt.savefig(str(os.path.join(Path.home(), "Downloads", "drimera_dataPlot.png")))
         if self.ui.resultTabWidget_result.currentIndex() == 1:
-            dt_data = pd.DataFrame(np.append(np.array([['position (m)', 'concentration (µg/l)']]), self.datasheet, axis=0))
+            dt_data = pd.DataFrame(np.append(np.array([['position (m)', 'value (mg/l)']]), self.datasheet, axis=0))
             dt_data.to_csv(str(os.path.join(Path.home(), "Downloads", "drimera_dataSheet.csv")), index=False, header=False)
 
 

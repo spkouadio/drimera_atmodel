@@ -21,8 +21,9 @@ class Ui_MainWindow(object):
         if MainWindow.objectName():
             MainWindow.setObjectName(u"MainWindow")
         MainWindow.setWindowModality(Qt.NonModal)
-        MainWindow.resize(997, 726) #(797, 526)
-        MainWindow.setMinimumSize(QSize(997, 726))
+        MainWindow.resize(850, 630) # (997, 726)
+        MainWindow.setMinimumSize(QSize(850, 630)) #797, 526 QSize(997, 726).
+        MainWindow.setMaximumSize(QSize(850, 630))
         icon = QIcon()
         icon.addFile(u"Im/Ico_DRIMERA.png", QSize(), QIcon.Normal, QIcon.Off)
         MainWindow.setWindowIcon(icon)
@@ -35,7 +36,7 @@ class Ui_MainWindow(object):
         self.actionQuitter.setObjectName(u"actionQuitter")
         self.centralwidget = QWidget(MainWindow)
         self.centralwidget.setObjectName(u"centralwidget")
-        sizePolicy = QSizePolicy(QSizePolicy.Preferred, QSizePolicy.Minimum)
+        sizePolicy = QSizePolicy(QSizePolicy.Preferred, QSizePolicy.Preferred)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.centralwidget.sizePolicy().hasHeightForWidth())
@@ -324,7 +325,7 @@ class Ui_MainWindow(object):
         self.tabPlot_result.setSizeIncrement(QSize(0, 0))
         self.result_graphicsView = QGraphicsView(self.tabPlot_result)
         self.result_graphicsView.setObjectName(u"result_graphicsView")
-        self.result_graphicsView.setGeometry(QRect(1, 1, 551, 491)) #QRect(1, 1, 351, 291)
+        self.result_graphicsView.setGeometry(QRect(1, 1, 451, 390)) #351, 291 QRect(1, 1, 551, 491)
         icon3 = QIcon()
         icon3.addFile(u"Im/picture.png", QSize(), QIcon.Normal, QIcon.Off)
         self.resultTabWidget_result.addTab(self.tabPlot_result, icon3, "")
@@ -332,7 +333,7 @@ class Ui_MainWindow(object):
         self.tabData_result.setObjectName(u"tabData_result")
         self.tableView = QTableView(self.tabData_result)
         self.tableView.setObjectName(u"tableView")
-        self.tableView.setGeometry(QRect(1, 1, 551, 491))
+        self.tableView.setGeometry(QRect(1, 1, 451, 390)) #351, 291 QRect(1, 1, 551, 491)
         icon4 = QIcon()
         icon4.addFile(u"Im/graph.png", QSize(), QIcon.Normal, QIcon.Off)
         self.resultTabWidget_result.addTab(self.tabData_result, icon4, "")
@@ -383,7 +384,7 @@ class Ui_MainWindow(object):
 
         self.menubar.addAction(self.menuFichier.menuAction())
         self.menubar.addAction(self.menuAide.menuAction())
-        self.menuFichier.addAction(self.actionOuvrir)
+        #self.menuFichier.addAction(self.actionOuvrir)
         self.menuFichier.addAction(self.actionNouveau)
         self.menuFichier.addAction(self.actionQuitter)
 

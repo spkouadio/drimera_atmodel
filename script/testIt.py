@@ -1,20 +1,27 @@
 # -*- coding: utf-8 -*-
 
 ################################################################################
-## Form generated from reading UI file 'homeRJPsmw.ui'
+## Form generated from reading UI file 'homejJnZKP.ui'
 ##
-## Created by: Qt User Interface Compiler version 5.14.1
+## Created by: Qt User Interface Compiler version 6.4.3
 ##
 ## WARNING! All changes made in this file will be lost when recompiling UI file!
 ################################################################################
 
-from PySide2.QtCore import (QCoreApplication, QMetaObject, QObject, QPoint,
-    QRect, QSize, QUrl, Qt)
-from PySide2.QtGui import (QBrush, QColor, QConicalGradient, QCursor, QFont,
-    QFontDatabase, QIcon, QLinearGradient, QPalette, QPainter, QPixmap,
-    QRadialGradient)
-from PySide2.QtWidgets import *
-
+from PySide6.QtCore import (QCoreApplication, QDate, QDateTime, QLocale,
+    QMetaObject, QObject, QPoint, QRect,
+    QSize, QTime, QUrl, Qt)
+from PySide6.QtGui import (QAction, QBrush, QColor, QConicalGradient,
+    QCursor, QFont, QFontDatabase, QGradient,
+    QIcon, QImage, QKeySequence, QLinearGradient,
+    QPainter, QPalette, QPixmap, QRadialGradient,
+    QTransform)
+from PySide6.QtWidgets import (QApplication, QComboBox, QFrame, QGraphicsView,
+    QGridLayout, QGroupBox, QHBoxLayout, QHeaderView,
+    QLabel, QLayout, QLineEdit, QMainWindow,
+    QMenu, QMenuBar, QPushButton, QSizePolicy,
+    QStatusBar, QTabWidget, QTableView, QToolButton,
+    QVBoxLayout, QWidget)
 
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
@@ -71,19 +78,25 @@ class Ui_MainWindow(object):
         self.gridLayout_spray_mixture = QGridLayout()
         self.gridLayout_spray_mixture.setObjectName(u"gridLayout_spray_mixture")
         self.gridLayout_spray_mixture.setVerticalSpacing(6)
-        self.activeMatCarac_toolButton = QToolButton(self.groupBox_spray_mixture)
-        self.activeMatCarac_toolButton.setObjectName(u"activeMatCarac_toolButton")
+        self.carrierVol_lineEdit = QLineEdit(self.groupBox_spray_mixture)
+        self.carrierVol_lineEdit.setObjectName(u"carrierVol_lineEdit")
+
+        self.gridLayout_spray_mixture.addWidget(self.carrierVol_lineEdit, 3, 1, 1, 1)
+
+        self.supportCarac_comboBox = QComboBox(self.groupBox_spray_mixture)
+        self.supportCarac_comboBox.addItem(u"Water")
+        self.supportCarac_comboBox.addItem(u"Oil")
+        self.supportCarac_comboBox.setObjectName(u"supportCarac_comboBox")
+
+        self.gridLayout_spray_mixture.addWidget(self.supportCarac_comboBox, 2, 1, 1, 1)
+
+        self.supportCarac_toolButton = QToolButton(self.groupBox_spray_mixture)
+        self.supportCarac_toolButton.setObjectName(u"supportCarac_toolButton")
         icon1 = QIcon()
-        icon1.addFile(u"../Graphics/Icon/work-tools-crossed_icon-icons.com_68107.png", QSize(), QIcon.Normal, QIcon.Off)
-        self.activeMatCarac_toolButton.setIcon(icon1)
+        icon1.addFile(u"Im/tools.png", QSize(), QIcon.Normal, QIcon.Off)
+        self.supportCarac_toolButton.setIcon(icon1)
 
-        self.gridLayout_spray_mixture.addWidget(self.activeMatCarac_toolButton, 0, 2, 1, 1)
-
-        self.label_supportCarac = QLabel(self.groupBox_spray_mixture)
-        self.label_supportCarac.setObjectName(u"label_supportCarac")
-        self.label_supportCarac.setAlignment(Qt.AlignRight|Qt.AlignTrailing|Qt.AlignVCenter)
-
-        self.gridLayout_spray_mixture.addWidget(self.label_supportCarac, 2, 0, 1, 1)
+        self.gridLayout_spray_mixture.addWidget(self.supportCarac_toolButton, 2, 2, 1, 1)
 
         self.label_pesticideUsed = QLabel(self.groupBox_spray_mixture)
         self.label_pesticideUsed.setObjectName(u"label_pesticideUsed")
@@ -111,40 +124,34 @@ class Ui_MainWindow(object):
 
         self.gridLayout_spray_mixture.addWidget(self.pesticideUsed_comboBox, 0, 1, 1, 1)
 
-        self.supportCarac_toolButton = QToolButton(self.groupBox_spray_mixture)
-        self.supportCarac_toolButton.setObjectName(u"supportCarac_toolButton")
-        self.supportCarac_toolButton.setIcon(icon1)
-
-        self.gridLayout_spray_mixture.addWidget(self.supportCarac_toolButton, 2, 2, 1, 1)
-
-        self.carrierVol_lineEdit = QLineEdit(self.groupBox_spray_mixture)
-        self.carrierVol_lineEdit.setObjectName(u"carrierVol_lineEdit")
-
-        self.gridLayout_spray_mixture.addWidget(self.carrierVol_lineEdit, 3, 1, 1, 1)
-
-        self.supportCarac_comboBox = QComboBox(self.groupBox_spray_mixture)
-        self.supportCarac_comboBox.addItem(u"Water")
-        self.supportCarac_comboBox.addItem(u"Oil")
-        self.supportCarac_comboBox.setObjectName(u"supportCarac_comboBox")
-
-        self.gridLayout_spray_mixture.addWidget(self.supportCarac_comboBox, 2, 1, 1, 1)
-
         self.label_pesticideVol = QLabel(self.groupBox_spray_mixture)
         self.label_pesticideVol.setObjectName(u"label_pesticideVol")
         self.label_pesticideVol.setAlignment(Qt.AlignRight|Qt.AlignTrailing|Qt.AlignVCenter)
 
         self.gridLayout_spray_mixture.addWidget(self.label_pesticideVol, 1, 0, 1, 1)
 
-        self.pesticideVol_lineEdit = QLineEdit(self.groupBox_spray_mixture)
-        self.pesticideVol_lineEdit.setObjectName(u"pesticideVol_lineEdit")
+        self.label_supportCarac = QLabel(self.groupBox_spray_mixture)
+        self.label_supportCarac.setObjectName(u"label_supportCarac")
+        self.label_supportCarac.setAlignment(Qt.AlignRight|Qt.AlignTrailing|Qt.AlignVCenter)
 
-        self.gridLayout_spray_mixture.addWidget(self.pesticideVol_lineEdit, 1, 1, 1, 1)
+        self.gridLayout_spray_mixture.addWidget(self.label_supportCarac, 2, 0, 1, 1)
+
+        self.activeMatCarac_toolButton = QToolButton(self.groupBox_spray_mixture)
+        self.activeMatCarac_toolButton.setObjectName(u"activeMatCarac_toolButton")
+        self.activeMatCarac_toolButton.setIcon(icon1)
+
+        self.gridLayout_spray_mixture.addWidget(self.activeMatCarac_toolButton, 0, 2, 1, 1)
 
         self.label_CarrierVol = QLabel(self.groupBox_spray_mixture)
         self.label_CarrierVol.setObjectName(u"label_CarrierVol")
         self.label_CarrierVol.setAlignment(Qt.AlignRight|Qt.AlignTrailing|Qt.AlignVCenter)
 
         self.gridLayout_spray_mixture.addWidget(self.label_CarrierVol, 3, 0, 1, 1)
+
+        self.pesticideVol_lineEdit = QLineEdit(self.groupBox_spray_mixture)
+        self.pesticideVol_lineEdit.setObjectName(u"pesticideVol_lineEdit")
+
+        self.gridLayout_spray_mixture.addWidget(self.pesticideVol_lineEdit, 1, 1, 1, 1)
 
 
         self.verticalLayout_15.addLayout(self.gridLayout_spray_mixture)
@@ -279,16 +286,16 @@ class Ui_MainWindow(object):
         self.verticalLayout_8.setObjectName(u"verticalLayout_8")
         self.gridLayout_calculus = QGridLayout()
         self.gridLayout_calculus.setObjectName(u"gridLayout_calculus")
-        self.timeStep_lineEdit = QLineEdit(self.resultGrpBox)
-        self.timeStep_lineEdit.setObjectName(u"timeStep_lineEdit")
-
-        self.gridLayout_calculus.addWidget(self.timeStep_lineEdit, 0, 1, 1, 1)
-
         self.label_timeStep = QLabel(self.resultGrpBox)
         self.label_timeStep.setObjectName(u"label_timeStep")
         self.label_timeStep.setAlignment(Qt.AlignRight|Qt.AlignTrailing|Qt.AlignVCenter)
 
         self.gridLayout_calculus.addWidget(self.label_timeStep, 0, 0, 1, 1)
+
+        self.timeStep_lineEdit = QLineEdit(self.resultGrpBox)
+        self.timeStep_lineEdit.setObjectName(u"timeStep_lineEdit")
+
+        self.gridLayout_calculus.addWidget(self.timeStep_lineEdit, 0, 1, 1, 1)
 
         self.calculBtn = QPushButton(self.resultGrpBox)
         self.calculBtn.setObjectName(u"calculBtn")
@@ -310,6 +317,8 @@ class Ui_MainWindow(object):
 
         self.resultTabWidget_result = QTabWidget(self.resultGrpBox)
         self.resultTabWidget_result.setObjectName(u"resultTabWidget_result")
+        self.resultTabWidget_result.setEnabled(True)
+        self.resultTabWidget_result.setMaximumSize(QSize(850, 630))
         self.resultTabWidget_result.setTabShape(QTabWidget.Rounded)
         self.resultTabWidget_result.setIconSize(QSize(13, 20))
         self.resultTabWidget_result.setElideMode(Qt.ElideRight)
@@ -323,14 +332,20 @@ class Ui_MainWindow(object):
         self.result_graphicsView = QGraphicsView(self.tabPlot_result)
         self.result_graphicsView.setObjectName(u"result_graphicsView")
         self.result_graphicsView.setGeometry(QRect(-5, -9, 551, 491))
+        self.result_graphicsView.setMaximumSize(QSize(850, 630))
         icon3 = QIcon()
         icon3.addFile(u"Im/picture.png", QSize(), QIcon.Normal, QIcon.Off)
         self.resultTabWidget_result.addTab(self.tabPlot_result, icon3, "")
         self.tabData_result = QWidget()
         self.tabData_result.setObjectName(u"tabData_result")
+        sizePolicy3 = QSizePolicy(QSizePolicy.Fixed, QSizePolicy.Fixed)
+        sizePolicy3.setHorizontalStretch(0)
+        sizePolicy3.setVerticalStretch(0)
+        sizePolicy3.setHeightForWidth(self.tabData_result.sizePolicy().hasHeightForWidth())
+        self.tabData_result.setSizePolicy(sizePolicy3)
         self.tableView = QTableView(self.tabData_result)
         self.tableView.setObjectName(u"tableView")
-        self.tableView.setGeometry(QRect(-5, -9, 551, 491))
+        self.tableView.setGeometry(QRect(0, 0, 551, 471))
         icon4 = QIcon()
         icon4.addFile(u"Im/graph.png", QSize(), QIcon.Normal, QIcon.Off)
         self.resultTabWidget_result.addTab(self.tabData_result, icon4, "")
@@ -387,10 +402,10 @@ class Ui_MainWindow(object):
 
         self.retranslateUi(MainWindow)
 
-        self.pesticideUsed_comboBox.setCurrentIndex(-1)
         self.supportCarac_comboBox.setCurrentIndex(-1)
+        self.pesticideUsed_comboBox.setCurrentIndex(-1)
         self.dropletSize_comboBox.setCurrentIndex(-1)
-        self.resultTabWidget_result.setCurrentIndex(0)
+        self.resultTabWidget_result.setCurrentIndex(1)
 
 
         QMetaObject.connectSlotsByName(MainWindow)
@@ -404,13 +419,13 @@ class Ui_MainWindow(object):
         self.actionQuitter.setIconText(QCoreApplication.translate("MainWindow", u"Quitter", None))
         self.inputGrpBox.setTitle(QCoreApplication.translate("MainWindow", u"Inputs", None))
         self.groupBox_spray_mixture.setTitle(QCoreApplication.translate("MainWindow", u"Spray mixture", None))
-        self.activeMatCarac_toolButton.setText(QCoreApplication.translate("MainWindow", u"...", None))
-        self.label_supportCarac.setText(QCoreApplication.translate("MainWindow", u"Carrier material", None))
-        self.label_pesticideUsed.setText(QCoreApplication.translate("MainWindow", u"Pesticide used", None))
 
         self.supportCarac_toolButton.setText(QCoreApplication.translate("MainWindow", u"...", None))
+        self.label_pesticideUsed.setText(QCoreApplication.translate("MainWindow", u"Pesticide used", None))
 
-        self.label_pesticideVol.setText(QCoreApplication.translate("MainWindow", u"Pesticide volume (ml)", None))
+        self.label_pesticideVol.setText(QCoreApplication.translate("MainWindow", u"Pesticide volume (l)", None))
+        self.label_supportCarac.setText(QCoreApplication.translate("MainWindow", u"Carrier material", None))
+        self.activeMatCarac_toolButton.setText(QCoreApplication.translate("MainWindow", u"...", None))
         self.label_CarrierVol.setText(QCoreApplication.translate("MainWindow", u"Carrier volume (l)", None))
         self.groupBox_operational_data.setTitle(QCoreApplication.translate("MainWindow", u"Operational data", None))
         self.label_residualConc.setText(QCoreApplication.translate("MainWindow", u"Residual concentration (\u00b5g/l)", None))
