@@ -19,7 +19,7 @@ class inputs_par(object):
         self.carrier_volume = carrierVol
         self.boomHeight = boomHeight
         self.application_rate = appRate
-        self.resConcentration = residualConc #Pas encore utliser !!!
+        self.resConcentration = residualConc
         self.air_velocity = windSpeed
         self.temp = temperature
         self.humidity = humidity

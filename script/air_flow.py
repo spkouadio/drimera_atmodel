@@ -1,6 +1,6 @@
 r'''
 Air_flow module are based on the Eulerian approach solving the Navier-Stokes equations.
-Velocity field is initialized the with a constant free stream velocity u_inf and then solves the Euler equations
+Velocity field is initialized with a constant free stream velocity u_inf and then solves the Euler equations
 using a finite difference method to calculate the velocity field at each point on the grid.
 '''
 

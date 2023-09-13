@@ -155,6 +155,7 @@ class MainWindow(QMainWindow):
         # Plot concentration profile for a specific time
         # Plot concentration profile by diameter
         concent = np.zeros((101, 101))
+
         for k in range(n_diam):
             i = round(self.dd.x[k, -1])
             j = self.dd.j
@@ -163,6 +164,8 @@ class MainWindow(QMainWindow):
             c_0 = drop_dist[k, 1]  # *math.pow(10,6) µg/l
             # concent = cc.conc_cal(u_air, alpha_buoy, c_0, i, j)
             concent = np.add(concent, self.concalcul.conc_cal(u_air, alpha_buoy, c_0, i, j))
+        if self.parameter.resConcentration != 0 :
+            concent = concent + self.parameter.resConcentration * math.pow(10, -6)
 
         self.runprocess()
 
