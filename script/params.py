@@ -6,7 +6,7 @@ from script.const import constants #import const as cst
 
 class inputs_par(object):
     def __init__(self, activeMatConcent, pesticideDensity, pestVol, carrierDens, carrierVol, dropletSize, boomHeight, appRate,
-                 residualConc, windSpeed, temperature, humidity, timeStep):
+                 residualConc, windSpeed, ejectSpeed, temperature, humidity, timeStep, x0, y0):
 
         #self.chem = activeMatCarac
         #self.supportCarac = supportCarac
@@ -21,9 +21,12 @@ class inputs_par(object):
         self.application_rate = appRate
         self.resConcentration = residualConc
         self.air_velocity = windSpeed
+        self.ejectionSpeed = ejectSpeed
         self.temp = temperature
         self.humidity = humidity
         self.time_nt = timeStep
+        self.x_0 = x0
+        self.y_0 = y0
 
         self.cst = constants() #constants new instance
 

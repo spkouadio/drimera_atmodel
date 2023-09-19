@@ -118,15 +118,18 @@ class MainWindow(QMainWindow):
         droplet_size = self.dropClassList[np.where(self.dropClassList[:, 0] == droplet_class), 1].item()
         self.dropletSize = float(droplet_size)
         self.residualConc = float(self.ui.residualConc_lineEdit.text())
+        self.ejectSpeed = float(self.ui.ejectionSpeed_lineEdit.text())
         self.windSpeed = float(self.ui.windSpeed_lineEdit.text())
         self.temperature = float(self.ui.temperature_lineEdit.text())
         self.humidity = float(self.ui.humidity_lineEdit.text())
+        self.x0 = int(self.ui.x0_lineEdit.text())
+        self.y0 = int(self.ui.y0_lineEdit.text())
         self.timeStep = int(self.ui.timeStep_lineEdit.text())
 
         # Parameters initialisation
         self.parameter = inputs_par(self.activeMatConcent, self.pesticideDensity, self.pesticideVol, self.carrierDensity,
                                     self.carrierVol, self.dropletSize, self.boomHeight, self.appRate, self.residualConc,
-                                    self.windSpeed, self.temperature, self.humidity, self.timeStep)
+                                    self.windSpeed, self.ejectSpeed, self.temperature, self.humidity, self.timeStep, self.x0, self.y0)
 
         # Air flow initialisation
         self.airflow = air_flow(self.parameter.air_sp_ratio, self.parameter.air_pressure,
@@ -138,7 +141,7 @@ class MainWindow(QMainWindow):
         # Droplet dispersal initialisation
         self.dd = droplet_dispersal(self.airflow.v, self.airflow.u, self.parameter.rho_mix, self.parameter.air_density,
                                     self.parameter.boomHeight, self.parameter.air_kviscosity, self.dropdescr.drop_distrib(),
-                                    self.dropdescr.init_velocity())
+                                    self.ejectSpeed, self.x0, self.y0) #self.dropdescr.init_velocity()
 
         # Concentration calculus initialisation
         self.concalcul = concent_calc(self.parameter.time_nt)
@@ -155,12 +158,14 @@ class MainWindow(QMainWindow):
         # Plot concentration profile for a specific time
         # Plot concentration profile by diameter
         concent = np.zeros((101, 101))
+        self.dd.i = self.x0
+        self.dd.j = self.y0
 
         for k in range(n_diam):
             i = round(self.dd.x[k, -1])
             j = self.dd.j
             u_air = self.dd.u_air
-            alpha_buoy = self.dd.C_d(drop_dist[k, 0], self.dd.u_air[i, i], 0.0)
+            alpha_buoy = self.dd.C_d(drop_dist[k, 0], self.dd.u_air[i, i], self.ejectSpeed)
             c_0 = drop_dist[k, 1]  # *math.pow(10,6) µg/l
             # concent = cc.conc_cal(u_air, alpha_buoy, c_0, i, j)
             concent = np.add(concent, self.concalcul.conc_cal(u_air, alpha_buoy, c_0, i, j))
@@ -269,9 +274,12 @@ class MainWindow(QMainWindow):
         boomHeight = self.ui.boomHeight_lineEdit.text()
         appRate = self.ui.appRate_lineEdit.text()
         residualConc = self.ui.residualConc_lineEdit.text()
+        ejectSpeed = self.ui.ejectionSpeed_lineEdit.text()
         windSpeed = self.ui.windSpeed_lineEdit.text()
         temperature = self.ui.temperature_lineEdit.text()
         humidity = self.ui.humidity_lineEdit.text()
+        x0 = self.ui.x0_lineEdit.text()
+        y0 = self.ui.y0_lineEdit.text()
         timeStep = self.ui.timeStep_lineEdit.text()
 
         def is_float(string):
@@ -311,6 +319,9 @@ class MainWindow(QMainWindow):
         if (is_float(windSpeed) == False):
             self.truevalue += 0
         else : self.truevalue += 1
+        if (is_float(ejectSpeed) == False):
+            self.truevalue += 0
+        else : self.truevalue += 1
         if (is_float(temperature) == False):
             self.truevalue += 0
         else : self.truevalue += 1
@@ -320,8 +331,14 @@ class MainWindow(QMainWindow):
         if (is_float(timeStep) == False):
             self.truevalue += 0
         else : self.truevalue += 1
+        if (is_float(x0) == False):
+            self.truevalue += 0
+        else : self.truevalue += 1
+        if (is_float(y0) == False):
+            self.truevalue += 0
+        else : self.truevalue += 1
 
-        if (self.truevalue == 12):
+        if (self.truevalue == 15):
             self.calResult()
         else : self.uiErreur()
 
