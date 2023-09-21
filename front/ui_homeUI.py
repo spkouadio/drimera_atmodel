@@ -431,7 +431,15 @@ class Ui_MainWindow(object):
         self.zposition_horizontalSlider.setSliderPosition(9)
         self.zposition_horizontalSlider.setOrientation(Qt.Horizontal)
 
-        self.gridLayout_zposition.addWidget(self.zposition_horizontalSlider, 0, 1, 1, 1)
+        self.gridLayout_zposition.addWidget(self.zposition_horizontalSlider, 0, 2, 1, 1)
+
+        self.zposition_lineEdit = QLineEdit(self.resultGrpBox)
+        self.zposition_lineEdit.setObjectName(u"zposition_lineEdit")
+        sizePolicy5.setHeightForWidth(self.zposition_lineEdit.sizePolicy().hasHeightForWidth())
+        self.zposition_lineEdit.setSizePolicy(sizePolicy5)
+        self.zposition_lineEdit.setMaximumSize(QSize(30, 16777215))
+
+        self.gridLayout_zposition.addWidget(self.zposition_lineEdit, 0, 1, 1, 1)
 
 
         self.verticalLayout_8.addLayout(self.gridLayout_zposition)

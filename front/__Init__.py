@@ -141,7 +141,7 @@ class MainWindow(QMainWindow):
         # Droplet dispersal initialisation
         self.dd = droplet_dispersal(self.airflow.v, self.airflow.u, self.parameter.rho_mix, self.parameter.air_density,
                                     self.parameter.boomHeight, self.parameter.air_kviscosity, self.dropdescr.drop_distrib(),
-                                    self.ejectSpeed, self.x0, self.y0) #self.dropdescr.init_velocity()
+                                    self.ejectSpeed, self.x0, self.y0, self.z_pos) #self.dropdescr.init_velocity()
 
         # Concentration calculus initialisation
         self.concalcul = concent_calc(self.parameter.time_nt)
@@ -281,6 +281,18 @@ class MainWindow(QMainWindow):
         x0 = self.ui.x0_lineEdit.text()
         y0 = self.ui.y0_lineEdit.text()
         timeStep = self.ui.timeStep_lineEdit.text()
+
+        #Initialization of altitude
+        self.ui.zposition_horizontalSlider.setMaximum(int(boomHeight))
+        self.ui.zposition_horizontalSlider.setValue(int(boomHeight))
+        def sliderChanged():
+            self.ui.zposition_lineEdit.setText(str(self.ui.zposition_horizontalSlider.value()))
+
+        self.ui.zposition_horizontalSlider.valueChanged.connect(sliderChanged())
+
+        self.ui.zposition_horizontalSlider.setValue(int(self.ui.zposition_lineEdit.text()))
+        #z_pos = self.ui.zposition_lineEdit.text()
+
 
         def is_float(string):
             try:

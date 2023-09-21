@@ -19,7 +19,7 @@ class droplet_dispersal(object):
     dt = 1  # dt is the amount of time each timestep covers (delta t)
     # c = 1
 
-    def __init__(self, v_air, u_air, rho_mix, rho_a, alt_spray, nu_a, drop_dist, init_velocity, x0, y0):
+    def __init__(self, v_air, u_air, rho_mix, rho_a, alt_spray, nu_a, drop_dist, init_velocity, x0, y0, z_pos):
         self.v_air = v_air
         self.u_air = u_air
         self.rho_mix = rho_mix
@@ -28,6 +28,7 @@ class droplet_dispersal(object):
         self.nu_a = nu_a
         self.drop_dist = drop_dist
         self.init_velocity = init_velocity
+
         # air flow initialisation
         # v_air = air_flow.v
         # u_air = air_flow.u
@@ -56,6 +57,7 @@ class droplet_dispersal(object):
         self.i = x0
         self.j = y0
         self.x[:, 0] = self.i
+        self.z_position = z_pos
 
     # Buyoency coefficient
     def C_d(self, diam, air_vel, drop_vel):
