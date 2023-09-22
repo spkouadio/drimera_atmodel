@@ -64,6 +64,8 @@ class MainWindow(QMainWindow):
         self.ui.actionQuitter.triggered.connect(self.closeApp)
         self.ui.actionNouveau.triggered.connect(self.newApp)
 
+        self.ui.zposition_horizontalSlider.valueChanged.connect(self.sliderchanged)
+
         self.progress_bar = QtWidgets.QProgressBar()
         self.statusBar().addPermanentWidget(self.progress_bar)
         self.progress_bar.hide()
@@ -93,6 +95,11 @@ class MainWindow(QMainWindow):
             if self.progress_bar.value() == 100:
                 self.statusBar().showMessage("Process completed !", 0)
                 self.progress_bar.hide()
+    def sliderchanged(self):
+        self.ui.zposition_lineEdit.setText(str(self.ui.zposition_horizontalSlider.value()))
+
+    def positionChanged(self):
+        self.ui.zposition_horizontalSlider.setValue(int(self.ui.zposition_lineEdit.text()))
 
     def calResult(self):
 
@@ -125,6 +132,13 @@ class MainWindow(QMainWindow):
         self.x0 = int(self.ui.x0_lineEdit.text())
         self.y0 = int(self.ui.y0_lineEdit.text())
         self.timeStep = int(self.ui.timeStep_lineEdit.text())
+
+        # Altitude initialisation
+        self.ui.zposition_horizontalSlider.setMaximum(int(self.boomHeight))
+        self.ui.zposition_horizontalSlider.setValue(int(self.boomHeight))
+        self.ui.zposition_lineEdit.textChanged.connect(self.positionChanged)
+
+        self.z_pos = self.ui.zposition_horizontalSlider.value()
 
         # Parameters initialisation
         self.parameter = inputs_par(self.activeMatConcent, self.pesticideDensity, self.pesticideVol, self.carrierDensity,
@@ -247,7 +261,6 @@ class MainWindow(QMainWindow):
         #error.ui.buttonBox.accepted.connect(self.accepter)
         error.exec_()
 
-
     def accepter(self):
         self.ui.atmosBtn.setDefault(False)
         self.ui.operaBtn.setDefault(False)
@@ -281,18 +294,6 @@ class MainWindow(QMainWindow):
         x0 = self.ui.x0_lineEdit.text()
         y0 = self.ui.y0_lineEdit.text()
         timeStep = self.ui.timeStep_lineEdit.text()
-
-        #Initialization of altitude
-        self.ui.zposition_horizontalSlider.setMaximum(int(boomHeight))
-        self.ui.zposition_horizontalSlider.setValue(int(boomHeight))
-        def sliderChanged():
-            self.ui.zposition_lineEdit.setText(str(self.ui.zposition_horizontalSlider.value()))
-
-        self.ui.zposition_horizontalSlider.valueChanged.connect(sliderChanged())
-
-        self.ui.zposition_horizontalSlider.setValue(int(self.ui.zposition_lineEdit.text()))
-        #z_pos = self.ui.zposition_lineEdit.text()
-
 
         def is_float(string):
             try:
