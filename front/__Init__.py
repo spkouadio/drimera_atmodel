@@ -153,7 +153,7 @@ class MainWindow(QMainWindow):
         self.dropdescr = droplet_descr(self.dropletSize, self.parameter.chem_mass, self.parameter.rho_mix, self.parameter.vol_mix)
 
         # Droplet dispersal initialisation
-        self.dd = droplet_dispersal(self.airflow.v, self.airflow.u, self.parameter.rho_mix, self.parameter.air_density,
+        self.dd = droplet_dispersal(self.timeStep, self.airflow.v, self.airflow.u, self.parameter.rho_mix, self.parameter.air_density,
                                     self.parameter.boomHeight, self.parameter.air_kviscosity, self.dropdescr.drop_distrib(),
                                     self.ejectSpeed, self.x0, self.y0, self.z_pos) #self.dropdescr.init_velocity()
 
@@ -175,30 +175,54 @@ class MainWindow(QMainWindow):
         self.dd.i = self.x0
         self.dd.j = self.y0
 
+        sed_velo = self.dd.sed_velocity()
+        #z_pos = self.dd.z[:,:]
+        print(sed_velo)
+
         for k in range(n_diam):
-            i = round(self.dd.x[k, -1])
-            j = self.dd.j
-            u_air = self.dd.u_air
-            alpha_buoy = self.dd.C_d(drop_dist[k, 0], self.dd.u_air[i, i], self.ejectSpeed)
-            c_0 = drop_dist[k, 1]  # *math.pow(10,6) µg/l
-            # concent = cc.conc_cal(u_air, alpha_buoy, c_0, i, j)
-            concent = np.add(concent, self.concalcul.conc_cal(u_air, alpha_buoy, c_0, i, j))
+           i = round(self.dd.x[k, -1]) + self.x0
+           j = self.dd.j
+           u_air = self.dd.u_air
+           alpha_buoy = self.dd.C_d(drop_dist[k, 0], self.dd.u_air[i, j], self.ejectSpeed)
+           c_0 = drop_dist[k, 1]  # *math.pow(10,6) µg/l
+           # concent = cc.conc_cal(u_air, alpha_buoy, c_0, i, j)
+           concent = np.add(concent, self.concalcul.conc_cal(u_air, alpha_buoy, c_0, i, j))
         if self.parameter.resConcentration != 0 :
-            concent = concent + self.parameter.resConcentration * math.pow(10, -6)
+           concent = concent + self.parameter.resConcentration * math.pow(10, -6)
+
+
+        #for k in range(n_diam):
+        #    i = round(self.dd.x[k, -1]) + self.x0
+        #    j = self.dd.j
+        #    u_air = self.dd.u_air
+        #    alpha_buoy = self.dd.C_d(drop_dist[k, 0], self.dd.u_air[i, j], self.ejectSpeed)
+        #    c_0 = drop_dist[k, 1]  # *math.pow(10,6) µg/l
+        #    # concent = cc.conc_cal(u_air, alpha_buoy, c_0, i, j)
+        #    concent = np.add(concent, self.concalcul.conc_cal(u_air, alpha_buoy, c_0, i, j))
+        #if self.parameter.resConcentration != 0 :
+        #    concent = concent + self.parameter.resConcentration * math.pow(10, -6)
 
         self.runprocess()
 
         # Plot concentration by position in a tableView
         drift_pos = len(concent[self.dd.j,:])-1
-        self.datasheet = np.empty((0, 2), float)  # m
-        for xpos in range(drift_pos):
-            self.datasheet = np.append(self.datasheet, np.array([[xpos, round(concent[self.dd.j, xpos] * math.pow(10, 3), 3)]]), axis=0)
+        #self.datasheet = np.empty((0, 2), float)  # m
+        #for xpos in range(drift_pos):
+        #    self.datasheet = np.append(self.datasheet, np.array([[xpos, round(concent[self.dd.j, xpos] * math.pow(10, 3), 3)]]), axis=0)
 
-        self.model = QStandardItemModel(0, 2, self)
-        self.model.setHorizontalHeaderLabels(['position (m)', 'value (mg/l)'])
+        #self.model = QStandardItemModel(0, 2, self)
+        #self.model.setHorizontalHeaderLabels(['position (m)', 'value (mg/l)'])
+        #for i in range(drift_pos):
+        #    for j in range(2):
+        #        self.model.setItem(i, j, QStandardItem(str(self.datasheet[i,j])))
+
+        len_dim = len(concent[0,:])-1
+        self.model = QStandardItemModel(0, len_dim, self)
+        self.datasheet = np.round(concent * math.pow(10, 3), 6)
+        #self.model.setHorizontalHeaderLabels(['position (m)', 'value (mg/l)'])
         for i in range(drift_pos):
-            for j in range(2):
-                self.model.setItem(i, j, QStandardItem(str(self.datasheet[i,j])))
+            for j in range(len_dim):
+                self.model.setItem(i, j, QStandardItem(str(self.datasheet[i, j])))
 
         self.ui.tableView.setModel(self.model)
         #self.ui.tableView.setMinimumWidth(100)
@@ -211,7 +235,7 @@ class MainWindow(QMainWindow):
         plt.colorbar()
         plt.xlabel('x')
         plt.ylabel('y')
-        plt.title(f'Concentration in mg/l at time = {(self.parameter.time_nt / 60):.2f} min')
+        plt.title(f'Concentration in mg/l at time = {(self.parameter.time_nt / 60):.2f} min at altitude Z = {(self.z_pos):.2f} m')
 
         def fig_to_pixmap(fig):
             # Save the figure to a buffer
@@ -272,7 +296,8 @@ class MainWindow(QMainWindow):
         if self.ui.resultTabWidget_result.currentIndex() == 0:
             plt.savefig(str(os.path.join(Path.home(), "Downloads", "drimera_dataPlot.png")))
         if self.ui.resultTabWidget_result.currentIndex() == 1:
-            dt_data = pd.DataFrame(np.append(np.array([['position (m)', 'value (mg/l)']]), self.datasheet, axis=0))
+            #dt_data = pd.DataFrame(np.append(np.array([['position (m)', 'value (mg/l)']]), self.datasheet, axis=0))
+            dt_data = pd.DataFrame(self.datasheet)
             dt_data.to_csv(str(os.path.join(Path.home(), "Downloads", "drimera_dataSheet.csv")), index=False, header=False)
 
 

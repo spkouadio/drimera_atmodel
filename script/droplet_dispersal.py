@@ -15,11 +15,12 @@ from script.const import constants
 class droplet_dispersal(object):
     # nx = 41
     # dx = 2 / (nx - 1)
-    nt = 3601  # 1501    #nt is the number of timesteps
+    #nt = 3601  # 1501    #nt is the number of timesteps
     dt = 1  # dt is the amount of time each timestep covers (delta t)
     # c = 1
 
-    def __init__(self, v_air, u_air, rho_mix, rho_a, alt_spray, nu_a, drop_dist, init_velocity, x0, y0, z_pos):
+    def __init__(self, timestep, v_air, u_air, rho_mix, rho_a, alt_spray, nu_a, drop_dist, init_velocity, x0, y0, z_pos):
+        self.nt = timestep+1
         self.v_air = v_air
         self.u_air = u_air
         self.rho_mix = rho_mix
@@ -45,13 +46,14 @@ class droplet_dispersal(object):
         x_cord = len(self.v_air)
         y_cord = len(self.v_air[0])
 
-        n_diam = len(self.drop_dist[:, 0])
-        v = np.zeros((self.nt))
-        self.x = np.zeros((n_diam, self.nt))
+        self.n_diam = len(self.drop_dist[:, 0])
+        self.v = np.zeros((self.nt))
+        self.x = np.zeros((self.n_diam, self.nt))
+        #self.x = np.zeros((1+z_pos*10, n_diam, self.nt))
         # x_tab = np.empty((0, 1), float)
-        self.z = np.zeros((n_diam, self.nt))  # for altitude
+        self.z = np.zeros((self.n_diam, self.nt))  # for altitude
         t_t = np.zeros(self.nt)
-        v[0] = self.init_velocity  # initialization of droplet velocity
+        self.v[0] = self.init_velocity  # initialization of droplet velocity
         self.z[:, 0] = self.alt_spray  # altitude of spray initialization
 
         self.i = x0
@@ -90,9 +92,9 @@ class droplet_dispersal(object):
             for t in range(self.nt - 1):
                 # vel = dt*(g*(rho_mix-rho_a)/rho_mix-(rho_a*math.pi*math.pow(drop_dist[i,0],2)*Cd*math.pow(v[n,i],2))/
                 # (8*(rho_mix*math.pi*math.pow(drop_dist[i,0],3)/6))) + v[n,i]
-                vel = (self.v[t] + self.g * (1 - self.rho_a / self.rho_mix) * self.dt) / (1 + self.dt / self.tau(self.drop_dist[k, 0], self.u_air[i, self.j], self.v[t]))
+                vel = (self.v[t] + self.g * (1 - self.rho_a / self.rho_mix) * self.dt) / (1 + self.dt / self.tau(self.drop_dist[k, 0], self.u_air[self.i, self.j], self.v[t]))
                 vel_sed = math.sqrt(
-                    (4 * self.g * self.rho_mix * self.drop_dist[k, 0]) / (3 * self.C_d(self.drop_dist[k, 0], self.u_air[i, self.j], self.v[t]) * self.rho_a))
+                    (4 * self.g * self.rho_mix * self.drop_dist[k, 0]) / (3 * self.C_d(self.drop_dist[k, 0], self.u_air[self.i, self.j], self.v[t]) * self.rho_a))
                 # vel = (v[n, i] + g * (1 - rho_a / rho_mix) * dt) / (1 + dt / tau(drop_dist[i, 0], v_air[0, n], v[n, i]))
                 if vel > 0:  # vel >= 0
                     self.v[t + 1] = vel  # droplet velocity
@@ -104,7 +106,7 @@ class droplet_dispersal(object):
                 self.x[k, t + 1] = self.x[k, t] + self.v[t + 1] * self.dt  # droplet position
                 # if v[t + 1] == 0 : x[k, t + 1] = 0
                 # if x[k, t + 1] != x[k, t] : np.append(x_tab, np.array([x[k, t + 1]]), axis=0)
-                i = round(self.x[k, t + 1])
+                self.i = round(self.x[k, t + 1])
 
         # Timestep
         for n in range(self.nt):
