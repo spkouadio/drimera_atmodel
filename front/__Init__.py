@@ -100,6 +100,7 @@ class MainWindow(QMainWindow):
 
     def positionChanged(self):
         self.ui.zposition_horizontalSlider.setValue(int(self.ui.zposition_lineEdit.text()))
+        self.plot(int(self.ui.zposition_lineEdit.text()))
 
     def calResult(self):
 
@@ -155,7 +156,7 @@ class MainWindow(QMainWindow):
         # Droplet dispersal initialisation
         self.dd = droplet_dispersal(self.timeStep, self.airflow.v, self.airflow.u, self.parameter.rho_mix, self.parameter.air_density,
                                     self.parameter.boomHeight, self.parameter.air_kviscosity, self.dropdescr.drop_distrib(),
-                                    self.ejectSpeed, self.x0, self.y0, self.z_pos) #self.dropdescr.init_velocity()
+                                    self.dropdescr.init_velocity(), self.x0, self.y0, self.z_pos) #self.ejectSpeed
 
         # Concentration calculus initialisation
         self.concalcul = concent_calc(self.parameter.time_nt)
@@ -171,24 +172,37 @@ class MainWindow(QMainWindow):
 
         # Plot concentration profile for a specific time
         # Plot concentration profile by diameter
-        concent = np.zeros((101, 101))
+        concent = np.zeros((301, 301))
+        self.z_concent = [concent] * (self.z_pos+1)
         self.dd.i = self.x0
         self.dd.j = self.y0
+        self.res_conc = np.ones((301, 301)) * self.parameter.resConcentration * math.pow(10, -6)
 
-        sed_velo = self.dd.sed_velocity()
-        #z_pos = self.dd.z[:,:]
-        print(sed_velo)
+        #for k in range(n_diam):
+        #   i = self.x0 #round(self.dd.x[k, -1]) +
+        #   j = self.dd.j
+        #   u_air = self.dd.u_air
+        #   alpha_buoy = self.dd.C_d(drop_dist[k, 0], self.dd.u_air[i, j], self.dropdescr.init_velocity())
+        #   c_0 = drop_dist[k, 1]  # *math.pow(10,6) µg/l
+        #   # concent = cc.conc_cal(u_air, alpha_buoy, c_0, i, j)
+        #   concent = np.add(concent, self.concalcul.conc_cal(u_air, alpha_buoy, c_0, i, j))
+        #if self.parameter.resConcentration != 0 :
+        #   concent = concent + self.parameter.resConcentration * math.pow(10, -6)
+
 
         for k in range(n_diam):
-           i = round(self.dd.x[k, -1]) + self.x0
+           i = self.x0 #round(self.dd.x[k, -1]) +
            j = self.dd.j
            u_air = self.dd.u_air
-           alpha_buoy = self.dd.C_d(drop_dist[k, 0], self.dd.u_air[i, j], self.ejectSpeed)
+           alpha_buoy = self.dd.C_d(drop_dist[k, 0], self.dd.u_air[i, j], self.dropdescr.init_velocity())
            c_0 = drop_dist[k, 1]  # *math.pow(10,6) µg/l
            # concent = cc.conc_cal(u_air, alpha_buoy, c_0, i, j)
-           concent = np.add(concent, self.concalcul.conc_cal(u_air, alpha_buoy, c_0, i, j))
+           #concent = np.add(concent, self.dd.conc_cal(u_air, alpha_buoy, c_0, i, j, k))
+           concent = self.dd.conc_cal(u_air, alpha_buoy, c_0, i, j, k)
+           pos = int(round(self.dd.z[k,-1], 0))
+           self.z_concent[pos] = np.add(self.z_concent[pos], concent)
         if self.parameter.resConcentration != 0 :
-           concent = concent + self.parameter.resConcentration * math.pow(10, -6)
+           self.z_concent[0] = np.add(self.z_concent[0], self.res_conc) 
 
 
         #for k in range(n_diam):
@@ -204,8 +218,11 @@ class MainWindow(QMainWindow):
 
         self.runprocess()
 
+        self.plot(self.z_pos)
+
+    def plot(self, z_pos):
         # Plot concentration by position in a tableView
-        drift_pos = len(concent[self.dd.j,:])-1
+        drift_pos = 300 #len(concent[self.dd.j,:])-1
         #self.datasheet = np.empty((0, 2), float)  # m
         #for xpos in range(drift_pos):
         #    self.datasheet = np.append(self.datasheet, np.array([[xpos, round(concent[self.dd.j, xpos] * math.pow(10, 3), 3)]]), axis=0)
@@ -216,7 +233,9 @@ class MainWindow(QMainWindow):
         #    for j in range(2):
         #        self.model.setItem(i, j, QStandardItem(str(self.datasheet[i,j])))
 
-        len_dim = len(concent[0,:])-1
+        len_dim = 300 #len(concent[0,:])-1
+        concent = self.z_concent[int(z_pos)]
+
         self.model = QStandardItemModel(0, len_dim, self)
         self.datasheet = np.round(concent * math.pow(10, 3), 6)
         #self.model.setHorizontalHeaderLabels(['position (m)', 'value (mg/l)'])
@@ -231,11 +250,11 @@ class MainWindow(QMainWindow):
         plt.clf() # Reinitialize plot
         plt.rcParams.update({'font.size': 8}) # Set fontsize
         plt.gcf().set_size_inches(8.7, 3.7, forward=True) # Set imagesize
-        plt.imshow(concent * math.pow(10, 3), cmap='hot', origin='lower', extent=[0, 100, 0, 100])
+        plt.imshow(concent * math.pow(10, 3), cmap='hot', origin='lower', extent=[0, 300, 0, 300])
         plt.colorbar()
         plt.xlabel('x')
         plt.ylabel('y')
-        plt.title(f'Concentration in mg/l at time = {(self.parameter.time_nt / 60):.2f} min at altitude Z = {(self.z_pos):.2f} m')
+        plt.title(f'Concentration in mg/l at time = {(self.parameter.time_nt / 60):.2f} min at altitude Z = {(z_pos):.2f} m')
 
         def fig_to_pixmap(fig):
             # Save the figure to a buffer

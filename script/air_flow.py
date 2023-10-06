@@ -15,18 +15,18 @@ class air_flow(object):
         self.u_inf = u_inf # free stream velocity
 
         # Define parameters
-        nx = 101  # number of grid points
-        ny = 101
+        self.nx = 301  # number of grid points # Et si j'actualisait chaque fois la valeur de la vitesse de l'air
+        self.ny = 301
         nt = 100  # number of time steps
         dx = 0.1  # grid spacing
         dy = 0.1
         CFL = 0.1  # CFL number
 
         # Initialize arrays
-        self.u = np.zeros((nx, ny))  # x-velocity
-        self.v = np.zeros((nx, ny))  # y-velocity
-        p = np.ones((nx, ny)) * self.p_inf  # pressure
-        rho = np.ones((nx, ny)) * self.rho_inf  # density
+        self.u = np.zeros((self.nx, self.ny))  # x-velocity
+        self.v = np.zeros((self.nx, self.ny))  # y-velocity
+        p = np.ones((self.nx, self.ny)) * self.p_inf  # pressure
+        rho = np.ones((self.nx, self.ny)) * self.rho_inf  # density
 
         # Set initial condition
         self.u[:, :] = self.u_inf

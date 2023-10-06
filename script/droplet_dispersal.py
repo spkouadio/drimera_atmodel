@@ -51,8 +51,8 @@ class droplet_dispersal(object):
         self.x = np.zeros((self.n_diam, self.nt))
         #self.x = np.zeros((1+z_pos*10, n_diam, self.nt))
         # x_tab = np.empty((0, 1), float)
-        self.z = np.zeros((self.n_diam, self.nt))  # for altitude
-        t_t = np.zeros(self.nt)
+        self.z = np.zeros((self.n_diam, self.nt+1))  # for altitude
+        self.t_t = np.zeros(self.nt)
         self.v[0] = self.init_velocity  # initialization of droplet velocity
         self.z[:, 0] = self.alt_spray  # altitude of spray initialization
 
@@ -89,7 +89,7 @@ class droplet_dispersal(object):
 
         # Position calculation
         for k in range(self.n_diam):
-            for t in range(self.nt - 1):
+            for t in range(self.nt-1):
                 # vel = dt*(g*(rho_mix-rho_a)/rho_mix-(rho_a*math.pi*math.pow(drop_dist[i,0],2)*Cd*math.pow(v[n,i],2))/
                 # (8*(rho_mix*math.pi*math.pow(drop_dist[i,0],3)/6))) + v[n,i]
                 vel = (self.v[t] + self.g * (1 - self.rho_a / self.rho_mix) * self.dt) / (1 + self.dt / self.tau(self.drop_dist[k, 0], self.u_air[self.i, self.j], self.v[t]))
@@ -106,8 +106,76 @@ class droplet_dispersal(object):
                 self.x[k, t + 1] = self.x[k, t] + self.v[t + 1] * self.dt  # droplet position
                 # if v[t + 1] == 0 : x[k, t + 1] = 0
                 # if x[k, t + 1] != x[k, t] : np.append(x_tab, np.array([x[k, t + 1]]), axis=0)
-                self.i = round(self.x[k, t + 1])
+                #self.i = round(self.x[k, t + 1])
+        #return (x, z)
+        #print(self.x)
 
         # Timestep
         for n in range(self.nt):
             self.t_t[n] = n * self.dt
+
+
+    # Define parameters
+    nx = 301  # number of grid points
+    ny = 301
+    # nt = 100 #params.time_nt  # number of time steps
+    dx = 0.1  # grid spacing
+    dy = 0.1
+    dt = 0.01  # time step
+    D = 0.1  # diffusion coefficient
+
+
+    # Define finite difference operator
+    def laplacian(self, c):
+        lap = np.zeros_like(c)
+        lap[1:-1, 1:-1] = (c[2:, 1:-1] - 2 * c[1:-1, 1:-1] + c[:-2, 1:-1]) / self.dx ** 2 \
+                          + (c[1:-1, 2:] - 2 * c[1:-1, 1:-1] + c[1:-1, :-2]) / self.dy ** 2
+        return lap
+
+    def conc_cal(self, u_air, alpha_buoy, c_0, i, j, k):
+        r'''
+        Concentration advection-diffusion calculus module
+        :param u_air: air velocity
+        :param alpha_buoy: Buyoency coefficient
+        :param c_0: initial concentration at the point of dispersion
+        :return: concentration
+        '''
+        u = u_air
+        alpha = alpha_buoy
+        c = np.zeros((self.nx, self.ny))  # concentration of particles
+        c[i, j] = c_0  # Set initial condition
+        self.u_p = np.zeros((self.nx, self.ny))  # particle velocity in x-direction
+        self.v_p = np.zeros((self.nx, self.ny))  # particle velocity in y-direction
+
+        # Time loop
+        for n in range(self.nt):
+            # Update particle velocity based on fluid velocity
+            self.u_p = alpha * u + (1 - alpha) * self.u_p
+            self.v_p = alpha * 0 + (1 - alpha) * self.v_p
+
+            vel_sed = math.sqrt((4 * self.g * self.rho_mix * self.drop_dist[k, 0]) /
+                                (3 * self.C_d(self.drop_dist[k, 0], self.u_air[self.i, self.j], self.v[n]) * self.rho_a))
+
+            if vel_sed > self.u_p[self.i, self.j] :
+                alt = self.z[k, n] - vel_sed * self.dt  # droplet altitude
+                if alt >= 0: self.z[k, n + 1] = alt
+                #c += 0
+            else:
+                self.z[k, n + 1] = self.alt_spray
+
+            # Calculate particle diffusion
+            c += self.dt * self.D * self.laplacian(c)
+
+            # Calculate advection of particles
+            c[1:-1, 1:-1] -= self.dt * self.u_p[1:-1, 1:-1] * (c[2:, 1:-1] - c[:-2, 1:-1]) / (2 * self.dx) \
+                             + self.dt * self.v_p[1:-1, 1:-1] * (c[1:-1, 2:] - c[1:-1, :-2]) / (2 * self.dy)
+
+            # Enforce boundary conditions
+            c[:, 0] = 0
+            c[:, -1] = 0
+            c[0, :] = 0
+            c[-1, :] = 0
+
+        c[c < 0] = 0
+
+        return c.transpose()

@@ -7,13 +7,12 @@ Pesticides concentration is then determinated.
 
 
 import numpy as np
-#import params
 
 class concent_calc(object):
 
     # Define parameters
-    nx = 101  # number of grid points
-    ny = 101
+    nx = 301  # number of grid points
+    ny = 301
     # nt = 100 #params.time_nt  # number of time steps
     dx = 0.1  # grid spacing
     dy = 0.1
@@ -42,21 +41,21 @@ class concent_calc(object):
         alpha = alpha_buoy
         c = np.zeros((self.nx, self.ny))  # concentration of particles
         c[i, j] = c_0  # Set initial condition
-        u_p = np.zeros((self.nx, self.ny))  # particle velocity in x-direction
-        v_p = np.zeros((self.nx, self.ny))  # particle velocity in y-direction
+        self.u_p = np.zeros((self.nx, self.ny))  # particle velocity in x-direction
+        self.v_p = np.zeros((self.nx, self.ny))  # particle velocity in y-direction
 
         # Time loop
         for n in range(self.nt):
             # Update particle velocity based on fluid velocity
-            u_p = alpha * u + (1 - alpha) * u_p
-            v_p = alpha * 0 + (1 - alpha) * v_p
+            self.u_p = alpha * u + (1 - alpha) * self.u_p
+            self.v_p = alpha * 0 + (1 - alpha) * self.v_p
 
             # Calculate particle diffusion
             c += self.dt * self.D * self.laplacian(c)
 
             # Calculate advection of particles
-            c[1:-1, 1:-1] -= self.dt * u_p[1:-1, 1:-1] * (c[2:, 1:-1] - c[:-2, 1:-1]) / (2 * self.dx) \
-                             + self.dt * v_p[1:-1, 1:-1] * (c[1:-1, 2:] - c[1:-1, :-2]) / (2 * self.dy)
+            c[1:-1, 1:-1] -= self.dt * self.u_p[1:-1, 1:-1] * (c[2:, 1:-1] - c[:-2, 1:-1]) / (2 * self.dx) \
+                             + self.dt * self.v_p[1:-1, 1:-1] * (c[1:-1, 2:] - c[1:-1, :-2]) / (2 * self.dy)
 
             # Enforce boundary conditions
             c[:, 0] = 0
