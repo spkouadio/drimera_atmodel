@@ -11,8 +11,8 @@ import numpy as np
 class concent_calc(object):
 
     # Define parameters
-    nx = 301  # number of grid points
-    ny = 301
+    nx = 101  # number of grid points
+    ny = 101
     # nt = 100 #params.time_nt  # number of time steps
     dx = 0.1  # grid spacing
     dy = 0.1

@@ -170,13 +170,13 @@ class MainWindow(QMainWindow):
         # Droplets trajectory
         n_diam = len(drop_dist[:, 0])
 
-        # Plot concentration profile for a specific time
+        # Plot concentration profile at end of timestep
         # Plot concentration profile by diameter
-        concent = np.zeros((301, 301))
+        concent = np.zeros((101, 101))
         self.z_concent = [concent] * (self.z_pos+1)
         self.dd.i = self.x0
         self.dd.j = self.y0
-        self.res_conc = np.ones((301, 301)) * self.parameter.resConcentration * math.pow(10, -6)
+        self.res_conc = np.ones((101, 101)) * self.parameter.resConcentration * math.pow(10, -6)
 
         #for k in range(n_diam):
         #   i = self.x0 #round(self.dd.x[k, -1]) +
@@ -222,7 +222,7 @@ class MainWindow(QMainWindow):
 
     def plot(self, z_pos):
         # Plot concentration by position in a tableView
-        drift_pos = 300 #len(concent[self.dd.j,:])-1
+        #len(concent[self.dd.j,:])-1
         #self.datasheet = np.empty((0, 2), float)  # m
         #for xpos in range(drift_pos):
         #    self.datasheet = np.append(self.datasheet, np.array([[xpos, round(concent[self.dd.j, xpos] * math.pow(10, 3), 3)]]), axis=0)
@@ -233,13 +233,13 @@ class MainWindow(QMainWindow):
         #    for j in range(2):
         #        self.model.setItem(i, j, QStandardItem(str(self.datasheet[i,j])))
 
-        len_dim = 300 #len(concent[0,:])-1
+        len_dim = 101 #len(concent[0,:])-1
         concent = self.z_concent[int(z_pos)]
 
         self.model = QStandardItemModel(0, len_dim, self)
         self.datasheet = np.round(concent * math.pow(10, 3), 6)
         #self.model.setHorizontalHeaderLabels(['position (m)', 'value (mg/l)'])
-        for i in range(drift_pos):
+        for i in range(len_dim):
             for j in range(len_dim):
                 self.model.setItem(i, j, QStandardItem(str(self.datasheet[i, j])))
 
@@ -248,9 +248,9 @@ class MainWindow(QMainWindow):
 
         # Plot concentration by position in a 2D graph
         plt.clf() # Reinitialize plot
-        plt.rcParams.update({'font.size': 8}) # Set fontsize
+        plt.rcParams.update({'font.size': 8, 'axes.titlepad': 18}) # Set fontsize & title padding
         plt.gcf().set_size_inches(8.7, 3.7, forward=True) # Set imagesize
-        plt.imshow(concent * math.pow(10, 3), cmap='hot', origin='lower', extent=[0, 300, 0, 300])
+        plt.imshow(concent * math.pow(10, 3), cmap='hot', origin='lower', extent=[0, 100, 0, 100])
         plt.colorbar()
         plt.xlabel('x')
         plt.ylabel('y')

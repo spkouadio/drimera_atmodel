@@ -15,8 +15,8 @@ class air_flow(object):
         self.u_inf = u_inf # free stream velocity
 
         # Define parameters
-        self.nx = 301  # number of grid points # Et si j'actualisait chaque fois la valeur de la vitesse de l'air
-        self.ny = 301
+        self.nx = 101  # number of grid points # Et si j'actualisait chaque fois la valeur de la vitesse de l'air
+        self.ny = 101
         nt = 100  # number of time steps
         dx = 0.1  # grid spacing
         dy = 0.1
