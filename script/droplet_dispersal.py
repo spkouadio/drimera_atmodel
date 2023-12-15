@@ -68,7 +68,7 @@ class droplet_dispersal(object):
 
     # Buyoency coefficient
     def C_d(self, diam, air_vel, drop_vel):
-        Re = (diam * math.fabs(air_vel - drop_vel)) / self.nu_a
+        Re = (diam * math.pow(10, -6) * math.fabs(air_vel - drop_vel)) / self.nu_a
         if Re < 0.1:
             c_d = 24 / Re  # stokes regime
         else:
@@ -81,7 +81,7 @@ class droplet_dispersal(object):
     # Relaxation time
     def tau(self, diam, air_vel, drop_vel):
         cd = self.C_d(diam, air_vel, drop_vel)
-        tp = (4 * self.rho_mix * diam) / (3 * self.rho_a * cd * math.fabs(air_vel - drop_vel))
+        tp = (4 * self.rho_mix * diam * math.pow(10, -6)) / (3 * self.rho_a * cd * math.fabs(air_vel - drop_vel))
         return tp
 
     def sed_velocity(self):
@@ -99,7 +99,7 @@ class droplet_dispersal(object):
                 # (8*(rho_mix*math.pi*math.pow(drop_dist[i,0],3)/6))) + v[n,i]
                 vel = (self.v[t] + self.g * (1 - self.rho_a / self.rho_mix) * self.dt) / (1 + self.dt / self.tau(self.drop_dist[k, 0], self.u_air[self.i, self.j], self.v[t]))
                 vel_sed = math.sqrt(
-                    (4 * self.g * self.rho_mix * self.drop_dist[k, 0]) / (3 * self.C_d(self.drop_dist[k, 0], self.u_air[self.i, self.j], self.v[t]) * self.rho_a))
+                    (4 * self.g * (self.rho_mix - self.rho_a) * self.drop_dist[k, 0] * math.pow(10, -6)) / (3 * self.C_d(self.drop_dist[k, 0], self.u_air[self.i, self.j], self.v[t]) * self.rho_a))
                 # vel = (v[n, i] + g * (1 - rho_a / rho_mix) * dt) / (1 + dt / tau(drop_dist[i, 0], v_air[0, n], v[n, i]))
                 if vel > 0:  # vel >= 0
                     self.v[t + 1] = vel  # droplet velocity
@@ -162,7 +162,7 @@ class droplet_dispersal(object):
             self.u_p = alpha * u + (1 - alpha) * self.u_p
             self.v_p = alpha * 0 + (1 - alpha) * self.v_p
 
-            vel_sed = math.sqrt((4 * self.g * self.rho_mix * self.drop_dist[k, 0]) /
+            vel_sed = math.sqrt((4 * self.g * (self.rho_mix-self.rho_a) * self.drop_dist[k, 0] * math.pow(10, -6)) /
                                 (3 * self.C_d(self.drop_dist[k, 0], self.u_air[self.i, self.j], self.v[n]) * self.rho_a))
 
             # Droplet altitude determination
