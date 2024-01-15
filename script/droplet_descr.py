@@ -10,9 +10,9 @@ import numpy as np
 class droplet_descr(object):
     def __init__(self, mean_diam, chem_mass, rho_mix, vol_mix):
         # Chemical properties
-        self.chem_mass = chem_mass  # params.chem_mass
-        self.rho_mix = rho_mix  # params.rho_mix #Density of mixture
-        self.vol_mix = vol_mix  # params.vol_mix #Volume of mixture
+        self.chem_mass = chem_mass  # (g/ha) params.chem_mass
+        self.rho_mix = rho_mix  # (g/l) params.rho_mix #Density of mixture
+        self.vol_mix = vol_mix  # (l) params.vol_mix #Volume of mixture
         self.d_50 = mean_diam
 
     def init_velocity(self):
@@ -44,6 +44,9 @@ class droplet_descr(object):
                 * math.exp(-math.pow(math.log10(d / self.d_50), 2) / (2 * math.pow(math.log10(sigma_g), 2)))
             f_cumul = f_cumul + f
             n = f / (math.pow(d, 3) * (math.pi / 6))
-            # drop_table = np.append(drop_table, np.array([[d, f*vol_mix, f_cumul, n]]), axis=0)
-            drop_table = np.append(drop_table, np.array([[d, 1000 * f * self.chem_mass, f_cumul, n]]), axis=0)
+            #drop_table = np.append(drop_table, np.array([[d, f * self.vol_mix, f_cumul, n]]), axis=0) # (l)
+            drop_table = np.append(drop_table, np.array([[d, f * self.chem_mass, f_cumul, n]]), axis=0) # (g)
+        #test = sum(drop_table)
+        #test2 = self.chem_mass
+        #print(test, test2)
         return drop_table

@@ -50,4 +50,4 @@ class inputs_par(object):
 
         # Chemical properties
         ##chemical mass (g/m2)
-        self.chem_mass = ((self.chem_concent * self.pesticide_volume)/self.vol_mix) * self.application_rate * math.pow(10, -4)
+        self.chem_mass = ((self.chem_concent * self.pesticide_volume)/self.vol_mix) * self.application_rate # g/ha

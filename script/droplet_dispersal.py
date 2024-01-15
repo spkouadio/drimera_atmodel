@@ -152,7 +152,7 @@ class droplet_dispersal(object):
         u = u_air
         alpha = alpha_buoy
         c = np.zeros((self.nx, self.ny))  # concentration of particles
-        c[i, j] = c_0  # Set initial condition
+        c[i+1, j] = c_0  # Set initial condition
         self.u_p = np.zeros((self.nx, self.ny))  # particle velocity in x-direction
         self.v_p = np.zeros((self.nx, self.ny))  # particle velocity in y-direction
 
