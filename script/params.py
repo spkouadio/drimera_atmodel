@@ -6,7 +6,7 @@ from script.const import constants #import const as cst
 
 class inputs_par(object):
     def __init__(self, activeMatConcent, pesticideDensity, pestVol, carrierDens, carrierVol, dropletSize, boomHeight, appRate,
-                 residualConc, windSpeed, ejectSpeed, temperature, humidity, timeStep, x0, y0):
+                 residualConc, windSpeed, forwardSpeed, nozzleSpacing,  temperature, humidity, timeStep, x0, y0):
 
         #self.chem = activeMatCarac
         #self.supportCarac = supportCarac
@@ -21,7 +21,8 @@ class inputs_par(object):
         self.application_rate = appRate
         self.resConcentration = residualConc
         self.air_velocity = windSpeed
-        self.ejectionSpeed = ejectSpeed
+        self.forwardSpeed = forwardSpeed
+        self.nozzleSpacing = nozzleSpacing
         self.temp = temperature
         self.humidity = humidity
         self.time_nt = timeStep
@@ -39,8 +40,8 @@ class inputs_par(object):
         # Times step dispersion
         #self.time_nt = self.time_nt  # 180
 
-        # Field properties
-        #field_surface = 0.025  # ha
+        # Output flow per nozzle
+        self.outputFlow = (self.application_rate*self.nozzleSpacing*(self.forwardSpeed*3.6))/(60000*60) # l/s
 
         # Mixture properties
         ## Density of mixture

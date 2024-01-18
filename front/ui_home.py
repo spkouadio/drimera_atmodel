@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
 
 ################################################################################
-## Form generated from reading UI file 'homeOvdYgY.ui'
+## Form generated from reading UI file 'homeJjGYNu.ui'
 ##
-## Created by: Qt User Interface Compiler version 5.14.1
+## Created by: Qt User Interface Compiler version 6.4.3
 ##
 ## WARNING! All changes made in this file will be lost when recompiling UI file!
 ################################################################################
@@ -15,13 +15,19 @@ from PySide2.QtGui import (QBrush, QColor, QConicalGradient, QCursor, QFont,
     QRadialGradient)
 from PySide2.QtWidgets import *
 
-
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
-        if MainWindow.objectName():
+        if not MainWindow.objectName():
             MainWindow.setObjectName(u"MainWindow")
         MainWindow.setWindowModality(Qt.NonModal)
-        MainWindow.resize(800, 655)
+        MainWindow.resize(950, 665)
+        sizePolicy = QSizePolicy(QSizePolicy.Preferred, QSizePolicy.Preferred)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(MainWindow.sizePolicy().hasHeightForWidth())
+        MainWindow.setSizePolicy(sizePolicy)
+        MainWindow.setMinimumSize(QSize(950, 665))
+        MainWindow.setMaximumSize(QSize(950, 665))
         icon = QIcon()
         icon.addFile(u"Im/Ico_DRIMERA.png", QSize(), QIcon.Normal, QIcon.Off)
         MainWindow.setWindowIcon(icon)
@@ -34,9 +40,6 @@ class Ui_MainWindow(object):
         self.actionQuitter.setObjectName(u"actionQuitter")
         self.centralwidget = QWidget(MainWindow)
         self.centralwidget.setObjectName(u"centralwidget")
-        sizePolicy = QSizePolicy(QSizePolicy.Preferred, QSizePolicy.Minimum)
-        sizePolicy.setHorizontalStretch(0)
-        sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.centralwidget.sizePolicy().hasHeightForWidth())
         self.centralwidget.setSizePolicy(sizePolicy)
         self.verticalLayout = QVBoxLayout(self.centralwidget)
@@ -50,556 +53,243 @@ class Ui_MainWindow(object):
         self.inputLayout.setContentsMargins(0, 0, 0, 0)
         self.inputGrpBox = QGroupBox(self.centralwidget)
         self.inputGrpBox.setObjectName(u"inputGrpBox")
-        sizePolicy1 = QSizePolicy(QSizePolicy.Preferred, QSizePolicy.Preferred)
+        sizePolicy1 = QSizePolicy(QSizePolicy.Minimum, QSizePolicy.Preferred)
         sizePolicy1.setHorizontalStretch(0)
         sizePolicy1.setVerticalStretch(0)
         sizePolicy1.setHeightForWidth(self.inputGrpBox.sizePolicy().hasHeightForWidth())
         self.inputGrpBox.setSizePolicy(sizePolicy1)
-        self.horizontalLayout = QHBoxLayout(self.inputGrpBox)
-        self.horizontalLayout.setSpacing(9)
-        self.horizontalLayout.setObjectName(u"horizontalLayout")
-        self.horizontalLayout.setSizeConstraint(QLayout.SetDefaultConstraint)
-        self.horizontalLayout.setContentsMargins(9, -1, -1, -1)
-        self.atmosBtn = QPushButton(self.inputGrpBox)
-        self.atmosBtn.setObjectName(u"atmosBtn")
-        sizePolicy2 = QSizePolicy(QSizePolicy.Minimum, QSizePolicy.Fixed)
-        sizePolicy2.setHorizontalStretch(0)
-        sizePolicy2.setVerticalStretch(0)
-        sizePolicy2.setHeightForWidth(self.atmosBtn.sizePolicy().hasHeightForWidth())
-        self.atmosBtn.setSizePolicy(sizePolicy2)
-        self.atmosBtn.setFocusPolicy(Qt.StrongFocus)
+        font = QFont()
+        font.setBold(False)
+        self.inputGrpBox.setFont(font)
+        self.verticalLayout_2 = QVBoxLayout(self.inputGrpBox)
+        self.verticalLayout_2.setSpacing(9)
+        self.verticalLayout_2.setObjectName(u"verticalLayout_2")
+        self.verticalLayout_2.setSizeConstraint(QLayout.SetDefaultConstraint)
+        self.verticalLayout_2.setContentsMargins(9, -1, -1, -1)
+        self.groupBox_spray_mixture = QGroupBox(self.inputGrpBox)
+        self.groupBox_spray_mixture.setObjectName(u"groupBox_spray_mixture")
+        self.verticalLayout_15 = QVBoxLayout(self.groupBox_spray_mixture)
+        self.verticalLayout_15.setObjectName(u"verticalLayout_15")
+        self.gridLayout_spray_mixture = QGridLayout()
+        self.gridLayout_spray_mixture.setObjectName(u"gridLayout_spray_mixture")
+        self.gridLayout_spray_mixture.setVerticalSpacing(6)
+        self.carrierVol_lineEdit = QLineEdit(self.groupBox_spray_mixture)
+        self.carrierVol_lineEdit.setObjectName(u"carrierVol_lineEdit")
+
+        self.gridLayout_spray_mixture.addWidget(self.carrierVol_lineEdit, 3, 1, 1, 1)
+
+        self.supportCarac_comboBox = QComboBox(self.groupBox_spray_mixture)
+        self.supportCarac_comboBox.addItem(u"Oil")
+        self.supportCarac_comboBox.addItem(u"Water")
+        self.supportCarac_comboBox.setObjectName(u"supportCarac_comboBox")
+
+        self.gridLayout_spray_mixture.addWidget(self.supportCarac_comboBox, 2, 1, 1, 1)
+
+        self.supportCarac_toolButton = QToolButton(self.groupBox_spray_mixture)
+        self.supportCarac_toolButton.setObjectName(u"supportCarac_toolButton")
         icon1 = QIcon()
-        icon1.addFile(u"Im/wind.png", QSize(), QIcon.Normal, QIcon.Off)
-        self.atmosBtn.setIcon(icon1)
-        self.atmosBtn.setIconSize(QSize(20, 20))
-        self.atmosBtn.setAutoDefault(False)
+        icon1.addFile(u"Im/tools.png", QSize(), QIcon.Normal, QIcon.Off)
+        self.supportCarac_toolButton.setIcon(icon1)
 
-        self.horizontalLayout.addWidget(self.atmosBtn)
+        self.gridLayout_spray_mixture.addWidget(self.supportCarac_toolButton, 2, 2, 1, 1)
 
-        self.terrainBtn = QPushButton(self.inputGrpBox)
-        self.terrainBtn.setObjectName(u"terrainBtn")
-        icon2 = QIcon()
-        icon2.addFile(u"Im/terrain.png", QSize(), QIcon.Normal, QIcon.Off)
-        self.terrainBtn.setIcon(icon2)
-        self.terrainBtn.setIconSize(QSize(20, 20))
+        self.label_pesticideUsed = QLabel(self.groupBox_spray_mixture)
+        self.label_pesticideUsed.setObjectName(u"label_pesticideUsed")
+        self.label_pesticideUsed.setAlignment(Qt.AlignRight|Qt.AlignTrailing|Qt.AlignVCenter)
 
-        self.horizontalLayout.addWidget(self.terrainBtn)
+        self.gridLayout_spray_mixture.addWidget(self.label_pesticideUsed, 0, 0, 1, 1)
 
-        self.operaBtn = QPushButton(self.inputGrpBox)
-        self.operaBtn.setObjectName(u"operaBtn")
-        icon3 = QIcon()
-        icon3.addFile(u"Im/airplane.png", QSize(), QIcon.Normal, QIcon.Off)
-        self.operaBtn.setIcon(icon3)
-        self.operaBtn.setIconSize(QSize(20, 20))
+        self.pesticideUsed_comboBox = QComboBox(self.groupBox_spray_mixture)
+        self.pesticideUsed_comboBox.addItem("")
+        self.pesticideUsed_comboBox.addItem("")
+        self.pesticideUsed_comboBox.addItem("")
+        self.pesticideUsed_comboBox.addItem("")
+        self.pesticideUsed_comboBox.addItem("")
+        self.pesticideUsed_comboBox.addItem("")
+        self.pesticideUsed_comboBox.addItem("")
+        self.pesticideUsed_comboBox.addItem("")
+        self.pesticideUsed_comboBox.addItem("")
+        self.pesticideUsed_comboBox.addItem("")
+        self.pesticideUsed_comboBox.addItem("")
+        self.pesticideUsed_comboBox.addItem("")
+        self.pesticideUsed_comboBox.addItem("")
+        self.pesticideUsed_comboBox.addItem("")
+        self.pesticideUsed_comboBox.addItem("")
+        self.pesticideUsed_comboBox.addItem("")
+        self.pesticideUsed_comboBox.addItem("")
+        self.pesticideUsed_comboBox.setObjectName(u"pesticideUsed_comboBox")
 
-        self.horizontalLayout.addWidget(self.operaBtn)
+        self.gridLayout_spray_mixture.addWidget(self.pesticideUsed_comboBox, 0, 1, 1, 1)
+
+        self.label_pesticideVol = QLabel(self.groupBox_spray_mixture)
+        self.label_pesticideVol.setObjectName(u"label_pesticideVol")
+        self.label_pesticideVol.setAlignment(Qt.AlignRight|Qt.AlignTrailing|Qt.AlignVCenter)
+
+        self.gridLayout_spray_mixture.addWidget(self.label_pesticideVol, 1, 0, 1, 1)
+
+        self.label_supportCarac = QLabel(self.groupBox_spray_mixture)
+        self.label_supportCarac.setObjectName(u"label_supportCarac")
+        self.label_supportCarac.setAlignment(Qt.AlignRight|Qt.AlignTrailing|Qt.AlignVCenter)
+
+        self.gridLayout_spray_mixture.addWidget(self.label_supportCarac, 2, 0, 1, 1)
+
+        self.activeMatCarac_toolButton = QToolButton(self.groupBox_spray_mixture)
+        self.activeMatCarac_toolButton.setObjectName(u"activeMatCarac_toolButton")
+        self.activeMatCarac_toolButton.setIcon(icon1)
+
+        self.gridLayout_spray_mixture.addWidget(self.activeMatCarac_toolButton, 0, 2, 1, 1)
+
+        self.label_CarrierVol = QLabel(self.groupBox_spray_mixture)
+        self.label_CarrierVol.setObjectName(u"label_CarrierVol")
+        self.label_CarrierVol.setAlignment(Qt.AlignRight|Qt.AlignTrailing|Qt.AlignVCenter)
+
+        self.gridLayout_spray_mixture.addWidget(self.label_CarrierVol, 3, 0, 1, 1)
+
+        self.pesticideVol_lineEdit = QLineEdit(self.groupBox_spray_mixture)
+        self.pesticideVol_lineEdit.setObjectName(u"pesticideVol_lineEdit")
+
+        self.gridLayout_spray_mixture.addWidget(self.pesticideVol_lineEdit, 1, 1, 1, 1)
+
+
+        self.verticalLayout_15.addLayout(self.gridLayout_spray_mixture)
+
+
+        self.verticalLayout_2.addWidget(self.groupBox_spray_mixture)
+
+        self.groupBox_operational_data = QGroupBox(self.inputGrpBox)
+        self.groupBox_operational_data.setObjectName(u"groupBox_operational_data")
+        sizePolicy.setHeightForWidth(self.groupBox_operational_data.sizePolicy().hasHeightForWidth())
+        self.groupBox_operational_data.setSizePolicy(sizePolicy)
+        self.verticalLayout_16 = QVBoxLayout(self.groupBox_operational_data)
+        self.verticalLayout_16.setObjectName(u"verticalLayout_16")
+        self.gridLayout_operational_data = QGridLayout()
+        self.gridLayout_operational_data.setObjectName(u"gridLayout_operational_data")
+        self.residualConc_lineEdit = QLineEdit(self.groupBox_operational_data)
+        self.residualConc_lineEdit.setObjectName(u"residualConc_lineEdit")
+
+        self.gridLayout_operational_data.addWidget(self.residualConc_lineEdit, 5, 1, 1, 1)
+
+        self.dropletSize_comboBox = QComboBox(self.groupBox_operational_data)
+        self.dropletSize_comboBox.addItem(u"Fog")
+        self.dropletSize_comboBox.addItem(u"Very fine")
+        self.dropletSize_comboBox.addItem(u"Medium")
+        self.dropletSize_comboBox.addItem(u"Coarse")
+        self.dropletSize_comboBox.addItem(u"Fine rain")
+        self.dropletSize_comboBox.setObjectName(u"dropletSize_comboBox")
+
+        self.gridLayout_operational_data.addWidget(self.dropletSize_comboBox, 3, 1, 1, 1)
+
+        self.boomHeight_lineEdit = QLineEdit(self.groupBox_operational_data)
+        self.boomHeight_lineEdit.setObjectName(u"boomHeight_lineEdit")
+
+        self.gridLayout_operational_data.addWidget(self.boomHeight_lineEdit, 0, 1, 1, 1)
+
+        self.appRate_lineEdit = QLineEdit(self.groupBox_operational_data)
+        self.appRate_lineEdit.setObjectName(u"appRate_lineEdit")
+
+        self.gridLayout_operational_data.addWidget(self.appRate_lineEdit, 1, 1, 1, 1)
+
+        self.label_boomHeight = QLabel(self.groupBox_operational_data)
+        self.label_boomHeight.setObjectName(u"label_boomHeight")
+        self.label_boomHeight.setAlignment(Qt.AlignRight|Qt.AlignTrailing|Qt.AlignVCenter)
+
+        self.gridLayout_operational_data.addWidget(self.label_boomHeight, 0, 0, 1, 1)
+
+        self.label_appRate = QLabel(self.groupBox_operational_data)
+        self.label_appRate.setObjectName(u"label_appRate")
+        self.label_appRate.setAlignment(Qt.AlignRight|Qt.AlignTrailing|Qt.AlignVCenter)
+
+        self.gridLayout_operational_data.addWidget(self.label_appRate, 1, 0, 1, 1)
+
+        self.label_residualConc = QLabel(self.groupBox_operational_data)
+        self.label_residualConc.setObjectName(u"label_residualConc")
+        self.label_residualConc.setAlignment(Qt.AlignRight|Qt.AlignTrailing|Qt.AlignVCenter)
+
+        self.gridLayout_operational_data.addWidget(self.label_residualConc, 5, 0, 1, 1)
+
+        self.nozzleSpacing_lineEdit = QLineEdit(self.groupBox_operational_data)
+        self.nozzleSpacing_lineEdit.setObjectName(u"nozzleSpacing_lineEdit")
+
+        self.gridLayout_operational_data.addWidget(self.nozzleSpacing_lineEdit, 2, 1, 1, 1)
+
+        self.label_dropletSize = QLabel(self.groupBox_operational_data)
+        self.label_dropletSize.setObjectName(u"label_dropletSize")
+        self.label_dropletSize.setAlignment(Qt.AlignRight|Qt.AlignTrailing|Qt.AlignVCenter)
+
+        self.gridLayout_operational_data.addWidget(self.label_dropletSize, 3, 0, 1, 1)
+
+        self.forwardSpeed_lineEdit = QLineEdit(self.groupBox_operational_data)
+        self.forwardSpeed_lineEdit.setObjectName(u"forwardSpeed_lineEdit")
+
+        self.gridLayout_operational_data.addWidget(self.forwardSpeed_lineEdit, 4, 1, 1, 1)
+
+        self.label_nozzleSpac = QLabel(self.groupBox_operational_data)
+        self.label_nozzleSpac.setObjectName(u"label_nozzleSpac")
+        self.label_nozzleSpac.setAlignment(Qt.AlignRight|Qt.AlignTrailing|Qt.AlignVCenter)
+
+        self.gridLayout_operational_data.addWidget(self.label_nozzleSpac, 2, 0, 1, 1)
+
+        self.label_forwardSpeed = QLabel(self.groupBox_operational_data)
+        self.label_forwardSpeed.setObjectName(u"label_forwardSpeed")
+        self.label_forwardSpeed.setAlignment(Qt.AlignRight|Qt.AlignTrailing|Qt.AlignVCenter)
+
+        self.gridLayout_operational_data.addWidget(self.label_forwardSpeed, 4, 0, 1, 1)
+
+
+        self.verticalLayout_16.addLayout(self.gridLayout_operational_data)
+
+
+        self.verticalLayout_2.addWidget(self.groupBox_operational_data)
+
+        self.groupBox_meteorological_data = QGroupBox(self.inputGrpBox)
+        self.groupBox_meteorological_data.setObjectName(u"groupBox_meteorological_data")
+        sizePolicy.setHeightForWidth(self.groupBox_meteorological_data.sizePolicy().hasHeightForWidth())
+        self.groupBox_meteorological_data.setSizePolicy(sizePolicy)
+        self.verticalLayout_14 = QVBoxLayout(self.groupBox_meteorological_data)
+        self.verticalLayout_14.setObjectName(u"verticalLayout_14")
+        self.gridLayout_meteorological_data = QGridLayout()
+        self.gridLayout_meteorological_data.setObjectName(u"gridLayout_meteorological_data")
+        self.label_windSpeed = QLabel(self.groupBox_meteorological_data)
+        self.label_windSpeed.setObjectName(u"label_windSpeed")
+        self.label_windSpeed.setAlignment(Qt.AlignRight|Qt.AlignTrailing|Qt.AlignVCenter)
+
+        self.gridLayout_meteorological_data.addWidget(self.label_windSpeed, 0, 0, 1, 1)
+
+        self.label_temperature = QLabel(self.groupBox_meteorological_data)
+        self.label_temperature.setObjectName(u"label_temperature")
+        self.label_temperature.setAlignment(Qt.AlignRight|Qt.AlignTrailing|Qt.AlignVCenter)
+
+        self.gridLayout_meteorological_data.addWidget(self.label_temperature, 1, 0, 1, 1)
+
+        self.windSpeed_lineEdit = QLineEdit(self.groupBox_meteorological_data)
+        self.windSpeed_lineEdit.setObjectName(u"windSpeed_lineEdit")
+
+        self.gridLayout_meteorological_data.addWidget(self.windSpeed_lineEdit, 0, 1, 1, 1)
+
+        self.temperature_lineEdit = QLineEdit(self.groupBox_meteorological_data)
+        self.temperature_lineEdit.setObjectName(u"temperature_lineEdit")
+
+        self.gridLayout_meteorological_data.addWidget(self.temperature_lineEdit, 1, 1, 1, 1)
+
+        self.label_humidity = QLabel(self.groupBox_meteorological_data)
+        self.label_humidity.setObjectName(u"label_humidity")
+        self.label_humidity.setAlignment(Qt.AlignRight|Qt.AlignTrailing|Qt.AlignVCenter)
+
+        self.gridLayout_meteorological_data.addWidget(self.label_humidity, 2, 0, 1, 1)
+
+        self.humidity_lineEdit = QLineEdit(self.groupBox_meteorological_data)
+        self.humidity_lineEdit.setObjectName(u"humidity_lineEdit")
+
+        self.gridLayout_meteorological_data.addWidget(self.humidity_lineEdit, 2, 1, 1, 1)
+
+
+        self.verticalLayout_14.addLayout(self.gridLayout_meteorological_data)
+
+
+        self.verticalLayout_2.addWidget(self.groupBox_meteorological_data)
 
 
         self.inputLayout.addWidget(self.inputGrpBox)
-
-        self.paramStackedWidget = QStackedWidget(self.centralwidget)
-        self.paramStackedWidget.setObjectName(u"paramStackedWidget")
-        sizePolicy3 = QSizePolicy(QSizePolicy.Fixed, QSizePolicy.Preferred)
-        sizePolicy3.setHorizontalStretch(0)
-        sizePolicy3.setVerticalStretch(0)
-        sizePolicy3.setHeightForWidth(self.paramStackedWidget.sizePolicy().hasHeightForWidth())
-        self.paramStackedWidget.setSizePolicy(sizePolicy3)
-        self.inputHome = QWidget()
-        self.inputHome.setObjectName(u"inputHome")
-        self.inputResume = QVBoxLayout(self.inputHome)
-        self.inputResume.setObjectName(u"inputResume")
-        self.paramGridLayout = QGridLayout()
-        self.paramGridLayout.setObjectName(u"paramGridLayout")
-        self.gridLayout = QGridLayout()
-        self.gridLayout.setObjectName(u"gridLayout")
-        self.progressBar_3 = QProgressBar(self.inputHome)
-        self.progressBar_3.setObjectName(u"progressBar_3")
-        sizePolicy2.setHeightForWidth(self.progressBar_3.sizePolicy().hasHeightForWidth())
-        self.progressBar_3.setSizePolicy(sizePolicy2)
-        self.progressBar_3.setValue(24)
-
-        self.gridLayout.addWidget(self.progressBar_3, 2, 1, 1, 1)
-
-        self.progressBar_2 = QProgressBar(self.inputHome)
-        self.progressBar_2.setObjectName(u"progressBar_2")
-        sizePolicy2.setHeightForWidth(self.progressBar_2.sizePolicy().hasHeightForWidth())
-        self.progressBar_2.setSizePolicy(sizePolicy2)
-        self.progressBar_2.setValue(24)
-
-        self.gridLayout.addWidget(self.progressBar_2, 1, 1, 1, 1)
-
-        self.label_2 = QLabel(self.inputHome)
-        self.label_2.setObjectName(u"label_2")
-        sizePolicy3.setHeightForWidth(self.label_2.sizePolicy().hasHeightForWidth())
-        self.label_2.setSizePolicy(sizePolicy3)
-        self.label_2.setAlignment(Qt.AlignRight|Qt.AlignTrailing|Qt.AlignVCenter)
-
-        self.gridLayout.addWidget(self.label_2, 0, 0, 1, 1)
-
-        self.label_3 = QLabel(self.inputHome)
-        self.label_3.setObjectName(u"label_3")
-        sizePolicy1.setHeightForWidth(self.label_3.sizePolicy().hasHeightForWidth())
-        self.label_3.setSizePolicy(sizePolicy1)
-        self.label_3.setAlignment(Qt.AlignRight|Qt.AlignTrailing|Qt.AlignVCenter)
-
-        self.gridLayout.addWidget(self.label_3, 1, 0, 1, 1)
-
-        self.progressBar = QProgressBar(self.inputHome)
-        self.progressBar.setObjectName(u"progressBar")
-        sizePolicy2.setHeightForWidth(self.progressBar.sizePolicy().hasHeightForWidth())
-        self.progressBar.setSizePolicy(sizePolicy2)
-        self.progressBar.setValue(24)
-
-        self.gridLayout.addWidget(self.progressBar, 0, 1, 1, 1)
-
-        self.label_4 = QLabel(self.inputHome)
-        self.label_4.setObjectName(u"label_4")
-        sizePolicy1.setHeightForWidth(self.label_4.sizePolicy().hasHeightForWidth())
-        self.label_4.setSizePolicy(sizePolicy1)
-        self.label_4.setAlignment(Qt.AlignRight|Qt.AlignTrailing|Qt.AlignVCenter)
-
-        self.gridLayout.addWidget(self.label_4, 2, 0, 1, 1)
-
-
-        self.paramGridLayout.addLayout(self.gridLayout, 1, 0, 1, 1)
-
-        self.paramLevel = QLabel(self.inputHome)
-        self.paramLevel.setObjectName(u"paramLevel")
-        sizePolicy4 = QSizePolicy(QSizePolicy.Preferred, QSizePolicy.Fixed)
-        sizePolicy4.setHorizontalStretch(0)
-        sizePolicy4.setVerticalStretch(0)
-        sizePolicy4.setHeightForWidth(self.paramLevel.sizePolicy().hasHeightForWidth())
-        self.paramLevel.setSizePolicy(sizePolicy4)
-        self.paramLevel.setAlignment(Qt.AlignCenter)
-
-        self.paramGridLayout.addWidget(self.paramLevel, 0, 0, 1, 1)
-
-
-        self.inputResume.addLayout(self.paramGridLayout)
-
-        self.verticalSpacer = QSpacerItem(20, 40, QSizePolicy.Minimum, QSizePolicy.Expanding)
-
-        self.inputResume.addItem(self.verticalSpacer)
-
-        self.line_2 = QFrame(self.inputHome)
-        self.line_2.setObjectName(u"line_2")
-        self.line_2.setFrameShape(QFrame.HLine)
-        self.line_2.setFrameShadow(QFrame.Sunken)
-
-        self.inputResume.addWidget(self.line_2)
-
-        self.calculBtn = QPushButton(self.inputHome)
-        self.calculBtn.setObjectName(u"calculBtn")
-        self.calculBtn.setFocusPolicy(Qt.StrongFocus)
-        icon4 = QIcon()
-        icon4.addFile(u"Im/settings.png", QSize(), QIcon.Normal, QIcon.Off)
-        self.calculBtn.setIcon(icon4)
-        self.calculBtn.setIconSize(QSize(20, 20))
-
-        self.inputResume.addWidget(self.calculBtn)
-
-        self.asriskBtn = QPushButton(self.inputHome)
-        self.asriskBtn.setObjectName(u"asriskBtn")
-        icon5 = QIcon()
-        icon5.addFile(u"Im/operation_risk.png", QSize(), QIcon.Normal, QIcon.Off)
-        self.asriskBtn.setIcon(icon5)
-        self.asriskBtn.setIconSize(QSize(20, 20))
-
-        self.inputResume.addWidget(self.asriskBtn)
-
-        self.paramStackedWidget.addWidget(self.inputHome)
-        self.paramAtmosphere = QWidget()
-        self.paramAtmosphere.setObjectName(u"paramAtmosphere")
-        self.parAtm = QVBoxLayout(self.paramAtmosphere)
-        self.parAtm.setObjectName(u"parAtm")
-        self.groupBox = QGroupBox(self.paramAtmosphere)
-        self.groupBox.setObjectName(u"groupBox")
-        self.verticalLayout_5 = QVBoxLayout(self.groupBox)
-        self.verticalLayout_5.setSpacing(6)
-        self.verticalLayout_5.setObjectName(u"verticalLayout_5")
-        self.groupBox_3 = QGroupBox(self.groupBox)
-        self.groupBox_3.setObjectName(u"groupBox_3")
-        sizePolicy2.setHeightForWidth(self.groupBox_3.sizePolicy().hasHeightForWidth())
-        self.groupBox_3.setSizePolicy(sizePolicy2)
-        self.groupBox_3.setAlignment(Qt.AlignCenter)
-        self.horizontalLayout_3 = QHBoxLayout(self.groupBox_3)
-        self.horizontalLayout_3.setObjectName(u"horizontalLayout_3")
-        self.gridLayout_5 = QGridLayout()
-        self.gridLayout_5.setObjectName(u"gridLayout_5")
-        self.label_10 = QLabel(self.groupBox_3)
-        self.label_10.setObjectName(u"label_10")
-
-        self.gridLayout_5.addWidget(self.label_10, 1, 0, 1, 1)
-
-        self.label_11 = QLabel(self.groupBox_3)
-        self.label_11.setObjectName(u"label_11")
-
-        self.gridLayout_5.addWidget(self.label_11, 0, 0, 1, 1)
-
-        self.lineEdit_7 = QLineEdit(self.groupBox_3)
-        self.lineEdit_7.setObjectName(u"lineEdit_7")
-
-        self.gridLayout_5.addWidget(self.lineEdit_7, 0, 1, 1, 1)
-
-        self.lineEdit_8 = QLineEdit(self.groupBox_3)
-        self.lineEdit_8.setObjectName(u"lineEdit_8")
-
-        self.gridLayout_5.addWidget(self.lineEdit_8, 1, 1, 1, 1)
-
-
-        self.horizontalLayout_3.addLayout(self.gridLayout_5)
-
-        self.pushButton_2 = QPushButton(self.groupBox_3)
-        self.pushButton_2.setObjectName(u"pushButton_2")
-        self.pushButton_2.setCheckable(False)
-        self.pushButton_2.setAutoDefault(False)
-
-        self.horizontalLayout_3.addWidget(self.pushButton_2)
-
-
-        self.verticalLayout_5.addWidget(self.groupBox_3)
-
-        self.gridLayout_6 = QGridLayout()
-        self.gridLayout_6.setObjectName(u"gridLayout_6")
-        self.label_12 = QLabel(self.groupBox)
-        self.label_12.setObjectName(u"label_12")
-        self.label_12.setAlignment(Qt.AlignRight|Qt.AlignTrailing|Qt.AlignVCenter)
-
-        self.gridLayout_6.addWidget(self.label_12, 3, 0, 1, 1)
-
-        self.lineEdit_9 = QLineEdit(self.groupBox)
-        self.lineEdit_9.setObjectName(u"lineEdit_9")
-
-        self.gridLayout_6.addWidget(self.lineEdit_9, 2, 1, 1, 1)
-
-        self.lineEdit_10 = QLineEdit(self.groupBox)
-        self.lineEdit_10.setObjectName(u"lineEdit_10")
-
-        self.gridLayout_6.addWidget(self.lineEdit_10, 0, 1, 1, 1)
-
-        self.lineEdit_11 = QLineEdit(self.groupBox)
-        self.lineEdit_11.setObjectName(u"lineEdit_11")
-
-        self.gridLayout_6.addWidget(self.lineEdit_11, 1, 1, 1, 1)
-
-        self.lineEdit_12 = QLineEdit(self.groupBox)
-        self.lineEdit_12.setObjectName(u"lineEdit_12")
-
-        self.gridLayout_6.addWidget(self.lineEdit_12, 3, 1, 1, 1)
-
-        self.label_13 = QLabel(self.groupBox)
-        self.label_13.setObjectName(u"label_13")
-        self.label_13.setAlignment(Qt.AlignRight|Qt.AlignTrailing|Qt.AlignVCenter)
-
-        self.gridLayout_6.addWidget(self.label_13, 1, 0, 1, 1)
-
-        self.label_14 = QLabel(self.groupBox)
-        self.label_14.setObjectName(u"label_14")
-        self.label_14.setAlignment(Qt.AlignRight|Qt.AlignTrailing|Qt.AlignVCenter)
-
-        self.gridLayout_6.addWidget(self.label_14, 2, 0, 1, 1)
-
-        self.label_15 = QLabel(self.groupBox)
-        self.label_15.setObjectName(u"label_15")
-        self.label_15.setAlignment(Qt.AlignRight|Qt.AlignTrailing|Qt.AlignVCenter)
-
-        self.gridLayout_6.addWidget(self.label_15, 0, 0, 1, 1)
-
-
-        self.verticalLayout_5.addLayout(self.gridLayout_6)
-
-
-        self.parAtm.addWidget(self.groupBox)
-
-        self.groupBox_5 = QGroupBox(self.paramAtmosphere)
-        self.groupBox_5.setObjectName(u"groupBox_5")
-
-        self.parAtm.addWidget(self.groupBox_5)
-
-        self.groupBox_4 = QGroupBox(self.paramAtmosphere)
-        self.groupBox_4.setObjectName(u"groupBox_4")
-
-        self.parAtm.addWidget(self.groupBox_4)
-
-        self.atmosBtnBox = QDialogButtonBox(self.paramAtmosphere)
-        self.atmosBtnBox.setObjectName(u"atmosBtnBox")
-        self.atmosBtnBox.setStandardButtons(QDialogButtonBox.Cancel|QDialogButtonBox.Ok)
-
-        self.parAtm.addWidget(self.atmosBtnBox)
-
-        self.paramStackedWidget.addWidget(self.paramAtmosphere)
-        self.paramTerrain = QWidget()
-        self.paramTerrain.setObjectName(u"paramTerrain")
-        self.parTer = QVBoxLayout(self.paramTerrain)
-        self.parTer.setObjectName(u"parTer")
-        self.groupBox_6 = QGroupBox(self.paramTerrain)
-        self.groupBox_6.setObjectName(u"groupBox_6")
-        self.verticalLayout_12 = QVBoxLayout(self.groupBox_6)
-        self.verticalLayout_12.setObjectName(u"verticalLayout_12")
-        self.gridLayout_8 = QGridLayout()
-        self.gridLayout_8.setObjectName(u"gridLayout_8")
-        self.lineEdit_15 = QLineEdit(self.groupBox_6)
-        self.lineEdit_15.setObjectName(u"lineEdit_15")
-
-        self.gridLayout_8.addWidget(self.lineEdit_15, 0, 1, 1, 1)
-
-        self.label_18 = QLabel(self.groupBox_6)
-        self.label_18.setObjectName(u"label_18")
-        self.label_18.setAlignment(Qt.AlignRight|Qt.AlignTrailing|Qt.AlignVCenter)
-
-        self.gridLayout_8.addWidget(self.label_18, 1, 0, 1, 1)
-
-        self.lineEdit_16 = QLineEdit(self.groupBox_6)
-        self.lineEdit_16.setObjectName(u"lineEdit_16")
-
-        self.gridLayout_8.addWidget(self.lineEdit_16, 1, 1, 1, 1)
-
-        self.label_19 = QLabel(self.groupBox_6)
-        self.label_19.setObjectName(u"label_19")
-        self.label_19.setAlignment(Qt.AlignRight|Qt.AlignTrailing|Qt.AlignVCenter)
-
-        self.gridLayout_8.addWidget(self.label_19, 0, 0, 1, 1)
-
-
-        self.verticalLayout_12.addLayout(self.gridLayout_8)
-
-
-        self.parTer.addWidget(self.groupBox_6)
-
-        self.groupBox_7 = QGroupBox(self.paramTerrain)
-        self.groupBox_7.setObjectName(u"groupBox_7")
-        self.verticalLayout_13 = QVBoxLayout(self.groupBox_7)
-        self.verticalLayout_13.setObjectName(u"verticalLayout_13")
-        self.gridLayout_9 = QGridLayout()
-        self.gridLayout_9.setObjectName(u"gridLayout_9")
-        self.checkBox = QCheckBox(self.groupBox_7)
-        self.checkBox.setObjectName(u"checkBox")
-
-        self.gridLayout_9.addWidget(self.checkBox, 0, 0, 1, 1)
-
-        self.checkBox_2 = QCheckBox(self.groupBox_7)
-        self.checkBox_2.setObjectName(u"checkBox_2")
-
-        self.gridLayout_9.addWidget(self.checkBox_2, 0, 1, 1, 1)
-
-
-        self.verticalLayout_13.addLayout(self.gridLayout_9)
-
-
-        self.parTer.addWidget(self.groupBox_7)
-
-        self.groupBox_8 = QGroupBox(self.paramTerrain)
-        self.groupBox_8.setObjectName(u"groupBox_8")
-
-        self.parTer.addWidget(self.groupBox_8)
-
-        self.terBtnBox = QDialogButtonBox(self.paramTerrain)
-        self.terBtnBox.setObjectName(u"terBtnBox")
-        self.terBtnBox.setStandardButtons(QDialogButtonBox.Cancel|QDialogButtonBox.Ok)
-
-        self.parTer.addWidget(self.terBtnBox)
-
-        self.paramStackedWidget.addWidget(self.paramTerrain)
-        self.paramOpera = QWidget()
-        self.paramOpera.setObjectName(u"paramOpera")
-        self.parOp = QVBoxLayout(self.paramOpera)
-        self.parOp.setObjectName(u"parOp")
-        self.groupBox_11 = QGroupBox(self.paramOpera)
-        self.groupBox_11.setObjectName(u"groupBox_11")
-        self.verticalLayout_16 = QVBoxLayout(self.groupBox_11)
-        self.verticalLayout_16.setObjectName(u"verticalLayout_16")
-        self.gridLayout_12 = QGridLayout()
-        self.gridLayout_12.setObjectName(u"gridLayout_12")
-        self.label_29 = QLabel(self.groupBox_11)
-        self.label_29.setObjectName(u"label_29")
-        self.label_29.setAlignment(Qt.AlignRight|Qt.AlignTrailing|Qt.AlignVCenter)
-
-        self.gridLayout_12.addWidget(self.label_29, 1, 0, 1, 1)
-
-        self.lineEdit_25 = QLineEdit(self.groupBox_11)
-        self.lineEdit_25.setObjectName(u"lineEdit_25")
-
-        self.gridLayout_12.addWidget(self.lineEdit_25, 0, 1, 1, 1)
-
-        self.label_30 = QLabel(self.groupBox_11)
-        self.label_30.setObjectName(u"label_30")
-        self.label_30.setAlignment(Qt.AlignRight|Qt.AlignTrailing|Qt.AlignVCenter)
-
-        self.gridLayout_12.addWidget(self.label_30, 2, 0, 1, 1)
-
-        self.lineEdit_26 = QLineEdit(self.groupBox_11)
-        self.lineEdit_26.setObjectName(u"lineEdit_26")
-
-        self.gridLayout_12.addWidget(self.lineEdit_26, 1, 1, 1, 1)
-
-        self.lineEdit_27 = QLineEdit(self.groupBox_11)
-        self.lineEdit_27.setObjectName(u"lineEdit_27")
-
-        self.gridLayout_12.addWidget(self.lineEdit_27, 2, 1, 1, 1)
-
-        self.label_31 = QLabel(self.groupBox_11)
-        self.label_31.setObjectName(u"label_31")
-        self.label_31.setAlignment(Qt.AlignRight|Qt.AlignTrailing|Qt.AlignVCenter)
-
-        self.gridLayout_12.addWidget(self.label_31, 0, 0, 1, 1)
-
-        self.label_32 = QLabel(self.groupBox_11)
-        self.label_32.setObjectName(u"label_32")
-        self.label_32.setAlignment(Qt.AlignRight|Qt.AlignTrailing|Qt.AlignVCenter)
-
-        self.gridLayout_12.addWidget(self.label_32, 3, 0, 1, 1)
-
-        self.lineEdit_28 = QLineEdit(self.groupBox_11)
-        self.lineEdit_28.setObjectName(u"lineEdit_28")
-
-        self.gridLayout_12.addWidget(self.lineEdit_28, 3, 1, 1, 1)
-
-
-        self.verticalLayout_16.addLayout(self.gridLayout_12)
-
-
-        self.parOp.addWidget(self.groupBox_11)
-
-        self.groupBox_10 = QGroupBox(self.paramOpera)
-        self.groupBox_10.setObjectName(u"groupBox_10")
-        self.verticalLayout_15 = QVBoxLayout(self.groupBox_10)
-        self.verticalLayout_15.setObjectName(u"verticalLayout_15")
-        self.gridLayout_11 = QGridLayout()
-        self.gridLayout_11.setObjectName(u"gridLayout_11")
-        self.lineEdit_22 = QLineEdit(self.groupBox_10)
-        self.lineEdit_22.setObjectName(u"lineEdit_22")
-
-        self.gridLayout_11.addWidget(self.lineEdit_22, 1, 1, 1, 1)
-
-        self.lineEdit_23 = QLineEdit(self.groupBox_10)
-        self.lineEdit_23.setObjectName(u"lineEdit_23")
-
-        self.gridLayout_11.addWidget(self.lineEdit_23, 0, 1, 1, 1)
-
-        self.label_26 = QLabel(self.groupBox_10)
-        self.label_26.setObjectName(u"label_26")
-        self.label_26.setAlignment(Qt.AlignRight|Qt.AlignTrailing|Qt.AlignVCenter)
-
-        self.gridLayout_11.addWidget(self.label_26, 1, 0, 1, 1)
-
-        self.label_27 = QLabel(self.groupBox_10)
-        self.label_27.setObjectName(u"label_27")
-        self.label_27.setAlignment(Qt.AlignRight|Qt.AlignTrailing|Qt.AlignVCenter)
-
-        self.gridLayout_11.addWidget(self.label_27, 0, 0, 1, 1)
-
-        self.label_28 = QLabel(self.groupBox_10)
-        self.label_28.setObjectName(u"label_28")
-        self.label_28.setAlignment(Qt.AlignRight|Qt.AlignTrailing|Qt.AlignVCenter)
-
-        self.gridLayout_11.addWidget(self.label_28, 2, 0, 1, 1)
-
-        self.lineEdit_24 = QLineEdit(self.groupBox_10)
-        self.lineEdit_24.setObjectName(u"lineEdit_24")
-
-        self.gridLayout_11.addWidget(self.lineEdit_24, 2, 1, 1, 1)
-
-
-        self.verticalLayout_15.addLayout(self.gridLayout_11)
-
-
-        self.parOp.addWidget(self.groupBox_10)
-
-        self.groupBox_9 = QGroupBox(self.paramOpera)
-        self.groupBox_9.setObjectName(u"groupBox_9")
-        self.verticalLayout_14 = QVBoxLayout(self.groupBox_9)
-        self.verticalLayout_14.setObjectName(u"verticalLayout_14")
-        self.gridLayout_10 = QGridLayout()
-        self.gridLayout_10.setObjectName(u"gridLayout_10")
-        self.label_20 = QLabel(self.groupBox_9)
-        self.label_20.setObjectName(u"label_20")
-        self.label_20.setAlignment(Qt.AlignRight|Qt.AlignTrailing|Qt.AlignVCenter)
-
-        self.gridLayout_10.addWidget(self.label_20, 5, 0, 1, 1)
-
-        self.lineEdit_17 = QLineEdit(self.groupBox_9)
-        self.lineEdit_17.setObjectName(u"lineEdit_17")
-
-        self.gridLayout_10.addWidget(self.lineEdit_17, 3, 1, 1, 1)
-
-        self.label_21 = QLabel(self.groupBox_9)
-        self.label_21.setObjectName(u"label_21")
-        self.label_21.setAlignment(Qt.AlignRight|Qt.AlignTrailing|Qt.AlignVCenter)
-
-        self.gridLayout_10.addWidget(self.label_21, 0, 0, 1, 1)
-
-        self.label_22 = QLabel(self.groupBox_9)
-        self.label_22.setObjectName(u"label_22")
-        self.label_22.setAlignment(Qt.AlignRight|Qt.AlignTrailing|Qt.AlignVCenter)
-
-        self.gridLayout_10.addWidget(self.label_22, 3, 0, 1, 1)
-
-        self.label_23 = QLabel(self.groupBox_9)
-        self.label_23.setObjectName(u"label_23")
-        self.label_23.setAlignment(Qt.AlignRight|Qt.AlignTrailing|Qt.AlignVCenter)
-
-        self.gridLayout_10.addWidget(self.label_23, 4, 0, 1, 1)
-
-        self.lineEdit_18 = QLineEdit(self.groupBox_9)
-        self.lineEdit_18.setObjectName(u"lineEdit_18")
-
-        self.gridLayout_10.addWidget(self.lineEdit_18, 5, 1, 1, 1)
-
-        self.lineEdit_19 = QLineEdit(self.groupBox_9)
-        self.lineEdit_19.setObjectName(u"lineEdit_19")
-
-        self.gridLayout_10.addWidget(self.lineEdit_19, 1, 1, 1, 1)
-
-        self.lineEdit_20 = QLineEdit(self.groupBox_9)
-        self.lineEdit_20.setObjectName(u"lineEdit_20")
-
-        self.gridLayout_10.addWidget(self.lineEdit_20, 4, 1, 1, 1)
-
-        self.lineEdit_21 = QLineEdit(self.groupBox_9)
-        self.lineEdit_21.setObjectName(u"lineEdit_21")
-
-        self.gridLayout_10.addWidget(self.lineEdit_21, 0, 1, 1, 1)
-
-        self.label_24 = QLabel(self.groupBox_9)
-        self.label_24.setObjectName(u"label_24")
-        self.label_24.setAlignment(Qt.AlignRight|Qt.AlignTrailing|Qt.AlignVCenter)
-
-        self.gridLayout_10.addWidget(self.label_24, 1, 0, 1, 1)
-
-        self.label_25 = QLabel(self.groupBox_9)
-        self.label_25.setObjectName(u"label_25")
-        self.label_25.setAlignment(Qt.AlignRight|Qt.AlignTrailing|Qt.AlignVCenter)
-
-        self.gridLayout_10.addWidget(self.label_25, 2, 0, 1, 1)
-
-        self.comboBox = QComboBox(self.groupBox_9)
-        self.comboBox.addItem("")
-        self.comboBox.addItem("")
-        self.comboBox.addItem("")
-        self.comboBox.addItem("")
-        self.comboBox.addItem("")
-        self.comboBox.addItem("")
-        self.comboBox.addItem("")
-        self.comboBox.addItem("")
-        self.comboBox.setObjectName(u"comboBox")
-
-        self.gridLayout_10.addWidget(self.comboBox, 2, 1, 1, 1)
-
-
-        self.verticalLayout_14.addLayout(self.gridLayout_10)
-
-
-        self.parOp.addWidget(self.groupBox_9)
-
-        self.opBtnBox = QDialogButtonBox(self.paramOpera)
-        self.opBtnBox.setObjectName(u"opBtnBox")
-        self.opBtnBox.setStandardButtons(QDialogButtonBox.Cancel|QDialogButtonBox.Ok)
-
-        self.parOp.addWidget(self.opBtnBox)
-
-        self.paramStackedWidget.addWidget(self.paramOpera)
-
-        self.inputLayout.addWidget(self.paramStackedWidget)
 
 
         self.centralLayout.addLayout(self.inputLayout)
@@ -615,41 +305,172 @@ class Ui_MainWindow(object):
         self.resultLayout.setObjectName(u"resultLayout")
         self.resultGrpBox = QGroupBox(self.centralwidget)
         self.resultGrpBox.setObjectName(u"resultGrpBox")
+        sizePolicy.setHeightForWidth(self.resultGrpBox.sizePolicy().hasHeightForWidth())
+        self.resultGrpBox.setSizePolicy(sizePolicy)
         self.verticalLayout_8 = QVBoxLayout(self.resultGrpBox)
         self.verticalLayout_8.setObjectName(u"verticalLayout_8")
-        self.resultTabWidget = QTabWidget(self.resultGrpBox)
-        self.resultTabWidget.setObjectName(u"resultTabWidget")
-        self.resultTabWidget.setTabShape(QTabWidget.Rounded)
-        self.resultTabWidget.setIconSize(QSize(13, 20))
-        self.resultTabWidget.setElideMode(Qt.ElideRight)
-        self.resultTabWidget.setDocumentMode(False)
-        self.resultTabWidget.setTabsClosable(False)
-        self.resultTabWidget.setMovable(False)
-        self.resultTabWidget.setTabBarAutoHide(False)
-        self.tabgraph = QWidget()
-        self.tabgraph.setObjectName(u"tabgraph")
-        icon6 = QIcon()
-        icon6.addFile(u"Im/picture.png", QSize(), QIcon.Normal, QIcon.Off)
-        self.resultTabWidget.addTab(self.tabgraph, icon6, "")
-        self.tabdata = QWidget()
-        self.tabdata.setObjectName(u"tabdata")
-        icon7 = QIcon()
-        icon7.addFile(u"Im/graph.png", QSize(), QIcon.Normal, QIcon.Off)
-        self.resultTabWidget.addTab(self.tabdata, icon7, "")
+        self.gridLayout_calculus = QGridLayout()
+        self.gridLayout_calculus.setObjectName(u"gridLayout_calculus")
+        self.label_timeStep = QLabel(self.resultGrpBox)
+        self.label_timeStep.setObjectName(u"label_timeStep")
+        self.label_timeStep.setAlignment(Qt.AlignRight|Qt.AlignTrailing|Qt.AlignVCenter)
 
-        self.verticalLayout_8.addWidget(self.resultTabWidget)
+        self.gridLayout_calculus.addWidget(self.label_timeStep, 1, 6, 1, 1)
+
+        self.label_y0 = QLabel(self.resultGrpBox)
+        self.label_y0.setObjectName(u"label_y0")
+        sizePolicy2 = QSizePolicy(QSizePolicy.Fixed, QSizePolicy.Preferred)
+        sizePolicy2.setHorizontalStretch(0)
+        sizePolicy2.setVerticalStretch(0)
+        sizePolicy2.setHeightForWidth(self.label_y0.sizePolicy().hasHeightForWidth())
+        self.label_y0.setSizePolicy(sizePolicy2)
+
+        self.gridLayout_calculus.addWidget(self.label_y0, 1, 3, 1, 1)
+
+        self.y0_lineEdit = QLineEdit(self.resultGrpBox)
+        self.y0_lineEdit.setObjectName(u"y0_lineEdit")
+        sizePolicy3 = QSizePolicy(QSizePolicy.Preferred, QSizePolicy.Fixed)
+        sizePolicy3.setHorizontalStretch(0)
+        sizePolicy3.setVerticalStretch(0)
+        sizePolicy3.setHeightForWidth(self.y0_lineEdit.sizePolicy().hasHeightForWidth())
+        self.y0_lineEdit.setSizePolicy(sizePolicy3)
+
+        self.gridLayout_calculus.addWidget(self.y0_lineEdit, 1, 4, 1, 1)
+
+        self.label_hotspot = QLabel(self.resultGrpBox)
+        self.label_hotspot.setObjectName(u"label_hotspot")
+        self.label_hotspot.setLayoutDirection(Qt.LeftToRight)
+        self.label_hotspot.setAlignment(Qt.AlignRight|Qt.AlignTrailing|Qt.AlignVCenter)
+
+        self.gridLayout_calculus.addWidget(self.label_hotspot, 1, 0, 1, 1)
+
+        self.label_x0 = QLabel(self.resultGrpBox)
+        self.label_x0.setObjectName(u"label_x0")
+        sizePolicy2.setHeightForWidth(self.label_x0.sizePolicy().hasHeightForWidth())
+        self.label_x0.setSizePolicy(sizePolicy2)
+
+        self.gridLayout_calculus.addWidget(self.label_x0, 1, 1, 1, 1)
+
+        self.timeStep_lineEdit = QLineEdit(self.resultGrpBox)
+        self.timeStep_lineEdit.setObjectName(u"timeStep_lineEdit")
+        sizePolicy3.setHeightForWidth(self.timeStep_lineEdit.sizePolicy().hasHeightForWidth())
+        self.timeStep_lineEdit.setSizePolicy(sizePolicy3)
+
+        self.gridLayout_calculus.addWidget(self.timeStep_lineEdit, 1, 7, 1, 1)
+
+        self.x0_lineEdit = QLineEdit(self.resultGrpBox)
+        self.x0_lineEdit.setObjectName(u"x0_lineEdit")
+        sizePolicy3.setHeightForWidth(self.x0_lineEdit.sizePolicy().hasHeightForWidth())
+        self.x0_lineEdit.setSizePolicy(sizePolicy3)
+
+        self.gridLayout_calculus.addWidget(self.x0_lineEdit, 1, 2, 1, 1)
+
+        self.calculBtn = QPushButton(self.resultGrpBox)
+        self.calculBtn.setObjectName(u"calculBtn")
+        sizePolicy4 = QSizePolicy(QSizePolicy.Maximum, QSizePolicy.Fixed)
+        sizePolicy4.setHorizontalStretch(0)
+        sizePolicy4.setVerticalStretch(0)
+        sizePolicy4.setHeightForWidth(self.calculBtn.sizePolicy().hasHeightForWidth())
+        self.calculBtn.setSizePolicy(sizePolicy4)
+        self.calculBtn.setFocusPolicy(Qt.StrongFocus)
+        icon2 = QIcon()
+        icon2.addFile(u"Im/settings.png", QSize(), QIcon.Normal, QIcon.Off)
+        self.calculBtn.setIcon(icon2)
+        self.calculBtn.setIconSize(QSize(20, 20))
+
+        self.gridLayout_calculus.addWidget(self.calculBtn, 1, 9, 1, 1)
+
+        self.label = QLabel(self.resultGrpBox)
+        self.label.setObjectName(u"label")
+
+        self.gridLayout_calculus.addWidget(self.label, 1, 5, 1, 1)
+
+
+        self.verticalLayout_8.addLayout(self.gridLayout_calculus)
+
+        self.resultTabWidget_result = QTabWidget(self.resultGrpBox)
+        self.resultTabWidget_result.setObjectName(u"resultTabWidget_result")
+        self.resultTabWidget_result.setEnabled(True)
+        sizePolicy5 = QSizePolicy(QSizePolicy.Fixed, QSizePolicy.Fixed)
+        sizePolicy5.setHorizontalStretch(0)
+        sizePolicy5.setVerticalStretch(0)
+        sizePolicy5.setHeightForWidth(self.resultTabWidget_result.sizePolicy().hasHeightForWidth())
+        self.resultTabWidget_result.setSizePolicy(sizePolicy5)
+        self.resultTabWidget_result.setMinimumSize(QSize(565, 431))
+        self.resultTabWidget_result.setMaximumSize(QSize(565, 431))
+        self.resultTabWidget_result.setTabShape(QTabWidget.Rounded)
+        self.resultTabWidget_result.setIconSize(QSize(13, 20))
+        self.resultTabWidget_result.setElideMode(Qt.ElideRight)
+        self.resultTabWidget_result.setDocumentMode(False)
+        self.resultTabWidget_result.setTabsClosable(False)
+        self.resultTabWidget_result.setMovable(False)
+        self.resultTabWidget_result.setTabBarAutoHide(False)
+        self.tabPlot_result = QWidget()
+        self.tabPlot_result.setObjectName(u"tabPlot_result")
+        self.tabPlot_result.setSizeIncrement(QSize(0, 0))
+        self.result_graphicsView = QGraphicsView(self.tabPlot_result)
+        self.result_graphicsView.setObjectName(u"result_graphicsView")
+        self.result_graphicsView.setGeometry(QRect(1, 1, 557, 397))
+        sizePolicy5.setHeightForWidth(self.result_graphicsView.sizePolicy().hasHeightForWidth())
+        self.result_graphicsView.setSizePolicy(sizePolicy5)
+        self.result_graphicsView.setMinimumSize(QSize(557, 397))
+        self.result_graphicsView.setMaximumSize(QSize(557, 397))
+        icon3 = QIcon()
+        icon3.addFile(u"Im/picture.png", QSize(), QIcon.Normal, QIcon.Off)
+        self.resultTabWidget_result.addTab(self.tabPlot_result, icon3, "")
+        self.tabData_result = QWidget()
+        self.tabData_result.setObjectName(u"tabData_result")
+        sizePolicy5.setHeightForWidth(self.tabData_result.sizePolicy().hasHeightForWidth())
+        self.tabData_result.setSizePolicy(sizePolicy5)
+        self.tableView = QTableView(self.tabData_result)
+        self.tableView.setObjectName(u"tableView")
+        self.tableView.setGeometry(QRect(1, 1, 557, 397))
+        sizePolicy5.setHeightForWidth(self.tableView.sizePolicy().hasHeightForWidth())
+        self.tableView.setSizePolicy(sizePolicy5)
+        self.tableView.setMinimumSize(QSize(557, 397))
+        self.tableView.setMaximumSize(QSize(557, 397))
+        icon4 = QIcon()
+        icon4.addFile(u"Im/graph.png", QSize(), QIcon.Normal, QIcon.Off)
+        self.resultTabWidget_result.addTab(self.tabData_result, icon4, "")
+
+        self.verticalLayout_8.addWidget(self.resultTabWidget_result)
+
+        self.gridLayout_zposition = QGridLayout()
+        self.gridLayout_zposition.setObjectName(u"gridLayout_zposition")
+        self.zposition_lineEdit = QLineEdit(self.resultGrpBox)
+        self.zposition_lineEdit.setObjectName(u"zposition_lineEdit")
+        sizePolicy5.setHeightForWidth(self.zposition_lineEdit.sizePolicy().hasHeightForWidth())
+        self.zposition_lineEdit.setSizePolicy(sizePolicy5)
+        self.zposition_lineEdit.setMaximumSize(QSize(30, 16777215))
+
+        self.gridLayout_zposition.addWidget(self.zposition_lineEdit, 0, 1, 1, 1)
+
+        self.label_z = QLabel(self.resultGrpBox)
+        self.label_z.setObjectName(u"label_z")
+
+        self.gridLayout_zposition.addWidget(self.label_z, 0, 0, 1, 1)
+
+        self.zposition_horizontalSlider = QSlider(self.resultGrpBox)
+        self.zposition_horizontalSlider.setObjectName(u"zposition_horizontalSlider")
+        self.zposition_horizontalSlider.setMaximum(9)
+        self.zposition_horizontalSlider.setPageStep(1)
+        self.zposition_horizontalSlider.setValue(9)
+        self.zposition_horizontalSlider.setSliderPosition(9)
+        self.zposition_horizontalSlider.setOrientation(Qt.Horizontal)
+
+        self.gridLayout_zposition.addWidget(self.zposition_horizontalSlider, 0, 2, 1, 1)
+
+
+        self.verticalLayout_8.addLayout(self.gridLayout_zposition)
 
         self.downloadBtn = QPushButton(self.resultGrpBox)
         self.downloadBtn.setObjectName(u"downloadBtn")
-        sizePolicy5 = QSizePolicy(QSizePolicy.Maximum, QSizePolicy.Fixed)
-        sizePolicy5.setHorizontalStretch(0)
-        sizePolicy5.setVerticalStretch(0)
-        sizePolicy5.setHeightForWidth(self.downloadBtn.sizePolicy().hasHeightForWidth())
-        self.downloadBtn.setSizePolicy(sizePolicy5)
+        sizePolicy4.setHeightForWidth(self.downloadBtn.sizePolicy().hasHeightForWidth())
+        self.downloadBtn.setSizePolicy(sizePolicy4)
         self.downloadBtn.setLayoutDirection(Qt.LeftToRight)
-        icon8 = QIcon()
-        icon8.addFile(u"Im/download.png", QSize(), QIcon.Normal, QIcon.Off)
-        self.downloadBtn.setIcon(icon8)
+        icon5 = QIcon()
+        icon5.addFile(u"Im/download.png", QSize(), QIcon.Normal, QIcon.Off)
+        self.downloadBtn.setIcon(icon5)
         self.downloadBtn.setIconSize(QSize(17, 19))
 
         self.verticalLayout_8.addWidget(self.downloadBtn)
@@ -674,15 +495,9 @@ class Ui_MainWindow(object):
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QMenuBar(MainWindow)
         self.menubar.setObjectName(u"menubar")
-        self.menubar.setGeometry(QRect(0, 0, 800, 21))
+        self.menubar.setGeometry(QRect(0, 0, 950, 22))
         self.menuFichier = QMenu(self.menubar)
         self.menuFichier.setObjectName(u"menuFichier")
-        self.menuEditer = QMenu(self.menubar)
-        self.menuEditer.setObjectName(u"menuEditer")
-        self.menuRechercher = QMenu(self.menubar)
-        self.menuRechercher.setObjectName(u"menuRechercher")
-        self.menuOutils = QMenu(self.menubar)
-        self.menuOutils.setObjectName(u"menuOutils")
         self.menuAide = QMenu(self.menubar)
         self.menuAide.setObjectName(u"menuAide")
         MainWindow.setMenuBar(self.menubar)
@@ -691,9 +506,6 @@ class Ui_MainWindow(object):
         MainWindow.setStatusBar(self.statusbar)
 
         self.menubar.addAction(self.menuFichier.menuAction())
-        self.menubar.addAction(self.menuEditer.menuAction())
-        self.menubar.addAction(self.menuRechercher.menuAction())
-        self.menubar.addAction(self.menuOutils.menuAction())
         self.menubar.addAction(self.menuAide.menuAction())
         self.menuFichier.addAction(self.actionOuvrir)
         self.menuFichier.addAction(self.actionNouveau)
@@ -701,9 +513,10 @@ class Ui_MainWindow(object):
 
         self.retranslateUi(MainWindow)
 
-        self.paramStackedWidget.setCurrentIndex(3)
-        self.pushButton_2.setDefault(False)
-        self.resultTabWidget.setCurrentIndex(0)
+        self.supportCarac_comboBox.setCurrentIndex(-1)
+        self.pesticideUsed_comboBox.setCurrentIndex(-1)
+        self.dropletSize_comboBox.setCurrentIndex(-1)
+        self.resultTabWidget_result.setCurrentIndex(0)
 
 
         QMetaObject.connectSlotsByName(MainWindow)
@@ -711,71 +524,62 @@ class Ui_MainWindow(object):
 
     def retranslateUi(self, MainWindow):
         MainWindow.setWindowTitle(QCoreApplication.translate("MainWindow", u"DRIMERA", None))
-        self.actionOuvrir.setText(QCoreApplication.translate("MainWindow", u"Ouvrir", None))
-        self.actionNouveau.setText(QCoreApplication.translate("MainWindow", u"Nouveau", None))
-        self.actionQuitter.setText(QCoreApplication.translate("MainWindow", u"Quitter", None))
-        self.inputGrpBox.setTitle(QCoreApplication.translate("MainWindow", u"Entr\u00e9es", None))
-        self.atmosBtn.setText(QCoreApplication.translate("MainWindow", u"Atmosph\u00e9riques", None))
-        self.terrainBtn.setText(QCoreApplication.translate("MainWindow", u"Terrain", None))
-        self.operaBtn.setText(QCoreApplication.translate("MainWindow", u"Op\u00e9rationnels", None))
-        self.label_2.setText(QCoreApplication.translate("MainWindow", u"Atmosph\u00e9rique", None))
-        self.label_3.setText(QCoreApplication.translate("MainWindow", u"Terrain", None))
-        self.label_4.setText(QCoreApplication.translate("MainWindow", u"Op\u00e9rationnel", None))
-        self.paramLevel.setText(QCoreApplication.translate("MainWindow", u"Niveau de param\u00e9trage", None))
-        self.calculBtn.setText(QCoreApplication.translate("MainWindow", u"Calculer", None))
-        self.asriskBtn.setText(QCoreApplication.translate("MainWindow", u"Evaluer risques", None))
-        self.groupBox.setTitle(QCoreApplication.translate("MainWindow", u"Donn\u00e9es m\u00e9t\u00e9orologiques", None))
-        self.groupBox_3.setTitle(QCoreApplication.translate("MainWindow", u"Coordonn\u00e9es UTM", None))
-        self.label_10.setText(QCoreApplication.translate("MainWindow", u"Y (m)", None))
-        self.label_11.setText(QCoreApplication.translate("MainWindow", u"X (m)", None))
-        self.pushButton_2.setText(QCoreApplication.translate("MainWindow", u"T\u00e9l\u00e9charger donn\u00e9es", None))
-        self.label_12.setText(QCoreApplication.translate("MainWindow", u"Humidit\u00e9 relative (%)", None))
-        self.label_13.setText(QCoreApplication.translate("MainWindow", u"Direction du vent (N\u00b0)", None))
-        self.label_14.setText(QCoreApplication.translate("MainWindow", u"Temp\u00e9rature (\u00b0C)", None))
-        self.label_15.setText(QCoreApplication.translate("MainWindow", u"Vitesse du vent (km/h)", None))
-        self.groupBox_5.setTitle(QCoreApplication.translate("MainWindow", u"Turbulences", None))
-        self.groupBox_4.setTitle(QCoreApplication.translate("MainWindow", u"Bruit de fond", None))
-        self.groupBox_6.setTitle(QCoreApplication.translate("MainWindow", u"V\u00e9g\u00e9tation", None))
-        self.label_18.setText(QCoreApplication.translate("MainWindow", u"Densit\u00e9", None))
-        self.label_19.setText(QCoreApplication.translate("MainWindow", u"Hauteur (m)", None))
-        self.groupBox_7.setTitle(QCoreApplication.translate("MainWindow", u"Termes source", None))
-        self.checkBox.setText(QCoreApplication.translate("MainWindow", u"Pr\u00e9sence", None))
-        self.checkBox_2.setText(QCoreApplication.translate("MainWindow", u"Absence", None))
-        self.groupBox_8.setTitle(QCoreApplication.translate("MainWindow", u"Zones sensibles", None))
-        self.groupBox_11.setTitle(QCoreApplication.translate("MainWindow", u"Carat\u00e9ristiques appareil", None))
-        self.label_29.setText(QCoreApplication.translate("MainWindow", u"Masse (kg)", None))
-        self.label_30.setText(QCoreApplication.translate("MainWindow", u"Diam\u00e8tre rotor (mm)", None))
-        self.label_31.setText(QCoreApplication.translate("MainWindow", u"Avancement (m/s)", None))
-        self.label_32.setText(QCoreApplication.translate("MainWindow", u"Vitesse rotor (m/s)", None))
-        self.groupBox_10.setTitle(QCoreApplication.translate("MainWindow", u"Donn\u00e9es d'\u00e9mission", None))
-        self.label_26.setText(QCoreApplication.translate("MainWindow", u"Taux d'application (%)", None))
-        self.label_27.setText(QCoreApplication.translate("MainWindow", u"Taux de mati\u00e8re active (%)", None))
-        self.label_28.setText(QCoreApplication.translate("MainWindow", u"Temp\u00e9rature du produit (\u00b0C)", None))
-        self.groupBox_9.setTitle(QCoreApplication.translate("MainWindow", u"Caract\u00e9ristiques traitement", None))
-        self.label_20.setText(QCoreApplication.translate("MainWindow", u"Distance lignes de passage (m)", None))
-        self.label_21.setText(QCoreApplication.translate("MainWindow", u"Largeur rampe (m)", None))
-        self.label_22.setText(QCoreApplication.translate("MainWindow", u"Hauteur application (m)", None))
-        self.label_23.setText(QCoreApplication.translate("MainWindow", u"Nombre de passage", None))
-        self.label_24.setText(QCoreApplication.translate("MainWindow", u"Orientation buses (\u00b0)", None))
-        self.label_25.setText(QCoreApplication.translate("MainWindow", u"Classe gouettelettes", None))
-        self.comboBox.setItemText(0, QCoreApplication.translate("MainWindow", u"Extr\u00eamement fin", None))
-        self.comboBox.setItemText(1, QCoreApplication.translate("MainWindow", u"Tr\u00e8s fin", None))
-        self.comboBox.setItemText(2, QCoreApplication.translate("MainWindow", u"Fin", None))
-        self.comboBox.setItemText(3, QCoreApplication.translate("MainWindow", u"Moyen", None))
-        self.comboBox.setItemText(4, QCoreApplication.translate("MainWindow", u"Grossier", None))
-        self.comboBox.setItemText(5, QCoreApplication.translate("MainWindow", u"Tr\u00e8s grossier", None))
-        self.comboBox.setItemText(6, QCoreApplication.translate("MainWindow", u"Extr\u00eamement grossier", None))
-        self.comboBox.setItemText(7, QCoreApplication.translate("MainWindow", u"Ultra grossier", None))
+        self.actionOuvrir.setText(QCoreApplication.translate("MainWindow", u"Open", None))
+        self.actionNouveau.setText(QCoreApplication.translate("MainWindow", u"New", None))
+        self.actionQuitter.setText(QCoreApplication.translate("MainWindow", u"Quit", None))
+        self.actionQuitter.setIconText(QCoreApplication.translate("MainWindow", u"Quitter", None))
+        self.inputGrpBox.setTitle(QCoreApplication.translate("MainWindow", u"Inputs", None))
+        self.groupBox_spray_mixture.setTitle(QCoreApplication.translate("MainWindow", u"Spray mixture", None))
 
-        self.resultGrpBox.setTitle(QCoreApplication.translate("MainWindow", u"R\u00e9sultats", None))
-        self.resultTabWidget.setTabText(self.resultTabWidget.indexOf(self.tabgraph), QCoreApplication.translate("MainWindow", u"Graphe", None))
-        self.resultTabWidget.setTabText(self.resultTabWidget.indexOf(self.tabdata), QCoreApplication.translate("MainWindow", u"Donn\u00e9es", None))
-        self.downloadBtn.setText(QCoreApplication.translate("MainWindow", u"Exporter", None))
+        self.supportCarac_toolButton.setText(QCoreApplication.translate("MainWindow", u"...", None))
+        self.label_pesticideUsed.setText(QCoreApplication.translate("MainWindow", u"Pesticide used", None))
+        self.pesticideUsed_comboBox.setItemText(0, QCoreApplication.translate("MainWindow", u"Bankit 25 SC", None))
+        self.pesticideUsed_comboBox.setItemText(1, QCoreApplication.translate("MainWindow", u"Banko 720 SC", None))
+        self.pesticideUsed_comboBox.setItemText(2, QCoreApplication.translate("MainWindow", u"Cabrio EG", None))
+        self.pesticideUsed_comboBox.setItemText(3, QCoreApplication.translate("MainWindow", u"Calixine 75 EC", None))
+        self.pesticideUsed_comboBox.setItemText(4, QCoreApplication.translate("MainWindow", u"Callis 400 OL", None))
+        self.pesticideUsed_comboBox.setItemText(5, QCoreApplication.translate("MainWindow", u"Folicur 250 EW-Junior", None))
+        self.pesticideUsed_comboBox.setItemText(6, QCoreApplication.translate("MainWindow", u"Impulse 075 EC", None))
+        self.pesticideUsed_comboBox.setItemText(7, QCoreApplication.translate("MainWindow", u"Ivory 80 WP", None))
+        self.pesticideUsed_comboBox.setItemText(8, QCoreApplication.translate("MainWindow", u"Opal 7.5 EC", None))
+        self.pesticideUsed_comboBox.setItemText(9, QCoreApplication.translate("MainWindow", u"Sico 250 EC", None))
+        self.pesticideUsed_comboBox.setItemText(10, QCoreApplication.translate("MainWindow", u"Siganex 600 SC", None))
+        self.pesticideUsed_comboBox.setItemText(11, QCoreApplication.translate("MainWindow", u"Syllit 400 SC", None))
+        self.pesticideUsed_comboBox.setItemText(12, QCoreApplication.translate("MainWindow", u"T\u00e9ga 075 EC", None))
+        self.pesticideUsed_comboBox.setItemText(13, QCoreApplication.translate("MainWindow", u"Thiram 75 WP", None))
+        self.pesticideUsed_comboBox.setItemText(14, QCoreApplication.translate("MainWindow", u"Tilt 250 EC", None))
+        self.pesticideUsed_comboBox.setItemText(15, QCoreApplication.translate("MainWindow", u"Trical 250 EC", None))
+        self.pesticideUsed_comboBox.setItemText(16, QCoreApplication.translate("MainWindow", u"Volley 88 OL", None))
+
+        self.label_pesticideVol.setText(QCoreApplication.translate("MainWindow", u"Pesticide volume (l)", None))
+        self.label_supportCarac.setText(QCoreApplication.translate("MainWindow", u"Carrier material", None))
+        self.activeMatCarac_toolButton.setText(QCoreApplication.translate("MainWindow", u"...", None))
+        self.label_CarrierVol.setText(QCoreApplication.translate("MainWindow", u"Carrier volume (l)", None))
+        self.groupBox_operational_data.setTitle(QCoreApplication.translate("MainWindow", u"Operational data", None))
+
+        self.label_boomHeight.setText(QCoreApplication.translate("MainWindow", u"Boom height (m)", None))
+        self.label_appRate.setText(QCoreApplication.translate("MainWindow", u"Application rate (l/ha)", None))
+        self.label_residualConc.setText(QCoreApplication.translate("MainWindow", u"Ground concentration (\u00b5g/l)", None))
+        self.label_dropletSize.setText(QCoreApplication.translate("MainWindow", u"Spray particle size", None))
+        self.label_nozzleSpac.setText(QCoreApplication.translate("MainWindow", u"Nozzle spacing (cm)", None))
+        self.label_forwardSpeed.setText(QCoreApplication.translate("MainWindow", u"Forward speed (m/s)", None))
+        self.groupBox_meteorological_data.setTitle(QCoreApplication.translate("MainWindow", u"Meteorological data", None))
+        self.label_windSpeed.setText(QCoreApplication.translate("MainWindow", u"Wind speed (m/s)", None))
+        self.label_temperature.setText(QCoreApplication.translate("MainWindow", u"Temperature (\u00b0C)", None))
+        self.label_humidity.setText(QCoreApplication.translate("MainWindow", u"Relative humidity (%)", None))
+        self.resultGrpBox.setTitle(QCoreApplication.translate("MainWindow", u"Outputs", None))
+        self.label_timeStep.setText(QCoreApplication.translate("MainWindow", u"Times step (s)", None))
+        self.label_y0.setText(QCoreApplication.translate("MainWindow", u", y =", None))
+        self.label_hotspot.setText(QCoreApplication.translate("MainWindow", u"Ejection point (m) :", None))
+        self.label_x0.setText(QCoreApplication.translate("MainWindow", u"x =", None))
+        self.calculBtn.setText(QCoreApplication.translate("MainWindow", u"Calculus", None))
+        self.label.setText("")
+        self.resultTabWidget_result.setTabText(self.resultTabWidget_result.indexOf(self.tabPlot_result), QCoreApplication.translate("MainWindow", u"Plot", None))
+        self.resultTabWidget_result.setTabText(self.resultTabWidget_result.indexOf(self.tabData_result), QCoreApplication.translate("MainWindow", u"Datasheet", None))
+        self.label_z.setText(QCoreApplication.translate("MainWindow", u"Z position (m) :", None))
+        self.downloadBtn.setText(QCoreApplication.translate("MainWindow", u"Export", None))
         self.appversion.setText(QCoreApplication.translate("MainWindow", u"v 1.0.0   ", None))
-        self.menuFichier.setTitle(QCoreApplication.translate("MainWindow", u"Fichier", None))
-        self.menuEditer.setTitle(QCoreApplication.translate("MainWindow", u"Editer", None))
-        self.menuRechercher.setTitle(QCoreApplication.translate("MainWindow", u"Rechercher", None))
-        self.menuOutils.setTitle(QCoreApplication.translate("MainWindow", u"Outils", None))
-        self.menuAide.setTitle(QCoreApplication.translate("MainWindow", u"Aide", None))
+        self.menuFichier.setTitle(QCoreApplication.translate("MainWindow", u"File", None))
+        self.menuAide.setTitle(QCoreApplication.translate("MainWindow", u"Help", None))
     # retranslateUi
 

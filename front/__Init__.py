@@ -126,7 +126,8 @@ class MainWindow(QMainWindow):
         droplet_size = self.dropClassList[np.where(self.dropClassList[:, 0] == droplet_class), 1].item()
         self.dropletSize = float(droplet_size)
         self.residualConc = float(self.ui.residualConc_lineEdit.text())
-        self.ejectSpeed = float(self.ui.ejectionSpeed_lineEdit.text())
+        self.forwardSpeed = float(self.ui.forwardSpeed_lineEdit.text())
+        self.nozzleSpacing = float(self.ui.nozzleSpacing_lineEdit.text())
         self.windSpeed = float(self.ui.windSpeed_lineEdit.text())
         self.temperature = float(self.ui.temperature_lineEdit.text())
         self.humidity = float(self.ui.humidity_lineEdit.text())
@@ -144,14 +145,14 @@ class MainWindow(QMainWindow):
         # Parameters initialisation
         self.parameter = inputs_par(self.activeMatConcent, self.pesticideDensity, self.pesticideVol, self.carrierDensity,
                                     self.carrierVol, self.dropletSize, self.boomHeight, self.appRate, self.residualConc,
-                                    self.windSpeed, self.ejectSpeed, self.temperature, self.humidity, self.timeStep, self.x0, self.y0)
+                                    self.windSpeed, self.forwardSpeed, self.nozzleSpacing, self.temperature, self.humidity, self.timeStep, self.x0, self.y0)
 
         # Air flow initialisation
         self.airflow = air_flow(self.parameter.air_sp_ratio, self.parameter.air_pressure,
                            self.parameter.air_density, self.parameter.air_velocity)
 
         # Droplet description initialisation
-        self.dropdescr = droplet_descr(self.dropletSize, self.parameter.chem_mass, self.parameter.rho_mix, self.parameter.vol_mix)
+        self.dropdescr = droplet_descr(self.dropletSize, self.parameter.outputFlow, self.parameter.rho_mix, self.parameter.vol_mix)
 
         # Droplet dispersal initialisation
         self.dd = droplet_dispersal(self.timeStep, self.airflow.v, self.airflow.u, self.parameter.rho_mix, self.parameter.air_density,
@@ -331,7 +332,8 @@ class MainWindow(QMainWindow):
         boomHeight = self.ui.boomHeight_lineEdit.text()
         appRate = self.ui.appRate_lineEdit.text()
         residualConc = self.ui.residualConc_lineEdit.text()
-        ejectSpeed = self.ui.ejectionSpeed_lineEdit.text()
+        forwardSpeed = self.ui.forwardSpeed_lineEdit.text()
+        nozzleSpacing = self.ui.nozzleSpacing_lineEdit.text()
         windSpeed = self.ui.windSpeed_lineEdit.text()
         temperature = self.ui.temperature_lineEdit.text()
         humidity = self.ui.humidity_lineEdit.text()
@@ -376,7 +378,10 @@ class MainWindow(QMainWindow):
         if (is_float(windSpeed) == False):
             self.truevalue += 0
         else : self.truevalue += 1
-        if (is_float(ejectSpeed) == False):
+        if (is_float(forwardSpeed) == False):
+            self.truevalue += 0
+        else : self.truevalue += 1
+        if (is_float(nozzleSpacing) == False):
             self.truevalue += 0
         else : self.truevalue += 1
         if (is_float(temperature) == False):
@@ -395,7 +400,7 @@ class MainWindow(QMainWindow):
             self.truevalue += 0
         else : self.truevalue += 1
 
-        if (self.truevalue == 15):
+        if (self.truevalue == 16):
             self.calResult()
         else : self.uiErreur()
 

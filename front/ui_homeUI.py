@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
 
 ################################################################################
-## Form generated from reading UI file 'homeRJPsmw.ui'
+## Form generated from reading UI file 'homeJjGYNu.ui'
 ##
-## Created by: Qt User Interface Compiler version 5.14.1
+## Created by: Qt User Interface Compiler version 6.4.3
 ##
 ## WARNING! All changes made in this file will be lost when recompiling UI file!
 ################################################################################
@@ -164,22 +164,10 @@ class Ui_MainWindow(object):
         self.verticalLayout_16.setObjectName(u"verticalLayout_16")
         self.gridLayout_operational_data = QGridLayout()
         self.gridLayout_operational_data.setObjectName(u"gridLayout_operational_data")
-        self.label_boomHeight = QLabel(self.groupBox_operational_data)
-        self.label_boomHeight.setObjectName(u"label_boomHeight")
-        self.label_boomHeight.setAlignment(Qt.AlignRight|Qt.AlignTrailing|Qt.AlignVCenter)
+        self.residualConc_lineEdit = QLineEdit(self.groupBox_operational_data)
+        self.residualConc_lineEdit.setObjectName(u"residualConc_lineEdit")
 
-        self.gridLayout_operational_data.addWidget(self.label_boomHeight, 0, 0, 1, 1)
-
-        self.label_residualConc = QLabel(self.groupBox_operational_data)
-        self.label_residualConc.setObjectName(u"label_residualConc")
-        self.label_residualConc.setAlignment(Qt.AlignRight|Qt.AlignTrailing|Qt.AlignVCenter)
-
-        self.gridLayout_operational_data.addWidget(self.label_residualConc, 3, 0, 1, 1)
-
-        self.appRate_lineEdit = QLineEdit(self.groupBox_operational_data)
-        self.appRate_lineEdit.setObjectName(u"appRate_lineEdit")
-
-        self.gridLayout_operational_data.addWidget(self.appRate_lineEdit, 1, 1, 1, 1)
+        self.gridLayout_operational_data.addWidget(self.residualConc_lineEdit, 5, 1, 1, 1)
 
         self.dropletSize_comboBox = QComboBox(self.groupBox_operational_data)
         self.dropletSize_comboBox.addItem(u"Fog")
@@ -189,29 +177,23 @@ class Ui_MainWindow(object):
         self.dropletSize_comboBox.addItem(u"Fine rain")
         self.dropletSize_comboBox.setObjectName(u"dropletSize_comboBox")
 
-        self.gridLayout_operational_data.addWidget(self.dropletSize_comboBox, 2, 1, 1, 1)
-
-        self.label_dropletSize = QLabel(self.groupBox_operational_data)
-        self.label_dropletSize.setObjectName(u"label_dropletSize")
-        self.label_dropletSize.setAlignment(Qt.AlignRight|Qt.AlignTrailing|Qt.AlignVCenter)
-
-        self.gridLayout_operational_data.addWidget(self.label_dropletSize, 2, 0, 1, 1)
+        self.gridLayout_operational_data.addWidget(self.dropletSize_comboBox, 3, 1, 1, 1)
 
         self.boomHeight_lineEdit = QLineEdit(self.groupBox_operational_data)
         self.boomHeight_lineEdit.setObjectName(u"boomHeight_lineEdit")
 
         self.gridLayout_operational_data.addWidget(self.boomHeight_lineEdit, 0, 1, 1, 1)
 
-        self.residualConc_lineEdit = QLineEdit(self.groupBox_operational_data)
-        self.residualConc_lineEdit.setObjectName(u"residualConc_lineEdit")
+        self.appRate_lineEdit = QLineEdit(self.groupBox_operational_data)
+        self.appRate_lineEdit.setObjectName(u"appRate_lineEdit")
 
-        self.gridLayout_operational_data.addWidget(self.residualConc_lineEdit, 3, 1, 1, 1)
+        self.gridLayout_operational_data.addWidget(self.appRate_lineEdit, 1, 1, 1, 1)
 
-        self.label_ejectSpeed = QLabel(self.groupBox_operational_data)
-        self.label_ejectSpeed.setObjectName(u"label_ejectSpeed")
-        self.label_ejectSpeed.setAlignment(Qt.AlignRight|Qt.AlignTrailing|Qt.AlignVCenter)
+        self.label_boomHeight = QLabel(self.groupBox_operational_data)
+        self.label_boomHeight.setObjectName(u"label_boomHeight")
+        self.label_boomHeight.setAlignment(Qt.AlignRight|Qt.AlignTrailing|Qt.AlignVCenter)
 
-        self.gridLayout_operational_data.addWidget(self.label_ejectSpeed, 4, 0, 1, 1)
+        self.gridLayout_operational_data.addWidget(self.label_boomHeight, 0, 0, 1, 1)
 
         self.label_appRate = QLabel(self.groupBox_operational_data)
         self.label_appRate.setObjectName(u"label_appRate")
@@ -219,10 +201,39 @@ class Ui_MainWindow(object):
 
         self.gridLayout_operational_data.addWidget(self.label_appRate, 1, 0, 1, 1)
 
-        self.ejectionSpeed_lineEdit = QLineEdit(self.groupBox_operational_data)
-        self.ejectionSpeed_lineEdit.setObjectName(u"ejectionSpeed_lineEdit")
+        self.label_residualConc = QLabel(self.groupBox_operational_data)
+        self.label_residualConc.setObjectName(u"label_residualConc")
+        self.label_residualConc.setAlignment(Qt.AlignRight|Qt.AlignTrailing|Qt.AlignVCenter)
 
-        self.gridLayout_operational_data.addWidget(self.ejectionSpeed_lineEdit, 4, 1, 1, 1)
+        self.gridLayout_operational_data.addWidget(self.label_residualConc, 5, 0, 1, 1)
+
+        self.nozzleSpacing_lineEdit = QLineEdit(self.groupBox_operational_data)
+        self.nozzleSpacing_lineEdit.setObjectName(u"nozzleSpacing_lineEdit")
+
+        self.gridLayout_operational_data.addWidget(self.nozzleSpacing_lineEdit, 2, 1, 1, 1)
+
+        self.label_dropletSize = QLabel(self.groupBox_operational_data)
+        self.label_dropletSize.setObjectName(u"label_dropletSize")
+        self.label_dropletSize.setAlignment(Qt.AlignRight|Qt.AlignTrailing|Qt.AlignVCenter)
+
+        self.gridLayout_operational_data.addWidget(self.label_dropletSize, 3, 0, 1, 1)
+
+        self.forwardSpeed_lineEdit = QLineEdit(self.groupBox_operational_data)
+        self.forwardSpeed_lineEdit.setObjectName(u"forwardSpeed_lineEdit")
+
+        self.gridLayout_operational_data.addWidget(self.forwardSpeed_lineEdit, 4, 1, 1, 1)
+
+        self.label_nozzleSpac = QLabel(self.groupBox_operational_data)
+        self.label_nozzleSpac.setObjectName(u"label_nozzleSpac")
+        self.label_nozzleSpac.setAlignment(Qt.AlignRight|Qt.AlignTrailing|Qt.AlignVCenter)
+
+        self.gridLayout_operational_data.addWidget(self.label_nozzleSpac, 2, 0, 1, 1)
+
+        self.label_forwardSpeed = QLabel(self.groupBox_operational_data)
+        self.label_forwardSpeed.setObjectName(u"label_forwardSpeed")
+        self.label_forwardSpeed.setAlignment(Qt.AlignRight|Qt.AlignTrailing|Qt.AlignVCenter)
+
+        self.gridLayout_operational_data.addWidget(self.label_forwardSpeed, 4, 0, 1, 1)
 
 
         self.verticalLayout_16.addLayout(self.gridLayout_operational_data)
@@ -545,12 +556,13 @@ class Ui_MainWindow(object):
         self.activeMatCarac_toolButton.setText(QCoreApplication.translate("MainWindow", u"...", None))
         self.label_CarrierVol.setText(QCoreApplication.translate("MainWindow", u"Carrier volume (l)", None))
         self.groupBox_operational_data.setTitle(QCoreApplication.translate("MainWindow", u"Operational data", None))
-        self.label_boomHeight.setText(QCoreApplication.translate("MainWindow", u"Boom height (m)", None))
-        self.label_residualConc.setText(QCoreApplication.translate("MainWindow", u"Ground concentration (\u00b5g/l)", None))
 
-        self.label_dropletSize.setText(QCoreApplication.translate("MainWindow", u"Spray particle size", None))
-        self.label_ejectSpeed.setText(QCoreApplication.translate("MainWindow", u"Ejection speed (m/s)", None))
+        self.label_boomHeight.setText(QCoreApplication.translate("MainWindow", u"Boom height (m)", None))
         self.label_appRate.setText(QCoreApplication.translate("MainWindow", u"Application rate (l/ha)", None))
+        self.label_residualConc.setText(QCoreApplication.translate("MainWindow", u"Ground concentration (\u00b5g/l)", None))
+        self.label_dropletSize.setText(QCoreApplication.translate("MainWindow", u"Spray particle size", None))
+        self.label_nozzleSpac.setText(QCoreApplication.translate("MainWindow", u"Nozzle spacing (cm)", None))
+        self.label_forwardSpeed.setText(QCoreApplication.translate("MainWindow", u"Forward speed (m/s)", None))
         self.groupBox_meteorological_data.setTitle(QCoreApplication.translate("MainWindow", u"Meteorological data", None))
         self.label_windSpeed.setText(QCoreApplication.translate("MainWindow", u"Wind speed (m/s)", None))
         self.label_temperature.setText(QCoreApplication.translate("MainWindow", u"Temperature (\u00b0C)", None))
