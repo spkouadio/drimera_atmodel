@@ -42,6 +42,7 @@ class inputs_par(object):
 
         # Output flow per nozzle
         self.outputFlow = (self.application_rate*self.nozzleSpacing*(self.forwardSpeed*3.6))/(60000*60) # l/s
+        self.outputFlow = self.outputFlow / self.forwardSpeed # l/m
 
         # Mixture properties
         ## Density of mixture

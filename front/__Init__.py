@@ -196,15 +196,16 @@ class MainWindow(QMainWindow):
            j = self.dd.j
            u_air = self.dd.u_air
            alpha_buoy = self.dd.C_d(drop_dist[k, 0], self.dd.u_air[i, j], self.dropdescr.init_velocity())
-           c_0 = drop_dist[k, 1]  # *math.pow(10,6) µg/l
+           c_0 = drop_dist[k, 1] * self.parameter.rho_mix # g *math.pow(10,6) µg/l
            # concent = cc.conc_cal(u_air, alpha_buoy, c_0, i, j)
            #concent = np.add(concent, self.dd.conc_cal(u_air, alpha_buoy, c_0, i, j, k))
            concent = self.dd.conc_cal(u_air, alpha_buoy, c_0, i, j, k)
            pos = int(round(self.dd.z[k,-1], 0))
            self.z_concent[pos] = np.add(self.z_concent[pos], concent)
         if self.parameter.resConcentration != 0 :
-           self.z_concent[0] = np.add(self.z_concent[0], self.res_conc) 
+           self.z_concent[0] = np.add(self.z_concent[0], self.res_conc)
 
+        #self.z_concent = convFact * self.z_concent
 
         #for k in range(n_diam):
         #    i = round(self.dd.x[k, -1]) + self.x0
@@ -236,10 +237,13 @@ class MainWindow(QMainWindow):
 
         len_dim = 101 #len(concent[0,:])-1
         concent = self.z_concent[int(z_pos)]
+        convFact = (self.parameter.pesticide_density / self.parameter.rho_mix) *\
+                   (self.parameter.pesticide_volume / self.parameter.vol_mix)
+        concent = concent * convFact
 
         self.model = QStandardItemModel(0, len_dim, self)
-        self.datasheet = np.round(concent * math.pow(10, 3), 6)
-        #self.model.setHorizontalHeaderLabels(['position (m)', 'value (mg/l)'])
+        self.datasheet = np.round(concent * math.pow(10, 6), 6)
+        #self.model.setHorizontalHeaderLabels(['position (m)', 'value (µg/l)'])
         for i in range(len_dim):
             for j in range(len_dim):
                 self.model.setItem(i, j, QStandardItem(str(self.datasheet[i, j])))
@@ -251,11 +255,11 @@ class MainWindow(QMainWindow):
         plt.clf() # Reinitialize plot
         plt.rcParams.update({'font.size': 8, 'axes.titlepad': 18}) # Set fontsize & title padding
         plt.gcf().set_size_inches(8.7, 3.7, forward=True) # Set imagesize
-        plt.imshow(concent * math.pow(10, 3), cmap='hot', origin='lower', extent=[0, 100, 0, 100])
+        plt.imshow(concent * math.pow(10, 6), cmap='hot', origin='lower', extent=[0, 100, 0, 100])
         plt.colorbar()
         plt.xlabel('x')
         plt.ylabel('y')
-        plt.title(f'Concentration in mg/l at time = {(self.parameter.time_nt / 60):.2f} min at altitude Z = {(z_pos):.2f} m')
+        plt.title(f'Concentration in µg/l at time = {(self.parameter.time_nt / 60):.2f} min at altitude Z = {(z_pos):.2f} m')
 
         def fig_to_pixmap(fig):
             # Save the figure to a buffer

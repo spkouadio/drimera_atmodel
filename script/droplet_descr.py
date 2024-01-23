@@ -10,7 +10,7 @@ import numpy as np
 class droplet_descr(object):
     def __init__(self, mean_diam, output_vol, rho_mix, vol_mix):
         # Chemical properties
-        self.output_vol = output_vol*1000  # (ml/s) params.chem_mass
+        self.output_vol = output_vol  # (l/m) params.chem_mass
         self.rho_mix = rho_mix  # (g/l) params.rho_mix #Density of mixture
         self.vol_mix = vol_mix  # (l) params.vol_mix #Volume of mixture
         self.d_50 = mean_diam
@@ -45,7 +45,7 @@ class droplet_descr(object):
             f_cumul = f_cumul + f
             n = f / (math.pow(d, 3) * (math.pi / 6))
             #drop_table = np.append(drop_table, np.array([[d, f * self.vol_mix, f_cumul, n]]), axis=0) # (l)
-            drop_table = np.append(drop_table, np.array([[d, f * self.output_vol, f_cumul, n]]), axis=0) # (ml)
+            drop_table = np.append(drop_table, np.array([[d, f * self.output_vol, f_cumul, n]]), axis=0) # (l)
         #test = sum(drop_table)
         #test2 = self.chem_mass
         #print(test, test2)
