@@ -237,12 +237,11 @@ class MainWindow(QMainWindow):
 
         len_dim = 101 #len(concent[0,:])-1
         concent = self.z_concent[int(z_pos)]
-        convFact = (self.parameter.pesticide_density / self.parameter.rho_mix) *\
-                   (self.parameter.pesticide_volume / self.parameter.vol_mix)
-        concent = concent * convFact
+        convFact = (self.parameter.chem_concent * self.parameter.pesticide_volume) / self.parameter.vol_mix
+        concent = concent * convFact # g
 
         self.model = QStandardItemModel(0, len_dim, self)
-        self.datasheet = np.round(concent * math.pow(10, 6), 6)
+        self.datasheet = np.round(concent * math.pow(10, 3), 6)
         #self.model.setHorizontalHeaderLabels(['position (m)', 'value (µg/l)'])
         for i in range(len_dim):
             for j in range(len_dim):
@@ -255,11 +254,11 @@ class MainWindow(QMainWindow):
         plt.clf() # Reinitialize plot
         plt.rcParams.update({'font.size': 8, 'axes.titlepad': 18}) # Set fontsize & title padding
         plt.gcf().set_size_inches(8.7, 3.7, forward=True) # Set imagesize
-        plt.imshow(concent * math.pow(10, 6), cmap='hot', origin='lower', extent=[0, 100, 0, 100])
+        plt.imshow(concent * math.pow(10, 3), cmap='hot', origin='lower', extent=[0, 100, 0, 100])
         plt.colorbar()
         plt.xlabel('x')
         plt.ylabel('y')
-        plt.title(f'Concentration in µg/l at time = {(self.parameter.time_nt / 60):.2f} min at altitude Z = {(z_pos):.2f} m')
+        plt.title(f'Active matter in mg at time = {(self.parameter.time_nt / 60):.2f} min at altitude Z = {(z_pos):.2f} m')
 
         def fig_to_pixmap(fig):
             # Save the figure to a buffer
