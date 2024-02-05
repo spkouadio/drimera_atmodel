@@ -3,13 +3,15 @@ Constants package
 '''
 import math
 import numpy as np
+import random
+import scipy.special as sc
 
 class constants(object):
     # Initial chemical list
     def chemical(self):
         chem_list = np.array((['Banko 720 SC', 'Chlorothalonil', 720, 0.00], ['Sico 250 EC', 'Difenoconazol', 250, 1.37],
                               ['Syllit 400 SC', 'Dodin', 400, 0.00], ['Opal 7.5 EC', 'Epoxiconazol', 75, 1.38],
-                              ['Volley 88 OL', 'Fenpropimorph', 750, 0.93], ['Ivory 80 WP', 'Mancozeb', 000, 0.00],
+                              ['Volley 88 OL', 'Fenpropimorph', 750, 0.93], ['Ivory 80 WP', 'Mancozeb', 800, 0.00],
                               ['Tilt 250 EC', 'Propiconazol', 250, 1.09], ['Cabrio EG', 'Pyraclostrobin', 000, 0.00],
                               ['Siganex 600 SC', 'Pyrimethanil', 600, 0.00], ['Impulse 075 EC', 'Spiroxamin', 800, 0.00],
                               ['Thiram 75 WP', 'Thiram', 750, 0.00], ['Folicur 250 EW-Junior', 'Tebuconazol', 250, 1.25],
@@ -87,6 +89,29 @@ class constants(object):
         supp_list = self.carrier
         d_supp = float(supp_list[np.where(supp_list[:, 0] == supp), 1])
         return d_supp
+
+    def windSpeedProfil(self, meanSpeed, timestep):
+        '''
+        WInd speed profil obtain with Weibull distribution
+        :param meanSpeed: mean speed enter by user
+        :param timestep: timestep of simulation enter by user
+        :return: a wind speed profil table
+        '''
+        sigma = 0.25 * meanSpeed
+        # calculate the k index
+        k = math.pow(sigma / meanSpeed, -1.086)
+        # calculate the c index
+        gamma_f = math.exp(sc.gammaln(1 + (1 / k)))
+        c = (meanSpeed / gamma_f)
+        u_step = 1 / timestep
+        # randomly create u[0, 1] uniform values
+        rand_u_step = random.sample([i for i in np.arange(0, 1, u_step)], timestep)
+        windSpeed_table = np.empty((0, 1), float)
+        # wind speed generation
+        for i in rand_u_step:
+            x = math.pow((-1 * math.pow(c, k) * math.log(1 - i)), 1 / k)
+            windSpeed_table = np.append(windSpeed_table, np.array([[x]]), axis=0)  # (m/s)
+        return windSpeed_table
 
 
 
