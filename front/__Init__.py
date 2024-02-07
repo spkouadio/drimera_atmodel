@@ -148,15 +148,17 @@ class MainWindow(QMainWindow):
                                     self.windSpeed, self.forwardSpeed, self.nozzleSpacing, self.temperature, self.humidity, self.timeStep, self.x0, self.y0)
 
         # Air flow initialisation
-        self.airflow = air_flow(self.parameter.air_sp_ratio, self.parameter.air_pressure,
-                           self.parameter.air_density, self.parameter.air_velocity)
+        #self.airflow = air_flow(self.timeStep, self.parameter.air_sp_ratio, self.parameter.air_pressure,
+                           #self.parameter.air_density, self.parameter.air_velocity)
+        self.airflow = air_flow(self.windSpeed, self.timeStep)
 
         # Droplet description initialisation
         self.dropdescr = droplet_descr(self.dropletSize, self.parameter.outputFlow, self.parameter.rho_mix, self.parameter.vol_mix)
 
         # Droplet dispersal initialisation
-        self.dd = droplet_dispersal(self.timeStep, self.airflow.v, self.airflow.u, self.parameter.rho_mix, self.parameter.air_density,
-                                    self.parameter.boomHeight, self.parameter.air_kviscosity, self.dropdescr.drop_distrib(),
+        self.dd = droplet_dispersal(self.timeStep, self.airflow.velocity_field_y, self.airflow.velocity_field_x, self.airflow.velocity_value,
+                                    self.parameter.rho_mix, self.parameter.air_density, self.parameter.boomHeight,
+                                    self.parameter.air_kviscosity, self.dropdescr.drop_distrib(),
                                     self.dropdescr.init_velocity(), self.x0, self.y0, self.z_pos) #self.ejectSpeed
 
         # Concentration calculus initialisation
@@ -195,11 +197,12 @@ class MainWindow(QMainWindow):
            i = self.x0 #round(self.dd.x[k, -1]) +
            j = self.dd.j
            u_air = self.dd.u_air
-           alpha_buoy = self.dd.C_d(drop_dist[k, 0], self.dd.u_air[i, j], self.dropdescr.init_velocity())
+           v_air = self.dd.v_air
+           alpha_buoy = self.dd.C_d(drop_dist[k, 0], self.dd.vel_air[i, j], self.dropdescr.init_velocity())
            c_0 = drop_dist[k, 1] * self.parameter.rho_mix # g *math.pow(10,6) µg/l
            # concent = cc.conc_cal(u_air, alpha_buoy, c_0, i, j)
            #concent = np.add(concent, self.dd.conc_cal(u_air, alpha_buoy, c_0, i, j, k))
-           concent = self.dd.conc_cal(u_air, alpha_buoy, c_0, i, j, k)
+           concent = self.dd.conc_cal(v_air, u_air, alpha_buoy, c_0, i, j, k)
            pos = int(round(self.dd.z[k,-1], 0))
            self.z_concent[pos] = np.add(self.z_concent[pos], concent)
         if self.parameter.resConcentration != 0 :

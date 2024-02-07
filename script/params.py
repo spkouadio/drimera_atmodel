@@ -20,7 +20,6 @@ class inputs_par(object):
         self.boomHeight = boomHeight
         self.application_rate = appRate
         self.resConcentration = residualConc
-        self.air_velocity = windSpeed
         self.forwardSpeed = forwardSpeed
         self.nozzleSpacing = nozzleSpacing
         self.temp = temperature
@@ -37,8 +36,9 @@ class inputs_par(object):
         self.air_density = self.cst.rho_a(self.humidity, self.temp)
         self.air_dviscosity = self.cst.mu_a(self.temp)
         self.air_kviscosity = self.cst.mu_a(self.temp) / self.air_density
-        # Times step dispersion
-        #self.time_nt = self.time_nt  # 180
+
+        # Wind speed profil
+        self.air_velocity = self.cst.windSpeedProfil(windSpeed, self.time_nt)
 
         # Output flow per nozzle
         self.outputFlow = (self.application_rate*self.nozzleSpacing*(self.forwardSpeed*3.6))/(60000*60) # l/s
