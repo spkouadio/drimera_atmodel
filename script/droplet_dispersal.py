@@ -24,11 +24,12 @@ class droplet_dispersal(object):
     dt = 1  # dt is the amount of time each timestep covers (delta t)
     # c = 1
 
-    def __init__(self, timestep, v_air, u_air, air_vel, rho_mix, rho_a, alt_spray, nu_a, drop_dist, init_velocity, x0, y0, z_pos):
+    def __init__(self, timestep, v_air, u_air, air_vel, mean_windSpeed, rho_mix, rho_a, alt_spray, nu_a, drop_dist, init_velocity, x0, y0, z_pos):
         self.nt = timestep+1
         self.v_air = v_air
         self.u_air = u_air
         self.vel_air = air_vel
+        self.mean_windSpeed = mean_windSpeed
         self.rho_mix = rho_mix
         self.rho_a = rho_a
         self.alt_spray = alt_spray
@@ -128,15 +129,19 @@ class droplet_dispersal(object):
             # Update particle velocity based on fluid velocity
             self.u_p = alpha * u + (1 - alpha) * self.u_p
             self.v_p = alpha * v + (1 - alpha) * self.v_p
-            vel_drop = np.sqrt(np.array(self.u_p) ** 2 + np.array(self.v_p) ** 2)
-            vel_sed = np.zeros((self.nx, self.ny))
+            #vel_drop = np.sqrt(np.array(self.u_p) ** 2 + np.array(self.v_p) ** 2)
+            #mean_vel_drop = np.mean(vel_drop)
+            #vel_sed = np.zeros((self.nx, self.ny))
+            vel_sed = math.sqrt(
+                (4 * self.g * (self.rho_mix - self.rho_a) * self.drop_dist[k, 0] * math.pow(10, -6)) / (3 * alpha * self.rho_a))
+            '''
             for i_cp in range(self.nx):
                 for j_cp in range(self.ny):
                     vel_sed[i_cp, j_cp] = math.sqrt((4 * self.g * (self.rho_mix-self.rho_a) * self.drop_dist[k, 0] * math.pow(10, -6)) /
-                                (3 * self.C_d(self.drop_dist[k, 0], self.vel_air[i_cp, j_cp], self.v[n]) * self.rho_a))
+                                (3 * self.C_d(self.drop_dist[k, 0], self.vel_air[i_cp, j_cp], self.v[n]) * self.rho_a)) '''
 
             # Droplet altitude determination
-            if vel_sed > vel_drop :
+            if vel_sed > self.mean_windSpeed :
                 alt = self.z[k, n] - vel_sed * self.dt  # droplet altitude
                 if alt >= 0: self.z[k, n + 1] = alt
                 #c += 0

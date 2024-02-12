@@ -157,7 +157,7 @@ class MainWindow(QMainWindow):
 
         # Droplet dispersal initialisation
         self.dd = droplet_dispersal(self.timeStep, self.airflow.velocity_field_y, self.airflow.velocity_field_x, self.airflow.velocity_value,
-                                    self.parameter.rho_mix, self.parameter.air_density, self.parameter.boomHeight,
+                                    self.windSpeed, self.parameter.rho_mix, self.parameter.air_density, self.parameter.boomHeight,
                                     self.parameter.air_kviscosity, self.dropdescr.drop_distrib(),
                                     self.dropdescr.init_velocity(), self.x0, self.y0, self.z_pos) #self.ejectSpeed
 
@@ -199,7 +199,7 @@ class MainWindow(QMainWindow):
            u_air = self.dd.u_air
            v_air = self.dd.v_air
            alpha_buoy = self.dd.C_d(drop_dist[k, 0], self.dd.vel_air[i, j], self.dropdescr.init_velocity())
-           c_0 = drop_dist[k, 1] * self.parameter.rho_mix # g *math.pow(10,6) µg/l
+           c_0 = drop_dist[k, 1] * self.parameter.rho_mix #g *math.pow(10,6) µg/l
            # concent = cc.conc_cal(u_air, alpha_buoy, c_0, i, j)
            #concent = np.add(concent, self.dd.conc_cal(u_air, alpha_buoy, c_0, i, j, k))
            concent = self.dd.conc_cal(v_air, u_air, alpha_buoy, c_0, i, j, k)
@@ -239,13 +239,13 @@ class MainWindow(QMainWindow):
         #        self.model.setItem(i, j, QStandardItem(str(self.datasheet[i,j])))
 
         len_dim = 101 #len(concent[0,:])-1
-        concent = self.z_concent[int(z_pos)]
+        concent = self.z_concent[int(z_pos)] # l
         convFact = (self.parameter.chem_concent * self.parameter.pesticide_volume) / self.parameter.vol_mix
         concent = concent * convFact # g
 
         self.model = QStandardItemModel(0, len_dim, self)
-        self.datasheet = np.round(concent * math.pow(10, 3), 6)
-        #self.model.setHorizontalHeaderLabels(['position (m)', 'value (µg/l)'])
+        self.datasheet = np.round(concent, 6)
+        #self.model.setHorizontalHeaderLabels(['position (m)', 'value (g)'])
         for i in range(len_dim):
             for j in range(len_dim):
                 self.model.setItem(i, j, QStandardItem(str(self.datasheet[i, j])))
@@ -257,11 +257,11 @@ class MainWindow(QMainWindow):
         plt.clf() # Reinitialize plot
         plt.rcParams.update({'font.size': 8, 'axes.titlepad': 18}) # Set fontsize & title padding
         plt.gcf().set_size_inches(8.7, 3.7, forward=True) # Set imagesize
-        plt.imshow(concent * math.pow(10, 3), cmap='hot', origin='lower', extent=[0, 100, 0, 100])
+        plt.imshow(concent, cmap='hot', origin='lower', extent=[0, 100, 0, 100])
         plt.colorbar()
         plt.xlabel('x')
         plt.ylabel('y')
-        plt.title(f'Active matter in mg at time = {(self.parameter.time_nt / 60):.2f} min at altitude Z = {(z_pos):.2f} m')
+        plt.title(f'Active matter in g at time = {(self.parameter.time_nt / 60):.2f} min at altitude Z = {(z_pos):.2f} m')
 
         def fig_to_pixmap(fig):
             # Save the figure to a buffer

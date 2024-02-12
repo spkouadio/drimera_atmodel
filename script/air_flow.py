@@ -33,7 +33,8 @@ class air_flow(object):
 
         # Generate wind rose data (dummy data for example)
         wind_directions = np.arange(0, 360, 45)  # Angles in degrees
-        wind_probabilities = [0.1, 0.1, 0.1, 0.1, 0.2, 0.2, 0.1, 0.1]  # Corresponding probabilities at each direction
+        wind_probabilities = [0.5, 0.1, 0.06, 0.06, 0.06, 0.06, 0.06, 0.1]  # Corresponding probabilities at each direction
+        #[0.1, 0.1, 0.1, 0.1, 0.2, 0.2, 0.1, 0.1]
 
         # Generate Weibull wind speeds based on probabilities
         num_samples = 100
