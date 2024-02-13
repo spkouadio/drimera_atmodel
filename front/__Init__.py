@@ -241,7 +241,7 @@ class MainWindow(QMainWindow):
         len_dim = 101 #len(concent[0,:])-1
         concent = self.z_concent[int(z_pos)] # l
         convFact = (self.parameter.chem_concent * self.parameter.pesticide_volume) / self.parameter.vol_mix
-        concent = concent * convFact # g
+        concent = concent * convFact * math.pow(10, 6) # µg
 
         self.model = QStandardItemModel(0, len_dim, self)
         self.datasheet = np.round(concent, 6)
@@ -261,7 +261,7 @@ class MainWindow(QMainWindow):
         plt.colorbar()
         plt.xlabel('x')
         plt.ylabel('y')
-        plt.title(f'Active matter in g at time = {(self.parameter.time_nt / 60):.2f} min at altitude Z = {(z_pos):.2f} m')
+        plt.title(f'Active matter in µg at time = {(self.parameter.time_nt / 60):.2f} min at altitude Z = {(z_pos):.2f} m')
 
         def fig_to_pixmap(fig):
             # Save the figure to a buffer
