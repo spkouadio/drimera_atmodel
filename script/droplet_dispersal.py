@@ -12,10 +12,6 @@ Pesticides concentration is then determinated.
 import math
 import numpy as np
 from script.const import constants
-#from params import *
-#import const as cst
-#import droplet_descr
-#import air_flow
 
 class droplet_dispersal(object):
     # nx = 41
@@ -88,8 +84,8 @@ class droplet_dispersal(object):
 
 
     # Define parameters
-    nx = 101  # number of grid points
-    ny = 101
+    nx = 201  # number of grid points
+    ny = 201
     # nt = 100 #params.time_nt  # number of time steps
     dx = 0.1  # grid spacing
     dy = 0.1

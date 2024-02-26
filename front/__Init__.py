@@ -175,7 +175,7 @@ class MainWindow(QMainWindow):
 
         # Plot concentration profile at end of timestep
         # Plot concentration profile by diameter
-        concent = np.zeros((101, 101))
+        concent = np.zeros((201, 201))
         self.z_concent = [concent] * (self.z_pos+1)
         self.dd.i = self.x0
         self.dd.j = self.y0
@@ -238,7 +238,7 @@ class MainWindow(QMainWindow):
         #    for j in range(2):
         #        self.model.setItem(i, j, QStandardItem(str(self.datasheet[i,j])))
 
-        len_dim = 101 #len(concent[0,:])-1
+        len_dim = 201 #len(concent[0,:])-1
         concent = self.z_concent[int(z_pos)] # l
         convFact = (self.parameter.chem_concent * self.parameter.pesticide_volume) / self.parameter.vol_mix
         concent = concent * convFact * math.pow(10, 6) # µg
@@ -257,7 +257,7 @@ class MainWindow(QMainWindow):
         plt.clf() # Reinitialize plot
         plt.rcParams.update({'font.size': 8, 'axes.titlepad': 18}) # Set fontsize & title padding
         plt.gcf().set_size_inches(8.7, 3.7, forward=True) # Set imagesize
-        plt.imshow(concent, cmap='hot', origin='lower', extent=[0, 100, 0, 100])
+        plt.imshow(concent, cmap='hot', origin='lower', extent=[0, 200, 0, 200])
         plt.colorbar()
         plt.xlabel('x')
         plt.ylabel('y')

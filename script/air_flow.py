@@ -27,7 +27,7 @@ class air_flow(object):
         #for i in np.arange(0, 1, u_step):
         #    wind_speeds.append(math.pow((-1 * math.pow(c, k) * math.log(1 - i)), 1 / k)) # (m/s)
         # Define parameters
-        grid_size = 101
+        grid_size = 201
         #k = 2.0  # Weibull shape parameter
         #c = 8.0  # Weibull scale parameter
 
@@ -61,8 +61,6 @@ class air_flow(object):
                 self.velocity_field_x[i, j] = wind_vector_x
                 self.velocity_field_y[i, j] = wind_vector_y
                 self.velocity_value[i, j] = wind_speed
-
-
 '''
 import numpy as np
 
