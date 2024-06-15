@@ -5,7 +5,7 @@ aerial applied pesticides concentration simulation
 
 ### Features :
 
-- Euler-Lagrange granular flow model by FDM solver for air and pesticide droplets.
+- Euler model by FDM solver coupled with Weibull Law and Wind Rose for pesticide droplets flow in air.
 
 - Environmental risk assessment that can occur from aerial spraying.
 
