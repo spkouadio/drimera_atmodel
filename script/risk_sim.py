@@ -6,11 +6,11 @@ import matplotlib.pyplot as plt
 num_simulations = 10000
 
 # Exposure parameters
-mean_exposure = 0.022900609 # Mean exposure level
-std_dev_exposure = 0.000776509  # Standard deviation of exposure level
+mean_exposure = 3.66154E-09 # Mean exposure level
+std_dev_exposure = 4.07523E-17 # Standard deviation of exposure level
 
 # Health impact parameters
-mean_health_impact = 0.007  # Mean health impact per unit exposure
+mean_health_impact = 0.100 # Mean health impact per unit exposure
 std_dev_health_impact = 0.05*mean_health_impact # Standard deviation of health impact
 
 # Perform Monte Carlo simulation
