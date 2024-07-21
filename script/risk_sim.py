@@ -44,7 +44,7 @@ def plot_cdf(data, display_value=None):
   sorted_data = np.sort(data)
   y_vals = np.arange(len(sorted_data)) / (len(sorted_data) - 1)
   plt.plot(sorted_data, y_vals)
-  plt.xlabel("Dose value")
+  plt.xlabel("Dose value (µg/l)")
   plt.ylabel("Cumulative Probability")
   #plt.title(title)
   #plt.grid(True)
@@ -81,14 +81,14 @@ def your_simulation_function(sample):
 
 if __name__ == "__main__":
   # Replace these with your actual initial health risk values
-  initial_values = [0.001820357, 0.009950912, 0.037111496, 0.202868593, 0.001789722, 0.009783446]
+  initial_values = [0, 8.33333E-10, 8.20267E-09]
   num_simulations = 10000
 
   # Perform Monte Carlo simulation with bootstrapping
   simulated_outcomes = monte_carlo_simulation(initial_values, num_simulations, your_simulation_function)
 
   # Specify the x-axis value to display (optional)
-  VTR = 0.007  # Replace with VTR
+  VTR = 1.20  # Replace with VTR
 
   # Plot the CDF with highlighting and display
   plot_cdf(simulated_outcomes, display_value=VTR)
