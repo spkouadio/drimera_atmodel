@@ -1,12 +1,10 @@
 r'''
-Air_flow module are based on the Eulerian approach solving the Navier-Stokes equations
-coupled with Weibull Law and Wind Rose.
-Velocity field is initialized with a constant free stream velocity u_inf and then solves the Euler equations
-using a finite difference method to calculate the velocity field at each point on the grid.
+Air_flow module are based on Weibull Law coupled with the Wind Rose.
+A Mean Speed is used to determinate Weibull's k and c parameters and then, calculate wind speeds.
+Based on probabilities at each direction on the Wind Rose, a velocity field is randomly generate on the grid.
 '''
 import math
 import numpy as np
-import random
 import scipy.special as sc
 
 class air_flow(object):
@@ -18,24 +16,11 @@ class air_flow(object):
         # calculate the c index
         gamma_f = math.exp(sc.gammaln(1 + (1 / k)))
         c = (meanSpeed / gamma_f)
-        u_step = 1 / timestep
-        # randomly create u[0, 1] uniform values
-        #rand_u_step = random.sample([i for i in np.arange(0, 1, u_step)], timestep)
-        #wind_speeds = np.empty((0, 1), float)
-
-        # wind speed generation
-        #wind_speeds = []
-        #for i in np.arange(0, 1, u_step):
-        #    wind_speeds.append(math.pow((-1 * math.pow(c, k) * math.log(1 - i)), 1 / k)) # (m/s)
-        # Define parameters
         grid_size = 201
-        #k = 2.0  # Weibull shape parameter
-        #c = 8.0  # Weibull scale parameter
 
         # Generate wind rose data (dummy data for example)
         wind_directions = np.arange(0, 360, 45)  # Angles in degrees
         wind_probabilities = [0.5, 0.1, 0.06, 0.06, 0.06, 0.06, 0.06, 0.1]  # Corresponding probabilities at each direction
-        #[0.1, 0.1, 0.1, 0.1, 0.2, 0.2, 0.1, 0.1]
 
         # Generate Weibull wind speeds based on probabilities
         num_samples = 100
