@@ -9,9 +9,9 @@
 ################################################################################
 
 from PySide2.QtCore import (QCoreApplication, QMetaObject, QObject, QPoint,
-    QRect, QSize, QUrl, Qt)
+    QRect, QSize, QUrl, Qt, QRectF)
 from PySide2.QtGui import (QBrush, QColor, QConicalGradient, QCursor, QFont,
-    QFontDatabase, QIcon, QLinearGradient, QPalette, QPainter, QPixmap,
+    QFontDatabase, QIcon, QPen, QLinearGradient, QPalette, QPainter, QPixmap,
     QRadialGradient)
 from PySide2.QtWidgets import *
 
@@ -21,13 +21,13 @@ class Ui_MainWindow(object):
             MainWindow.setObjectName(u"MainWindow")
         MainWindow.setWindowModality(Qt.NonModal)
         MainWindow.resize(950, 665)
-        sizePolicy = QSizePolicy(QSizePolicy.Preferred, QSizePolicy.Preferred)
+        sizePolicy = QSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(MainWindow.sizePolicy().hasHeightForWidth())
         MainWindow.setSizePolicy(sizePolicy)
-        MainWindow.setMinimumSize(QSize(950, 665))
-        MainWindow.setMaximumSize(QSize(950, 665))
+        #MainWindow.setMinimumSize(QSize(950, 665))
+        #MainWindow.setMaximumSize(QSize(950, 665))
         icon = QIcon()
         icon.addFile(u"Im/Ico_DRIMERA.png", QSize(), QIcon.Normal, QIcon.Off)
         MainWindow.setWindowIcon(icon)
@@ -266,6 +266,16 @@ class Ui_MainWindow(object):
 
         self.gridLayout_meteorological_data.addWidget(self.windSpeed_lineEdit, 0, 1, 1, 1)
 
+
+
+        self.roseWind_toolButton = QToolButton(self.groupBox_meteorological_data)
+        self.roseWind_toolButton.setObjectName(u"roseWind_toolButton")
+        self.roseWind_toolButton.setIcon(icon1)
+
+        self.gridLayout_meteorological_data.addWidget(self.roseWind_toolButton, 0, 2, 1, 1)
+
+
+
         self.temperature_lineEdit = QLineEdit(self.groupBox_meteorological_data)
         self.temperature_lineEdit.setObjectName(u"temperature_lineEdit")
 
@@ -388,16 +398,17 @@ class Ui_MainWindow(object):
 
         self.verticalLayout_8.addLayout(self.gridLayout_calculus)
 
+
         self.resultTabWidget_result = QTabWidget(self.resultGrpBox)
         self.resultTabWidget_result.setObjectName(u"resultTabWidget_result")
         self.resultTabWidget_result.setEnabled(True)
-        sizePolicy5 = QSizePolicy(QSizePolicy.Fixed, QSizePolicy.Fixed)
+        sizePolicy5 = QSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
         sizePolicy5.setHorizontalStretch(0)
         sizePolicy5.setVerticalStretch(0)
         sizePolicy5.setHeightForWidth(self.resultTabWidget_result.sizePolicy().hasHeightForWidth())
         self.resultTabWidget_result.setSizePolicy(sizePolicy5)
-        self.resultTabWidget_result.setMinimumSize(QSize(565, 431))
-        self.resultTabWidget_result.setMaximumSize(QSize(565, 431))
+        #self.resultTabWidget_result.setMinimumSize(QSize(565, 431))
+        #self.resultTabWidget_result.setMaximumSize(QSize(565, 431))
         self.resultTabWidget_result.setTabShape(QTabWidget.Rounded)
         self.resultTabWidget_result.setIconSize(QSize(13, 20))
         self.resultTabWidget_result.setElideMode(Qt.ElideRight)
@@ -405,16 +416,18 @@ class Ui_MainWindow(object):
         self.resultTabWidget_result.setTabsClosable(False)
         self.resultTabWidget_result.setMovable(False)
         self.resultTabWidget_result.setTabBarAutoHide(False)
+        """
         self.tabPlot_result = QWidget()
         self.tabPlot_result.setObjectName(u"tabPlot_result")
         self.tabPlot_result.setSizeIncrement(QSize(0, 0))
         self.result_graphicsView = QGraphicsView(self.tabPlot_result)
         self.result_graphicsView.setObjectName(u"result_graphicsView")
-        self.result_graphicsView.setGeometry(QRect(1, 1, 557, 397))
+        #self.result_graphicsView.setGeometry(QRect(1, 1, 557, 397)) ##
+        self.result_graphicsView.setGeometry(QRect(1, 1, self.tabPlot_result.width(), self.tabPlot_result.height()))  ##
         sizePolicy5.setHeightForWidth(self.result_graphicsView.sizePolicy().hasHeightForWidth())
         self.result_graphicsView.setSizePolicy(sizePolicy5)
-        self.result_graphicsView.setMinimumSize(QSize(557, 397))
-        self.result_graphicsView.setMaximumSize(QSize(557, 397))
+        #self.result_graphicsView.setMinimumSize(QSize(557, 397))
+        #self.result_graphicsView.setMaximumSize(QSize(557, 397))
         icon3 = QIcon()
         icon3.addFile(u"Im/picture.png", QSize(), QIcon.Normal, QIcon.Off)
         self.resultTabWidget_result.addTab(self.tabPlot_result, icon3, "")
@@ -424,11 +437,49 @@ class Ui_MainWindow(object):
         self.tabData_result.setSizePolicy(sizePolicy5)
         self.tableView = QTableView(self.tabData_result)
         self.tableView.setObjectName(u"tableView")
-        self.tableView.setGeometry(QRect(1, 1, 557, 397))
+        self.tableView.setGeometry(QRect(1, 1, 557, 397)) ##
         sizePolicy5.setHeightForWidth(self.tableView.sizePolicy().hasHeightForWidth())
         self.tableView.setSizePolicy(sizePolicy5)
         self.tableView.setMinimumSize(QSize(557, 397))
-        self.tableView.setMaximumSize(QSize(557, 397))
+        self.tableView.setMaximumSize(QSize(557, 397))"""
+
+
+        # Tab Plot
+        self.tabPlot_result = QWidget()
+        self.tabPlot_result.setObjectName(u"tabPlot_result")
+        plot_layout = QVBoxLayout(self.tabPlot_result)  # Layout pour le tabPlot
+        self.result_graphicsView = QGraphicsView(self.tabPlot_result)
+        self.result_graphicsView.setObjectName(u"result_graphicsView")
+        self.result_graphicsView.setSizePolicy(sizePolicy5)
+        plot_layout.addWidget(self.result_graphicsView)  # Ajout du graphicsView au layout
+        icon3 = QIcon()
+        icon3.addFile(u"Im/picture.png", QSize(), QIcon.Normal, QIcon.Off)
+        self.resultTabWidget_result.addTab(self.tabPlot_result, icon3, "Plot")  # Ajout du tab avec le layout
+
+        # Tab Data
+        self.tabData_result = QWidget()
+        self.tabData_result.setObjectName(u"tabData_result")
+        data_layout = QVBoxLayout(self.tabData_result)  # Layout pour le tabData
+        self.tableView = QTableView(self.tabData_result)
+        self.tableView.setObjectName(u"tableView")
+        self.tableView.setSizePolicy(sizePolicy)
+        data_layout.addWidget(self.tableView)  # Ajout du tableView au layout
+        icon4 = QIcon()
+        icon4.addFile(u"Im/graph.png", QSize(), QIcon.Normal, QIcon.Off)
+        self.resultTabWidget_result.addTab(self.tabData_result, icon4, "Data")  # Ajout du tab avec le layout
+
+        # Ajout du tabwidget au groupbox
+        layoutGroupBox = QVBoxLayout(self.resultGrpBox)
+        layoutGroupBox.addWidget(self.resultTabWidget_result)
+
+        self.scene = QGraphicsScene()
+        self.result_graphicsView.setScene(self.scene)
+        self.scene_rect = self.scene.addRect(QRectF(0, 0, 0, 0), QPen(Qt.black), QBrush(Qt.white))
+        self.resizeEvent = self.onResize
+
+
+
+
         icon4 = QIcon()
         icon4.addFile(u"Im/graph.png", QSize(), QIcon.Normal, QIcon.Off)
         self.resultTabWidget_result.addTab(self.tabData_result, icon4, "")
@@ -439,8 +490,8 @@ class Ui_MainWindow(object):
         self.gridLayout_zposition.setObjectName(u"gridLayout_zposition")
         self.zposition_lineEdit = QLineEdit(self.resultGrpBox)
         self.zposition_lineEdit.setObjectName(u"zposition_lineEdit")
-        sizePolicy5.setHeightForWidth(self.zposition_lineEdit.sizePolicy().hasHeightForWidth())
-        self.zposition_lineEdit.setSizePolicy(sizePolicy5)
+        #sizePolicy5.setHeightForWidth(self.zposition_lineEdit.sizePolicy().hasHeightForWidth())
+        self.zposition_lineEdit.setSizePolicy(sizePolicy4)
         self.zposition_lineEdit.setMaximumSize(QSize(30, 16777215))
 
         self.gridLayout_zposition.addWidget(self.zposition_lineEdit, 0, 1, 1, 1)
@@ -522,6 +573,13 @@ class Ui_MainWindow(object):
         QMetaObject.connectSlotsByName(MainWindow)
     # setupUi
 
+    def onResize(self, event):
+        self.scene.setSceneRect(
+            QRectF(0, 0, self.result_graphicsView.viewport().width(), self.result_graphicsView.viewport().height()))
+        self.scene_rect.setRect(
+            QRectF(0, 0, self.result_graphicsView.viewport().width(), self.result_graphicsView.viewport().height()))
+        QWidget.resizeEvent(self, event)
+
     def retranslateUi(self, MainWindow):
         MainWindow.setWindowTitle(QCoreApplication.translate("MainWindow", u"DRIMERA", None))
         self.actionOuvrir.setText(QCoreApplication.translate("MainWindow", u"Open", None))
@@ -554,6 +612,7 @@ class Ui_MainWindow(object):
         self.label_pesticideVol.setText(QCoreApplication.translate("MainWindow", u"Pesticide volume (l)", None))
         self.label_supportCarac.setText(QCoreApplication.translate("MainWindow", u"Carrier material", None))
         self.activeMatCarac_toolButton.setText(QCoreApplication.translate("MainWindow", u"...", None))
+        self.roseWind_toolButton.setText(QCoreApplication.translate("MainWindow", u"...", None))
         self.label_CarrierVol.setText(QCoreApplication.translate("MainWindow", u"Carrier volume (l)", None))
         self.groupBox_operational_data.setTitle(QCoreApplication.translate("MainWindow", u"Operational data", None))
 

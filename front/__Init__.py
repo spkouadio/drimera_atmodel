@@ -9,6 +9,7 @@ import os
 
 from PySide2 import QtWidgets
 
+
 """
 DRIMERA (Drift Modeling for Environmental Risk Assessment) est un outil d’aide à la décision développé 
 dans la cadre de la thèse de doctorat de @Saint-Pierre KOUADIO. Ce logiciel permet la simulation de la dispersion 
@@ -30,6 +31,7 @@ import ui_alert
 import ui_error
 import ui_pestsetting
 import ui_carriersetting
+import ui_windrosesetting
 
 import math
 import matplotlib.pyplot as plt
@@ -61,6 +63,7 @@ class MainWindow(QMainWindow):
         self.ui.downloadBtn.clicked.connect(self.exportData)
         self.ui.activeMatCarac_toolButton.clicked.connect(self.pestSetting)
         self.ui.supportCarac_toolButton.clicked.connect(self.carSetting)
+        self.ui.roseWind_toolButton.clicked.connect(self.roseSetting)
         self.ui.actionQuitter.triggered.connect(self.closeApp)
         self.ui.actionNouveau.triggered.connect(self.newApp)
 
@@ -558,6 +561,186 @@ class MainWindow(QMainWindow):
         carSetting.ui.backBtn.clicked.connect(toMain)
 
         carSetting.exec_()
+
+    def roseSetting(self):
+        roseSetting = QDialog()
+        roseSetting.ui = ui_windrosesetting.Ui_Alert()
+        roseSetting.ui.setupUi(roseSetting)
+
+        roseSettingInitValue = {
+            'N': 0.5,
+            'NE': 0.1,
+            'E': 0.06,
+            'SE': 0.06,
+            'S': 0.06,
+            'SW': 0.06,
+            'W': 0.06,
+            'NW': 0.1
+        }
+        self.roseSettingValue = roseSettingInitValue
+
+        roseSetting.ui.North_lineEdit.setText(str(roseSettingInitValue['N']))
+        roseSetting.ui.NorthEast_lineEdit.setText(str(roseSettingInitValue['NE']))
+        roseSetting.ui.East_lineEdit.setText(str(roseSettingInitValue['E']))
+        roseSetting.ui.SouthEast_lineEdit.setText(str(roseSettingInitValue['SE']))
+        roseSetting.ui.South_lineEdit.setText(str(roseSettingInitValue['S']))
+        roseSetting.ui.SouthWest_lineEdit.setText(str(roseSettingInitValue['SW']))
+        roseSetting.ui.West_lineEdit.setText(str(roseSettingInitValue['W']))
+        roseSetting.ui.NorthWest_lineEdit.setText(str(roseSettingInitValue['NW']))
+
+        def fig_to_pixmap(fig):
+            # Save the figure to a buffer
+            buf = BytesIO()
+            fig.savefig(buf, format='png', bbox_inches='tight', pad_inches=0.2, transparent=True)
+            buf.seek(0)
+
+            # Convert the buffer to QPixmap
+            pixmap = QPixmap()
+            pixmap.loadFromData(buf.read())
+            buf.close()
+
+            return pixmap
+
+        def graphic_wind_rose(probas):
+
+            # Data validation
+            if len(probas) != 8:
+                #raise ValueError("Le dictionnaire doit contenir 8 directions.")
+                self.uiErreur()
+            if not all(0 <= probas[direction] <= 1 for direction in probas):
+                #raise ValueError("Les probabilités doivent être entre 0 et 1.")
+                self.uiErreur()
+
+            # Conversion des probabilités en fréquences (pour l'affichage)
+            freqs = np.array(list(probas.values())) * 100
+
+            # Création des directions en radians
+            dirs_rad = np.deg2rad(np.array([0, 45, 90, 135, 180, 225, 270, 315]))
+
+            # Création de la figure et des axes polaires
+            fig, ax = plt.subplots(figsize=(8, 8), subplot_kw=dict(polar=True))
+
+            # Largeur des barres
+            width = np.deg2rad(45)  # 45 degrés en radians
+
+            # Création des barres
+            bars = ax.bar(dirs_rad, freqs, width=width, bottom=0.0)
+
+            # Mise en page
+            ax.set_theta_zero_location("N")  # Le zéro est au Nord
+            ax.set_theta_direction(-1)  # Sens horaire
+            ax.set_thetagrids(np.degrees(dirs_rad))  # Affiche les degrés
+            #ax.set_title("Rose des vents des probabilités directionnelles")
+            ax.set_rlabel_position(0)  # Position labels des rayons
+            ax.set_rticks(np.linspace(0, max(freqs) + 10, 4))  # Ajuste les ticks radiaux
+            ax.set_rlabel_position(22.5)  # Positionne les labels radiaux au milieu des barres
+
+            # Ajout des étiquettes de direction (N, NE, E, etc.)
+            direction_labels = ['N', 'NE', 'E', 'SE', 'S', 'SW', 'W', 'NW']
+            ax.set_xticklabels(direction_labels)
+
+            plt.gcf().set_size_inches(5.7, 3.7, forward=True)  # Set imagesize
+
+            # Convert the matplotlib figure to QPixmap
+            self.figure_pixmap = fig_to_pixmap(plt.gcf())
+
+            # Create a QGraphicsPixmapItem to display the image
+            self.graphicSceneWindRose = QGraphicsScene()
+            self.graphicSceneWindRose.addPixmap(self.figure_pixmap)
+
+            # Set the QGraphicsView
+            roseSetting.ui.roseWind_graphicsView.setScene(self.graphicSceneWindRose)
+
+        graphic_wind_rose(roseSettingInitValue)
+
+        def addRose():
+            def is_float(string):
+                try:
+                    float(string)
+                    return True
+                except ValueError:
+                    return False
+
+            N_value = roseSetting.ui.North_lineEdit.text()
+            NE_value = roseSetting.ui.NorthEast_lineEdit.text()
+            E_value = roseSetting.ui.East_lineEdit.text()
+            SE_value = roseSetting.ui.SouthEast_lineEdit.text()
+            S_value = roseSetting.ui.South_lineEdit.text()
+            SW_value = roseSetting.ui.SouthWest_lineEdit.text()
+            W_value = roseSetting.ui.West_lineEdit.text()
+            NW_value = roseSetting.ui.NorthWest_lineEdit.text()
+
+            value = 0
+            if (is_float(N_value) == False):
+                value += 0
+            else:
+                value += 1
+            if (is_float(NE_value) == False):
+                value += 0
+            else:
+                value += 1
+            if (is_float(E_value) == False):
+                value += 0
+            else:
+                value += 1
+            if (is_float(SE_value) == False):
+                value += 0
+            else:
+                value += 1
+            if (is_float(S_value) == False):
+                value += 0
+            else:
+                value += 1
+            if (is_float(SW_value) == False):
+                value += 0
+            else:
+                value += 1
+            if (is_float(W_value) == False):
+                value += 0
+            else:
+                value += 1
+            if (is_float(NW_value) == False):
+                value += 0
+            else:
+                value += 1
+            if (value != 8):
+                self.uiErreur()
+            else:
+                self.roseSettingValue = {
+                    'N': float(N_value),
+                    'NE': float(NE_value),
+                    'E': float(E_value),
+                    'SE': float(SE_value),
+                    'S': float(S_value),
+                    'SW': float(SW_value),
+                    'W': float(W_value),
+                    'NW': float(NW_value)
+                }
+                graphic_wind_rose(self.roseSettingValue)
+
+
+        def resetRose():
+            self.roseSettingValue = roseSettingInitValue
+            roseSetting.ui.North_lineEdit.setText(str(self.roseSettingValue['N']))
+            roseSetting.ui.NorthEast_lineEdit.setText(str(self.roseSettingValue['NE']))
+            roseSetting.ui.East_lineEdit.setText(str(self.roseSettingValue['E']))
+            roseSetting.ui.SouthEast_lineEdit.setText(str(self.roseSettingValue['SE']))
+            roseSetting.ui.South_lineEdit.setText(str(self.roseSettingValue['S']))
+            roseSetting.ui.SouthWest_lineEdit.setText(str(self.roseSettingValue['SW']))
+            roseSetting.ui.West_lineEdit.setText(str(self.roseSettingValue['W']))
+            roseSetting.ui.NorthWest_lineEdit.setText(str(self.roseSettingValue['NW']))
+
+            graphic_wind_rose(self.roseSettingValue)
+
+        def toMain():
+            roseSetting.close()
+
+        roseSetting.ui.saveBtn.clicked.connect(addRose)
+        roseSetting.ui.resetBtn.clicked.connect(resetRose)
+        roseSetting.ui.backBtn.clicked.connect(toMain)
+
+        roseSetting.exec_()
+
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
