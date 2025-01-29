@@ -9,6 +9,7 @@ import os
 
 from PySide2 import QtWidgets
 
+import script.params
 
 """
 DRIMERA (Drift Modeling for Environmental Risk Assessment) est un outil d’aide à la décision développé 
@@ -72,6 +73,7 @@ class MainWindow(QMainWindow):
         self.progress_bar = QtWidgets.QProgressBar()
         self.statusBar().addPermanentWidget(self.progress_bar)
         self.progress_bar.hide()
+        self.roseSetValue = constants.roseValue(self)[:, 1].astype(float).tolist()
 
     def closeApp(self):
         self.close()
@@ -153,7 +155,7 @@ class MainWindow(QMainWindow):
         # Air flow initialisation
         #self.airflow = air_flow(self.timeStep, self.parameter.air_sp_ratio, self.parameter.air_pressure,
                            #self.parameter.air_density, self.parameter.air_velocity)
-        self.airflow = air_flow(self.windSpeed, self.timeStep)
+        self.airflow = air_flow(self.windSpeed, self.roseSetValue, self.timeStep)
 
         # Droplet description initialisation
         self.dropdescr = droplet_descr(self.dropletSize, self.parameter.outputFlow, self.parameter.rho_mix, self.parameter.vol_mix)
@@ -562,31 +564,23 @@ class MainWindow(QMainWindow):
 
         carSetting.exec_()
 
+
     def roseSetting(self):
         roseSetting = QDialog()
         roseSetting.ui = ui_windrosesetting.Ui_Alert()
         roseSetting.ui.setupUi(roseSetting)
 
-        roseSettingInitValue = {
-            'N': 0.5,
-            'NE': 0.1,
-            'E': 0.06,
-            'SE': 0.06,
-            'S': 0.06,
-            'SW': 0.06,
-            'W': 0.06,
-            'NW': 0.1
-        }
-        self.roseSettingValue = roseSettingInitValue
+        #self.roseSetValue = constants.roseValue(self)[:, 1]
+        #self.roseInitValue = self.roseSetValue
 
-        roseSetting.ui.North_lineEdit.setText(str(roseSettingInitValue['N']))
-        roseSetting.ui.NorthEast_lineEdit.setText(str(roseSettingInitValue['NE']))
-        roseSetting.ui.East_lineEdit.setText(str(roseSettingInitValue['E']))
-        roseSetting.ui.SouthEast_lineEdit.setText(str(roseSettingInitValue['SE']))
-        roseSetting.ui.South_lineEdit.setText(str(roseSettingInitValue['S']))
-        roseSetting.ui.SouthWest_lineEdit.setText(str(roseSettingInitValue['SW']))
-        roseSetting.ui.West_lineEdit.setText(str(roseSettingInitValue['W']))
-        roseSetting.ui.NorthWest_lineEdit.setText(str(roseSettingInitValue['NW']))
+        roseSetting.ui.North_lineEdit.setText(str(self.roseSetValue[0]))
+        roseSetting.ui.NorthEast_lineEdit.setText(str(self.roseSetValue[1]))
+        roseSetting.ui.East_lineEdit.setText(str(self.roseSetValue[2]))
+        roseSetting.ui.SouthEast_lineEdit.setText(str(self.roseSetValue[3]))
+        roseSetting.ui.South_lineEdit.setText(str(self.roseSetValue[4]))
+        roseSetting.ui.SouthWest_lineEdit.setText(str(self.roseSetValue[5]))
+        roseSetting.ui.West_lineEdit.setText(str(self.roseSetValue[6]))
+        roseSetting.ui.NorthWest_lineEdit.setText(str(self.roseSetValue[7]))
 
         def fig_to_pixmap(fig):
             # Save the figure to a buffer
@@ -601,8 +595,17 @@ class MainWindow(QMainWindow):
 
             return pixmap
 
-        def graphic_wind_rose(probas):
-
+        def graphic_wind_rose(roseValue):
+            probas = {
+                'N': float(roseValue[0]),
+                'NE': float(roseValue[1]),
+                'E': float(roseValue[2]),
+                'SE': float(roseValue[3]),
+                'S': float(roseValue[4]),
+                'SW': float(roseValue[5]),
+                'W': float(roseValue[6]),
+                'NW': float(roseValue[7])
+            }
             # Data validation
             if len(probas) != 8:
                 #raise ValueError("Le dictionnaire doit contenir 8 directions.")
@@ -639,7 +642,7 @@ class MainWindow(QMainWindow):
             direction_labels = ['N', 'NE', 'E', 'SE', 'S', 'SW', 'W', 'NW']
             ax.set_xticklabels(direction_labels)
 
-            plt.gcf().set_size_inches(5.7, 3.7, forward=True)  # Set imagesize
+            plt.gcf().set_size_inches(4.0, 2.7, forward=True)  # Set imagesize
 
             # Convert the matplotlib figure to QPixmap
             self.figure_pixmap = fig_to_pixmap(plt.gcf())
@@ -651,7 +654,7 @@ class MainWindow(QMainWindow):
             # Set the QGraphicsView
             roseSetting.ui.roseWind_graphicsView.setScene(self.graphicSceneWindRose)
 
-        graphic_wind_rose(roseSettingInitValue)
+        graphic_wind_rose(self.roseSetValue)
 
         def addRose():
             def is_float(string):
@@ -661,76 +664,77 @@ class MainWindow(QMainWindow):
                 except ValueError:
                     return False
 
-            N_value = roseSetting.ui.North_lineEdit.text()
-            NE_value = roseSetting.ui.NorthEast_lineEdit.text()
-            E_value = roseSetting.ui.East_lineEdit.text()
-            SE_value = roseSetting.ui.SouthEast_lineEdit.text()
-            S_value = roseSetting.ui.South_lineEdit.text()
-            SW_value = roseSetting.ui.SouthWest_lineEdit.text()
-            W_value = roseSetting.ui.West_lineEdit.text()
-            NW_value = roseSetting.ui.NorthWest_lineEdit.text()
+            self.N_value = roseSetting.ui.North_lineEdit.text()
+            self.NE_value = roseSetting.ui.NorthEast_lineEdit.text()
+            self.E_value = roseSetting.ui.East_lineEdit.text()
+            self.SE_value = roseSetting.ui.SouthEast_lineEdit.text()
+            self.S_value = roseSetting.ui.South_lineEdit.text()
+            self.SW_value = roseSetting.ui.SouthWest_lineEdit.text()
+            self.W_value = roseSetting.ui.West_lineEdit.text()
+            self.NW_value = roseSetting.ui.NorthWest_lineEdit.text()
 
             value = 0
-            if (is_float(N_value) == False):
+            som = 0
+            if (is_float(self.N_value) == False):
                 value += 0
             else:
                 value += 1
-            if (is_float(NE_value) == False):
+                som += float(self.N_value)
+            if (is_float(self.NE_value) == False):
                 value += 0
             else:
                 value += 1
-            if (is_float(E_value) == False):
+                som += float(self.NE_value)
+            if (is_float(self.E_value) == False):
                 value += 0
             else:
                 value += 1
-            if (is_float(SE_value) == False):
+                som += float(self.E_value)
+            if (is_float(self.SE_value) == False):
                 value += 0
             else:
                 value += 1
-            if (is_float(S_value) == False):
+                som += float(self.SE_value)
+            if (is_float(self.S_value) == False):
                 value += 0
             else:
                 value += 1
-            if (is_float(SW_value) == False):
+                som += float(self.S_value)
+            if (is_float(self.SW_value) == False):
                 value += 0
             else:
                 value += 1
-            if (is_float(W_value) == False):
+                som += float(self.SW_value)
+            if (is_float(self.W_value) == False):
                 value += 0
             else:
                 value += 1
-            if (is_float(NW_value) == False):
+                som += float(self.W_value)
+            if (is_float(self.NW_value) == False):
                 value += 0
             else:
                 value += 1
-            if (value != 8):
+                som += float(self.NW_value)
+            if (value != 8 or round(som, 6) != 1.000000):
                 self.uiErreur()
             else:
-                self.roseSettingValue = {
-                    'N': float(N_value),
-                    'NE': float(NE_value),
-                    'E': float(E_value),
-                    'SE': float(SE_value),
-                    'S': float(S_value),
-                    'SW': float(SW_value),
-                    'W': float(W_value),
-                    'NW': float(NW_value)
-                }
-                graphic_wind_rose(self.roseSettingValue)
+                self.roseSetValue = [self.N_value, self.NE_value, self.E_value, self.SE_value,
+                                     self.S_value, self.SW_value, self.W_value, self.NW_value]
+                graphic_wind_rose(self.roseSetValue)
 
 
         def resetRose():
-            self.roseSettingValue = roseSettingInitValue
-            roseSetting.ui.North_lineEdit.setText(str(self.roseSettingValue['N']))
-            roseSetting.ui.NorthEast_lineEdit.setText(str(self.roseSettingValue['NE']))
-            roseSetting.ui.East_lineEdit.setText(str(self.roseSettingValue['E']))
-            roseSetting.ui.SouthEast_lineEdit.setText(str(self.roseSettingValue['SE']))
-            roseSetting.ui.South_lineEdit.setText(str(self.roseSettingValue['S']))
-            roseSetting.ui.SouthWest_lineEdit.setText(str(self.roseSettingValue['SW']))
-            roseSetting.ui.West_lineEdit.setText(str(self.roseSettingValue['W']))
-            roseSetting.ui.NorthWest_lineEdit.setText(str(self.roseSettingValue['NW']))
-
-            graphic_wind_rose(self.roseSettingValue)
+            self.roseInitValue = constants.roseValue(self)[:, 1]
+            roseSetting.ui.North_lineEdit.setText(self.roseInitValue[0])
+            roseSetting.ui.NorthEast_lineEdit.setText(self.roseInitValue[1])
+            roseSetting.ui.East_lineEdit.setText(self.roseInitValue[2])
+            roseSetting.ui.SouthEast_lineEdit.setText(self.roseInitValue[3])
+            roseSetting.ui.South_lineEdit.setText(self.roseInitValue[4])
+            roseSetting.ui.SouthWest_lineEdit.setText(self.roseInitValue[5])
+            roseSetting.ui.West_lineEdit.setText(self.roseInitValue[6])
+            roseSetting.ui.NorthWest_lineEdit.setText(self.roseInitValue[7])
+            graphic_wind_rose(self.roseInitValue)
+            self.roseSetValue = self.roseInitValue
 
         def toMain():
             roseSetting.close()

@@ -32,7 +32,6 @@ class inputs_par(object):
 
         self.air_pressure = 10.1325  # mCE
         self.air_sp_ratio = 1.4  # air specific heat ratio
-
         self.air_density = self.cst.rho_a(self.humidity, self.temp)
         self.air_dviscosity = self.cst.mu_a(self.temp)
         self.air_kviscosity = self.cst.mu_a(self.temp) / self.air_density

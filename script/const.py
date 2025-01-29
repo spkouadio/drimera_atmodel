@@ -113,5 +113,8 @@ class constants(object):
             windSpeed_table = np.append(windSpeed_table, np.array([[x]]), axis=0)  # (m/s)
         return windSpeed_table
 
-
-
+    # Wind rose initial value
+    def roseValue(self):
+        rose_val = np.array((['N', 0.5], ['NE', 0.1], ['E', 0.06], ['SE', 0.06], ['S', 0.06],
+                                  ['SW', 0.06], ['W', 0.06], ['NW', 0.1]))
+        return rose_val
