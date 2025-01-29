@@ -261,12 +261,27 @@ class MainWindow(QMainWindow):
         # Plot concentration by position in a 2D graph
         plt.clf() # Reinitialize plot
         plt.rcParams.update({'font.size': 8, 'axes.titlepad': 18}) # Set fontsize & title padding
-        plt.gcf().set_size_inches(8.7, 3.7, forward=True) # Set imagesize
+        #plt.gcf().set_size_inches(8.7, 3.7, forward=True) # Set imagesize
         plt.imshow(concent, cmap='hot', origin='lower', extent=[0, 200, 0, 200])
         plt.colorbar()
         plt.xlabel('x')
         plt.ylabel('y')
         plt.title(f'Active matter in µg at time = {(self.parameter.time_nt / 60):.2f} min at altitude Z = {(z_pos):.2f} m')
+
+        width_pixels = 1.6*self.ui.result_graphicsView.width()
+        height_pixels = 1.6*self.ui.result_graphicsView.height()
+
+        # Convert dimensions in inches
+        dpi_x = QApplication.desktop().physicalDpiX()
+        dpi_y = QApplication.desktop().physicalDpiY()
+        width_pouces = width_pixels / dpi_x
+        height_pouces = height_pixels / dpi_y
+
+        # Set display size
+        plt.gcf().set_size_inches(width_pouces, height_pouces, forward=True)
+
+        # Inforce graphic displaying
+        plt.gcf().canvas.draw()
 
         def fig_to_pixmap(fig):
             # Save the figure to a buffer
