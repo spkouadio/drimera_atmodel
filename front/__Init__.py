@@ -41,7 +41,7 @@ import pandas as pd
 from pathlib import Path
 
 #from PyQt5.QtWidgets import QApplication, QGraphicsView, QGraphicsScene
-from PySide2.QtGui import QPixmap, QStandardItemModel, QStandardItem
+from PySide2.QtGui import QPixmap, QStandardItemModel, QStandardItem, QDesktopServices
 from PyQt5.QtCore import Qt
 from six import BytesIO
 from PySide2 import QtCore
@@ -67,6 +67,7 @@ class MainWindow(QMainWindow):
         self.ui.roseWind_toolButton.clicked.connect(self.roseSetting)
         self.ui.actionQuitter.triggered.connect(self.closeApp)
         self.ui.actionNouveau.triggered.connect(self.newApp)
+        self.ui.actionAide.triggered.connect(self.helpApp)
 
         self.ui.zposition_horizontalSlider.valueChanged.connect(self.sliderchanged)
 
@@ -79,6 +80,10 @@ class MainWindow(QMainWindow):
         self.close()
     def newApp(self):
         self.w = AnotherWindow()
+
+    def helpApp(self):
+        url = QUrl.fromLocalFile("Im/helpFile.pdf" )
+        QDesktopServices.openUrl(url)
 
     def startprocess(self):
         self.completed = 0

@@ -38,6 +38,8 @@ class Ui_MainWindow(object):
         self.actionNouveau.setObjectName(u"actionNouveau")
         self.actionQuitter = QAction(MainWindow)
         self.actionQuitter.setObjectName(u"actionQuitter")
+        self.actionAide = QAction(MainWindow) ###
+        self.actionAide.setObjectName(u"actionAide") ###
         self.centralwidget = QWidget(MainWindow)
         self.centralwidget.setObjectName(u"centralwidget")
         sizePolicy.setHeightForWidth(self.centralwidget.sizePolicy().hasHeightForWidth())
@@ -557,7 +559,8 @@ class Ui_MainWindow(object):
         MainWindow.setStatusBar(self.statusbar)
 
         self.menubar.addAction(self.menuFichier.menuAction())
-        self.menubar.addAction(self.menuAide.menuAction())
+        #self.menubar.addAction(self.menuAide.menuAction())
+        self.menubar.addAction(self.actionAide)
         self.menuFichier.addAction(self.actionOuvrir)
         self.menuFichier.addAction(self.actionNouveau)
         self.menuFichier.addAction(self.actionQuitter)
@@ -585,7 +588,7 @@ class Ui_MainWindow(object):
         self.actionOuvrir.setText(QCoreApplication.translate("MainWindow", u"Open", None))
         self.actionNouveau.setText(QCoreApplication.translate("MainWindow", u"New", None))
         self.actionQuitter.setText(QCoreApplication.translate("MainWindow", u"Quit", None))
-        self.actionQuitter.setIconText(QCoreApplication.translate("MainWindow", u"Quitter", None))
+        self.actionAide.setIconText(QCoreApplication.translate("MainWindow", u"Help", None))
         self.inputGrpBox.setTitle(QCoreApplication.translate("MainWindow", u"Inputs", None))
         self.groupBox_spray_mixture.setTitle(QCoreApplication.translate("MainWindow", u"Spray mixture", None))
 
