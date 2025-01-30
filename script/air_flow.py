@@ -8,7 +8,7 @@ import numpy as np
 import scipy.special as sc
 
 class air_flow(object):
-    def __init__(self, meanSpeed, windRose, timestep):
+    def __init__(self, meanSpeed, windProbability, timestep):
 
         sigma = 0.25 * meanSpeed
         # calculate the k index
@@ -20,7 +20,7 @@ class air_flow(object):
 
         # Generate wind rose data (dummy data for example)
         wind_directions = np.arange(0, 360, 45)  # Angles in degrees
-        wind_probabilities = windRose
+        wind_probabilities = windProbability
 
         # Generate Weibull wind speeds based on probabilities
         num_samples = 100
